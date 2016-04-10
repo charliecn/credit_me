@@ -1,3 +1,9 @@
 #drop_content{
 	display: none;
 }
+#confirm {
+	position: absolute;
+	display: none;
+	left: 300px;
+	top: 0px;
+}

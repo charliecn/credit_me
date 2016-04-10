@@ -3,18 +3,6 @@ var lowerPrice = 0.0;
 var upperTime = 0;
 var lowerTime = 0;
 
-function storeMessage() {
-	var diningHall = document.getElementById("halls_input").value;
-	var delivery;
-	var radios = document.getElementsByName("delivery");
-	if (radios[0].checked && radios[1].checked == false) {
-		delivery = true;
-	} else if (radios[1].checked && radios[0].checked == false) {
-		delivery = false;
-	}
-	console.log(diningHall + " " + delivery + " " + upperPrice + " " + lowerPrice + " " + upperTime + " " + lowerTime);
-}
-
 window.addEventListener('load', function(){
 	var upperRange = document.getElementById("upper_range");
 	upperRange.addEventListener('change', function(){
@@ -64,6 +52,34 @@ window.addEventListener('load', function(){
 		//window.location = 'userinput.html';
 	});
 
-	userinput_field.addEventListener('submit', storeMessage, false);
+	document.getElementById("userinput_field").addEventListener('submit', function(e){
+		e.preventDefault();
+		handleInput();
+	}, false);
 
 });
+
+function handleInput() {
+	//alert('handleinput');
+	//e.preventDefault();
+	//alert('here!');
+	storeMessage();
+	//document.getElementById("confirm").style.display = "block";
+	//window.location = '';
+}
+
+function storeMessage() {
+	//alert("here!");
+	var diningHall = document.getElementById("halls_input").value;
+	var delivery;
+	var radios = document.getElementsByName("delivery");
+	if (radios[0].checked && radios[1].checked == false) {
+		delivery = true;
+	} else if (radios[1].checked && radios[0].checked == false) {
+		delivery = false;
+	}
+	//alert('here!');
+	document.getElementById("confirm").style.display = "block";
+	//alert(diningHall + " " + delivery + " " + upperPrice + " " + lowerPrice + " " + upperTime + " " + lowerTime);
+	//window.location = 'creditMe.html';
+}

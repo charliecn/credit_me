@@ -1,4 +1,4 @@
-package edu.brown.cs.jj.autocorrect;
+package edu.brown.cs.sren1.credit_me;
 
 public class Main {
   public static void main(String[] args) {

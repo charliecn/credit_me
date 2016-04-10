@@ -64,7 +64,8 @@ function handleInput() {
 	//e.preventDefault();
 	//alert('here!');
 	storeMessage();
-	//document.getElementById("confirm").style.display = "block";
+
+	document.getElementById("confirm").style.display = "block";
 	//window.location = '';
 }
 
@@ -74,12 +75,20 @@ function storeMessage() {
 	var delivery;
 	var radios = document.getElementsByName("delivery");
 	if (radios[0].checked && radios[1].checked == false) {
-		delivery = true;
+		delivery = 'yes';
 	} else if (radios[1].checked && radios[0].checked == false) {
-		delivery = false;
+		delivery = 'no';
 	}
+
+	document.getElementById("confirm_info").innerHTML = 
+		'<p>Name: username<br>' + 
+		'Dining Hall: ' + diningHall + '<br>' + 
+		'Delivery: ' + delivery + '<br>' + 
+		'price span: from ' + upperPrice + ' to ' + lowerPrice + '<br>' + 
+		'time span: from ' + upperTime + ' to ' + lowerTime + '</p>' + 
+		'<p> Find me a match!</p>';
 	//alert('here!');
-	document.getElementById("confirm").style.display = "block";
+	//document.getElementById("confirm").style.display = "block";
 	//alert(diningHall + " " + delivery + " " + upperPrice + " " + lowerPrice + " " + upperTime + " " + lowerTime);
 	//window.location = 'creditMe.html';
 }

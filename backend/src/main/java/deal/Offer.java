@@ -20,5 +20,13 @@ public class Offer extends HalfDeal{
   public void cancel() {
     Global.getOffer().remove(this);
   }
+
+  @Override
+  public void expire() {    
+  }
+
+  @Override
+  public void extend(Duration dur) {
+  }
   
 }

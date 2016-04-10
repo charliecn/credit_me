@@ -8,16 +8,11 @@ import deal.Request;
 
 public class Global {
   private static TreeSet<Request> requests = new TreeSet<>();
-  private static TreeSet<Offer> offer = new TreeSet<>();
+  private static TreeSet<Offer> offers = new TreeSet<>();
   private static Database db = new Database();
-  
-  public Global() {
     
-  }
-  
-  
   public static TreeSet<Offer> getOffer() {
-    return offer;
+    return offers;
   }
 
   public static TreeSet<Request> getRequests() {

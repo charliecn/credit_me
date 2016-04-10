@@ -21,4 +21,12 @@ public class Request extends HalfDeal{
     Global.getRequests().remove(this);
   }
 
+  @Override
+  public void expire() {    
+  }
+
+  @Override
+  public void extend(Duration dur) {
+  }
+
 }

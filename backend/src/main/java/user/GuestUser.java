@@ -1,5 +1,22 @@
 package user;
 
-public class GuestUser {
+/**
+ * a guest user is a user who does not have a brown email address
+ * @author lucieackley
+ *
+ */
+public class GuestUser extends User {
+
+	/**
+	 * a guest user is a user is constructed exactly like a user
+	 * @param name - name of user
+	 * @param email - email of user
+	 * @param id - id of user
+	 * @param rating - rating of user
+	 */
+	public GuestUser(String name, String email, String id, int rating) {
+		super(name, email, id, rating);
+		
+	}
 
 }

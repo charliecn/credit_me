@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import deal.Deal;
+import deal.Request;
 
 /**
  * represents a class for containing information about a user
@@ -16,6 +17,16 @@ public abstract class User {
 	private String email;
 	private String id;
 	private int rating;
+	private title[] titles;
+	private gender gender;
+	
+	enum title {
+	  
+	}
+	
+	enum gender {
+	  male, female, undisclosed;
+	}
 	
 	/**
 	 *  a user takes in a name, email, id and rating
@@ -24,12 +35,21 @@ public abstract class User {
 	 * @param id - the id of the user
 	 * @param rating - the rating of the user
 	 */
-	public User(String name, String email, String id, int rating){
+	public User(String name, String email, String id, int rating, gender gender){
 		this.name = name;
 		this.email = email;
 		this.id = id;
 		this.rating = rating;
 		this.pastOrders = new ArrayList<Deal>();
+	}
+	
+	public abstract void deleteUser();
+	
+	public abstract Request postRequest();
+	
+	
+	public title[] getTitles() {
+	  return titles;
 	}
 	
 	/**
@@ -70,6 +90,7 @@ public abstract class User {
 	 */
 	public void addDeal(Deal deal){
 		pastOrders.add(deal);
+		updateTitles();
 	}
 	
 	/**
@@ -80,7 +101,5 @@ public abstract class User {
 		return pastOrders;
 	}
 	
-	
-
-	
+	protected abstract void updateTitles();
 }

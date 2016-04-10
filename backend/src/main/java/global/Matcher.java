@@ -20,4 +20,18 @@ public class Matcher {
 		return deals;
 	}
 	
+	public static Deal matchRequest(List<Offer> offer, Request requests){
+    Deal deal;
+    
+    
+    return deal;
+  }
+	
+	 public static Deal matchOffer(Offer offer, List<Request> requests){
+	    Deal deal;
+	    
+	    
+	    return deal;
+	  }
+	
 }

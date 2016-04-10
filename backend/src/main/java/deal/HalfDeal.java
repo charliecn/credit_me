@@ -32,7 +32,11 @@ public abstract class HalfDeal {
     user = usr;
   }
 
+  public abstract void extend(Duration dur);
+  
   public abstract void cancel();
+  
+  public abstract void expire();
   
   // getters and setters
   public Location getLocation() {

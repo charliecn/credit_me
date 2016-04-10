@@ -8,34 +8,33 @@
 </head>
 <body>
 	<h1>User Input</h1>
-	<div class="dropdown">
-		<input list="dining_halls" name = "dining">
-		<div id="options">
-			<form>
-				<datalist id="dining_halls">
-					<option value="Ratty">
-					<option value="V-Dub">
-					<option value="Andrews">
-				</datalist>
-				<p>Delivery?</p>
-					<input type="radio" name="delivery" value="yes" checked>Yes
-					<input type="radio" name="delivery" value="no">No
-				<p>Price Range</p>
-					<p>upper bound:</p>
-					<p id="upper_price"></p>
-					<input type="range" id="upper_range" name="price_range" min="0" max="100">
-					<p>lower bound:</p>
-					<p id="lower_price"></p>
-					<input type="range" id="lower_range" name="price_range" min="0" max="100">
-				<p>Time Range</p>
-					<p>upper bound (in min):</p>
-					<p id="upper_time"></p>
-					<input type="range" id="upper_time_range" name="time_range" min="0" max="100">
-					<p>lower bound (in min):</p>
-					<p id="lower_time"></p>
-					<input type="range" id="lower_time_range" name="time_range" min="0" max="100">
-				<input type="submit" value="submit">
-		 </form>
+	<div id="options">
+		<form id="userinput_field">
+		<input list="dining_halls" name = "dining" id="halls_input">
+			<datalist id="dining_halls">
+				<option value="Ratty">
+				<option value="V-Dub">
+				<option value="Andrews">
+			</datalist>
+		<p>Delivery?</p>
+			<input type="radio" name="delivery" value="yes" checked>Yes
+			<input type="radio" name="delivery" value="no">No
+		<p>Price Range</p>
+			<p>upper bound:</p>
+				<p id="upper_price"></p>
+				<input type="range" id="upper_range" name="price_range" min="0" max="100">
+			<p>lower bound:</p>
+				<p id="lower_price"></p>
+				<input type="range" id="lower_range" name="price_range" min="0" max="100">
+		<p>Time Range</p>
+			<p>upper bound (in min):</p>
+				<p id="upper_time"></p>
+				<input type="range" id="upper_time_range" name="time_range" min="0" max="100">
+			<p>lower bound (in min):</p>
+				<p id="lower_time"></p>
+				<input type="range" id="lower_time_range" name="time_range" min="0" max="100">
+			<input type="submit" value="submit">
+		</form>
 		</div>
 	</div>
 </body>

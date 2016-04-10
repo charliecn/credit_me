@@ -57,6 +57,10 @@ window.addEventListener('load', function(){
 		handleInput();
 	}, false);
 
+	document.getElementById("find_button").addEventListener('click', function(e){
+		window.location = 'waiting.html';
+	}, false);
+
 });
 
 function handleInput() {

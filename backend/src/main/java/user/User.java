@@ -19,6 +19,7 @@ public abstract class User {
 	private int rating;
 	private title[] titles;
 	private gender gender;
+	private String contact;
 	
 	enum title {
 	  
@@ -50,6 +51,10 @@ public abstract class User {
 	
 	public title[] getTitles() {
 	  return titles;
+	}
+	
+	public String getContact() {
+	  return contact;
 	}
 	
 	/**

@@ -1,0 +1,4 @@
+1. password input field should not show characters.
+2. upper/lower bound should have a default value, and the range should be adjusted according to each others' value.
+3. add a confirm/decline button in 'match.html', and the display a contact(phone number/fb account).
+4. add a personal page that displaypersonal info (name, email, titles, gender, rating, pastorders, current request<with info: time placed, time for expiration; buttons: cancel, extend time, change money>).

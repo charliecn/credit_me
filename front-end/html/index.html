@@ -5,29 +5,33 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CreditMe@Brown</title>
-    <link rel="stylesheet" href="../css/foundation/css/foundation.css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script>
+      $(document).bind('mobileinit',function(){
+          $.mobile.pushStateEnabled = false;
+      });
+    </script>
+    
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="../css/app.css">
-    <script src="../css/foundation/js/vendor/jquery.js"></script>
-    <script src="../css/foundation/js/vendor/what-input.js"></script>
-    <script src="../css/foundation/js/vendor/foundation.js"></script>
-    <script src="../css/foundation/js/app.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lobster+Two:400italic' rel='stylesheet' type='text/css'>
+    
   </head>
   <body>
-    <div class="row">
-      <div class="small-6 small-centered columns logo">
+      <div class="logo">
         <h1>CreditMe@Brown</h1>
       </div>
-    </div>
 
-    <div class="fixed-bottom">
-    <nav class="top-bar bottom-bar row">
-      <div class="small-3 columns text-center">Buy</div>
-      <div class="small-3 columns text-center">Sell</div>
-      <div class="small-3 columns text-center">Orders</div>
-      <div class="small-3 columns text-center">Me</div>
-    </nav>
-    </div>
+    <div data-role="footer" data-id="foo1" data-position="fixed">
+  <div data-role="navbar">
+    <ul>
+      <li><a href="a.html">Buy</a></li>
+      <li><a href="b.html">Sell</a></li>
+      <li><a href="c.html">Orders</a></li>
+      <li><a href="d.html">Me</a></li>
+    </ul>
+  </div>
+</div>
 
 
   </body>

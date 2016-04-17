@@ -10,26 +10,14 @@ h1{
 	font-family: "Lobster Two",cursive;
 	font-size: 1.5em;
 }
-
-.fixed-bottom{
-	position: fixed;
-	bottom: 0;
-	width:100%;
+.eatery{
+ 	text-align: center;
 }
 
-.text-center{
-	text-align: center;
+.eatery_description{
+	white-space:normal;
 }
 
-.fixed-bottom .columns{
-	border-right:2px solid white;
-}
-
-.fixed-bottom .columns:last-child{
-	border:none;
-}
-
-.top-bar,.bottom-bar{
-	margin: ;
-	padding:;
+.back img{
+	width: 15%;
 }

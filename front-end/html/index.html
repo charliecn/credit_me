@@ -18,18 +18,53 @@
     
   </head>
   <body>
-  <div data-role="page" id="page_buy_1">
+  
+    <div data-role="page" id="page_buy_2">
 
     <div class="logo" data-role="header" data-id="persistent" data-position="fixed">
       <h1>CreditMe@Brown</h1>
     </div>
 
-    <div data-role="main" class="ui-content"></div>
+      <div data-role="main" class="ui-content">
+          <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+
+        <ul data-role="listview" data-inset="true">
+          <li data-role="divider">Pick your eatery</li>
+          <li>
+            <a href="#page_buy_3">
+            <img src="../image/andrews.png">
+            <h2>Andrews Commons</h2>
+            <p style="white-space:normal;">They say some eat Andrews 24/7.</p>
+            </a>
+            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r"></a>
+          </li>
+          
+          <li>
+            <a href="#">
+            <img src="../image/blueroom.png">
+            <h2>Blue Room</h2>
+            <p style="white-space:normal;">Best known to campus visitors :)</p>
+            </a>
+            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r"></a>
+          </li>
+          
+          <li>
+            <a href="#page_buy_3">
+            <img src="../image/johs.png">
+            <h2>Josiah's</h2>
+            <p style="white-space:normal;">We talk business there after party.</p>
+            </a>
+            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r"></a>
+          </li>
+        </ul>
+      </div>
+
+
 
     <div data-role="footer" data-id="foo1" data-position="fixed" data-id="persistent">
       <div data-role="navbar">
         <ul>
-          <li><a href="a.html">Buy</a></li>
+          <li><a href="#page_buy_1">Buy</a></li>
           <li><a href="b.html">Sell</a></li>
           <li><a href="c.html">Orders</a></li>
           <li><a href="d.html">Me</a></li>
@@ -39,7 +74,9 @@
 
   </div>
 
-  <div data-role="page" id="page_buy_2">
+
+
+  <div data-role="page" id="page_buy_3">
     
   </div>
       

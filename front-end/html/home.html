@@ -5,23 +5,23 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CreditMe@Brown</title>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../js/jquery-2.1.1.js"></script>
     <link rel="stylesheet" href="../css/foundation/css/foundation.css">
     <link rel="stylesheet" href="../css/app.css">
-    <script src="../css/foundation/js/vendor/jquery.js"></script>
-    <script src="../css/foundation/js/vendor/what-input.js"></script>
-    <script src="../css/foundation/js/vendor/foundation.js"></script>
-    <script src="../css/foundation/js/app.js"></script>
     <script type="text/javascript" src="../js/home.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Lobster+Two:400italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- script src="http://code.jquery.com/jquery-1.11.3.min.js"></script -->
     <script>
       $(document).bind('mobileinit',function(){
           $.mobile.changePage.defaults.changeHash = false;
           $.mobile.hashListeningEnabled = false;
           $.mobile.pushStateEnabled = false;
           $.mobile.ignoreContentEnabled = true;
+          //$.mobile.fixedToolbars.setTouchToggleEnabled(false);
       });
+      //$("[data-role=footer]").toolbar({tapToggle: false});
     </script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   </head>
@@ -37,6 +37,16 @@
         <a href="#login-page" data-role="none" class="ui-btn" >Buy Credit</a>
         <a href="#login-page" data-role="none" id="sell-button" class="ui-btn">Sell Credit</a>
       </div>
+ <!--      <div data-role="footer" data-id="foo1" data-position="fixed" data-id="persistent">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="a.html">Buy</a></li>
+            <li><a href="b.html">Sell</a></li>
+            <li><a href="c.html">Orders</a></li>
+            <li><a href="d.html">Me</a></li>
+          </ul>
+        </div>
+      </div> -->
     </div>
 
     <div data-role="page" id="login-page">
@@ -49,9 +59,9 @@
         <form id="login-form">
           <div class="ui-field-contain">
             <label for="login-user">Email:</label>
-            <input type="text" name="login-user" id="login-user" placeholder="@brown.edu">
+            <input type="text" name="login-user" id="login-user" value="@brown.edu" class="half-input">
             <label for="login-pwd">Password:</label>
-            <input type="text" name="login-pwd" id="login-pwd">
+            <input type="password" name="login-pwd" id="login-pwd">
             <input type="submit" data-role="none" value="Log In" class="ui-btn home-buttons" style="margin-top: 20px">
           </div>
 <!--           <input type="submit" data-role="none" value="Log In" class="ui-btn " style="width: 100%"> -->
@@ -70,8 +80,10 @@
       <div data-role="main" class="ui-content centered">
         <form id="signup-form">
           <div class="ui-field-contain">
+            <label for="signup-name">Username:</label>
+              <input type="text" name="signup-name" id="signup-name">
             <label for="signup-user">Email:</label>
-              <input type="text" name="signup-user" id="signup-user" placeholder="@brown.edu">
+              <input type="text" name="signup-user" id="signup-user" value="@brown.edu">
             <label for="signup-pwd">Password:</label>
               <input type="text" name="signup-pwd" id="signup-pwd">
             <fieldset data-role="controlgroup" style="margin-top: 10px">
@@ -79,7 +91,7 @@
               <input type="checkbox" name="mailing-list" id="subscribe" value="Subscribe?">
             </fieldset>
 <!--             <p>Please check your email to confirm your login.</p> -->
-            <input type="submit" data-role="none" value="Log In" class="ui-btn home-buttons" style="margin-top: 20px">
+            <input type="submit" data-role="none" value="Sign Up" class="ui-btn home-buttons" style="margin-top: 20px">
           </div>
         </form>
       </div>
@@ -95,7 +107,7 @@
         <form id="forgetpwd-form">
           <div class="ui-field-contain">
             <label for="forgetpwd-user">Email:</label>
-            <input type="text" name="forgetpwd-user" id="forgetpwd-user" placeholder="@brown.edu">
+            <input type="text" name="forgetpwd-user" id="forgetpwd-user" value="@brown.edu">
             <input type="submit" data-role="none" value="Email me a link to reset password" class="ui-btn home-buttons" style="margin-top: 20px">
           </div>
         </form>
@@ -109,9 +121,9 @@
         </div>
       </div>
       <div data-role="main" class="ui-content centered">
+<!--         <form id="delivery-form"> -->
         <h2>Delivery or Not?</h2>
         <fieldset data-role="controlgroup">
-<!--           <h2>Delivery or Not?</h2> -->
           <legend>Would you like to have your food delivered to a place of your choice, or meet up at the dinning hall?</legend>
           <label for="to-deliver">Delivery to a place of my choice</label>
           <input type="radio" name="delivery" id="to-deliver" value="to-deliver">
@@ -119,6 +131,102 @@
           <input type="radio" name="delivery" id="not-deliver" value="not-deliver">
         </fieldset>
         <input type="submit" data-role="none" value="Next" class="ui-btn home-buttons" style="margin-top: 20px">
+      </div>
+      <div data-role="footer"  data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#delivery-page">Buy</a></li>
+            <li><a href="b.html">Sell</a></li>
+            <li><a href="#orders-page">Orders</a></li>
+            <li><a href="#profile-page">Me</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div data-role="page" id="profile-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+
+      <div data-role="main" class="ui-content centered">
+        <h2>Profile<h2>
+        <h3 class="pub-prvt">Public Information</h3>
+        <div id="profile-name" class="profile-info">Lucy Huang</div>
+        <ol data-role="listview" style="padding-top: 30px">
+          <li><h4>Mickey</h4><p style="font-size: 15px">&#9733; &#9733; &#9733; &#9733; &#x2606;<br>&nbsp; &nbsp; &nbsp; &nbsp;*Smile face*</p></li>
+          <li><h4>Minnie</h4><p style="font-size: 15px">&#9733; &#9733; &#9733; &#9733; &#x2606;<br>&nbsp; &nbsp; &nbsp; &nbsp;Thanks for the food and the credit :)</p></li>
+        </ol>
+        <h3 class="pub-prvt" style="margin-top: 30px">Private Information</h3>
+        <div id="profile-email">yuchen_huang@brown.edu</div>
+        <ul data-role="listview" style="padding-top: 30px">
+          <li data-role="none" style="font-size: 15px"><a href="#changepwd-page">Change Password</a></li>
+        </ul>
+      </div>
+      <div data-role="footer" data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#delivery-page">Buy</a></li>
+            <li><a href="b.html">Sell</a></li>
+            <li><a href="#orders-page">Orders</a></li>
+            <li><a href="#profile-page">Me</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div data-role="page" id="changepwd-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+      <div data-role="main" class="ui-content centered">
+        <form id="changepwd-form">
+          <div class="ui-field-contain">
+            <label for="prev-pwd">Current Password:</label>
+            <input type="password" name="prev-pwd" id="prev-pwd">
+            <label for="new-pwd">New Password:</label>
+            <input type="password" name="new-pwd" id="new-pwd">
+            <label for="re-new-pwd">Re-type New Password:</label>
+            <input type="password" name="re-new-pwd" id="re-new-pwd">
+            <input type="submit" data-role="none" value="Change Password" class="ui-btn home-buttons" style="margin-top: 20px">
+          </div>
+        </form>
+      </div>
+      <div data-role="footer" data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#delivery-page">Buy</a></li>
+            <li><a href="b.html">Sell</a></li>
+            <li><a href="#orders-page">Orders</a></li>
+            <li><a href="#profile-page">Me</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div data-role="page" id="orders-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+      <div data-role="main" class="ui-content centered">
+        <h2>Orders</h2>
+        <h3>Current</h3>
+      </div>
+      <div data-role="footer" data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#delivery-page">Buy</a></li>
+            <li><a href="b.html">Sell</a></li>
+            <li><a href="#orders-page">Orders</a></li>
+            <li><a href="#profile-page">Me</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 

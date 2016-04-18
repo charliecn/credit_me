@@ -21,12 +21,24 @@ window.addEventListener('load', function(){
 		changepwd();
 	}, false);
 
+	// document.getElementById("delete-order").addEventListener('tap', function(e){
+	// 	e.preventDefault();
+	// 	alert("taped");
+	// 	//addSignUp();
+	// }, false);
 });
 
 var prevName;
 var prevEmail;
 
 // $("[data-role=footer]").fixedtoolbar({tapToggle: false});
+
+$(document).on("pagecreate", "#orders-page", function(){
+	$("#order-id-a").on("tap", function(e){
+		//alert("taped!");
+		$("#order-id").remove();
+	});
+});
 
 $(document).on("pagecreate", "#profile-page", function(){
 	//alert('here');

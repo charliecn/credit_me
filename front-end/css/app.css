@@ -4,11 +4,12 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
+	
 }
 
 h1{
-	font-family: "Lobster Two",cursive;
-	color:#C99BA7;
+	font-family: "Lobster Two",Helvetica;
+	color:#9D8189;
 }
 
 h2{
@@ -38,24 +39,6 @@ h2{
 	width: 80%;
 }
 
-
-
-/*
-home-button{
-	margin-top: 10px;
-	height: 40%;
-	width: 100%;
-box-shadow: 0px 3px 3px 0 #bfbfc0;
-	border: none;
-	border-top: 0.5px solid;
-	border-bottom: 0.5px solid;
-	border-color: #b8b8ba;
-	background-color: white;
-	line-height: 40%;
-vertical-align: middle;
-
-}
-*/
 
 #buy-button{
 	height: 40%;
@@ -87,11 +70,18 @@ vertical-align: middle;
 	margin-top: 8%;
 }
 
+#progress_bar_deliver{
+	margin-top: 8%;
+}
+
 #progress_bar{
 	margin-top: 6%;
 	margin-bottom: 7.5%;
 }
 
+ul li a p{
+	text-align: center;
+}
 ul li a p{
 	margin:0;
 }
@@ -99,15 +89,9 @@ ul li a p{
 #bottom_ul li a img{
 	margin-top: 5px;
 }
-/*
 
-.login-button{
-	width: 100%;
-	margin-top: 20px;
-}
-<<<<<<< HEAD
-*/
-=======
+
+
 
 #profile-name-in{
 	border: none;

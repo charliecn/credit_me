@@ -8,7 +8,7 @@
 
 h1{
 	font-family: "Lobster Two",cursive;
-/*	font-size: 2em;*/
+	color:#C99BA7;
 }
 
 h2{
@@ -20,24 +20,12 @@ h2{
 	line-height: 200px;*/
 }
 
-/*p{
-	font-family: Arial;
-	font-size: 20px;
-	top: -80px;
-	position: relative;
-	padding-left: 15px;
-	padding-right: 15px;
-}*/
-
-.fixed-bottom{
-	position: fixed;
-	bottom: 0;
-	width:100%;
+.eatery{
+ 	text-align: center;
 }
 
-.text-center{
-	text-align: center;
-}
+
+
 .home-buttons{
 	position: absolute;
 	display: block;
@@ -46,32 +34,29 @@ h2{
 /*	margin-top: auto;*/
 }
 
-.fixed-bottom .columns{
-	border-right:2px solid white;
+.back img{
+	width: 80%;
 }
 
-.fixed-bottom .columns:last-child{
-	border:none;
-}
 
-.top-bar,.bottom-bar{
-	margin: ;
-	padding:;
-}
 
+/*
 home-button{
 	margin-top: 10px;
 	height: 40%;
 	width: 100%;
-/*	box-shadow: 0px 3px 3px 0 #bfbfc0;*/
+box-shadow: 0px 3px 3px 0 #bfbfc0;
 	border: none;
 	border-top: 0.5px solid;
 	border-bottom: 0.5px solid;
 	border-color: #b8b8ba;
 	background-color: white;
 	line-height: 40%;
-/*	vertical-align: middle;*/
+vertical-align: middle;
+
 }
+*/
+
 #buy-button{
 	height: 40%;
 }
@@ -82,10 +67,46 @@ home-button{
 	text-align: center;
 }
 
+.ui-widget-header {
+	background: lightblue;
+	color: #333333;
+	font-weight: bold;
+	border:none;
+}
+
+.ui-widget-content{
+	border:none;
+	height: 10px;
+}
+
+.ui-footer.ui-fixed-hidden {
+    position: fixed !important;
+}
+
+#progress_bar_2{
+	margin-top: 8%;
+}
+
+#progress_bar{
+	margin-top: 6%;
+	margin-bottom: 7.5%;
+}
+
+ul li a p{
+	margin:0;
+}
+
+#bottom_ul li a img{
+	margin-top: 5px;
+}
+/*
+
 .login-button{
 	width: 100%;
 	margin-top: 20px;
 }
+<<<<<<< HEAD
+*/
 
 #profile-name-in{
 	border: none;

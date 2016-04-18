@@ -7,7 +7,7 @@
     <title>CreditMe@Brown</title>
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="../js/jquery-2.1.1.js"></script>
-    <link rel="stylesheet" href="../css/foundation/css/foundation.css">
+<!--     <link rel="stylesheet" href="../css/foundation/css/foundation.css"> -->
     <link rel="stylesheet" href="../css/app.css">
     <script type="text/javascript" src="../js/home.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Lobster+Two:400italic' rel='stylesheet' type='text/css'>
@@ -33,9 +33,9 @@
           <h1>CreditMe@Brown</h1>
         </div>
       </div>
-      <div data-enhance="false" class="ui-content centered home-buttons">
-        <a href="#login-page" data-role="none" class="ui-btn" >Buy Credit</a>
-        <a href="#login-page" data-role="none" id="sell-button" class="ui-btn">Sell Credit</a>
+      <div data-role="main" class="ui-content">
+        <a href="#login-page" data-role="button" class="ui-btn">Buy Credit</a>
+        <a href="#login-page" data-role="button" id="sell-button" class="ui-btn">Sell Credit</a>
       </div>
  <!--      <div data-role="footer" data-id="foo1" data-position="fixed" data-id="persistent">
         <div data-role="navbar">
@@ -62,12 +62,12 @@
             <input type="text" name="login-user" id="login-user" value="@brown.edu" class="half-input">
             <label for="login-pwd">Password:</label>
             <input type="password" name="login-pwd" id="login-pwd">
-            <input type="submit" data-role="none" value="Log In" class="ui-btn home-buttons" style="margin-top: 20px">
+            <a href="#" id="login-submit" value="Log In" data-role="none" class="ui-btn" style="margin-top: 20px">Log In</a>
           </div>
-<!--           <input type="submit" data-role="none" value="Log In" class="ui-btn " style="width: 100%"> -->
+<!--           <input type="submit" data-role="none" value="Log In" class="ui-btn" style="margin-top: 20px"> -->
         </form>
-        <a href="#signup-page" data-role="none" class="ui-btn home-buttons" style="margin-top: 0px">Sign Up</a>
-        <a href="#forgetpwd-page" data-role="none" class="ui-btn home-buttons" style="margin-top: 0px">Forget Password?</a>
+        <a href="#signup-page" data-role="none" class="ui-btn" style="margin-top: 0px" id="signup-btn">Sign Up</a>
+        <a href="#forgetpwd-page" data-role="none" class="ui-btn" style="margin-top: 0px">Forget Password?</a>
       </div>
     </div>
 
@@ -85,13 +85,13 @@
             <label for="signup-user">Email:</label>
               <input type="text" name="signup-user" id="signup-user" value="@brown.edu">
             <label for="signup-pwd">Password:</label>
-              <input type="text" name="signup-pwd" id="signup-pwd">
+              <input type="password" name="signup-pwd" id="signup-pwd">
             <fieldset data-role="controlgroup" style="margin-top: 10px">
               <label for="subscribe">Subscribe to our mailing list?</label>
               <input type="checkbox" name="mailing-list" id="subscribe" value="Subscribe?">
             </fieldset>
 <!--             <p>Please check your email to confirm your login.</p> -->
-            <input type="submit" data-role="none" value="Sign Up" class="ui-btn home-buttons" style="margin-top: 20px">
+            <a href="#" data-role="none" id="signup-submit" value="Sign Up" class="ui-btn" style="margin-top: 20px">Sign Up</a>
           </div>
         </form>
       </div>
@@ -108,7 +108,7 @@
           <div class="ui-field-contain">
             <label for="forgetpwd-user">Email:</label>
             <input type="text" name="forgetpwd-user" id="forgetpwd-user" value="@brown.edu">
-            <input type="submit" data-role="none" value="Email me a link to reset password" class="ui-btn home-buttons" style="margin-top: 20px">
+            <a href="#" id="forgetpwd-submit" ata-role="none" value="Email me a link to reset password" class="ui-btn" style="margin-top: 20px">Email me a link to reset password</a>
           </div>
         </form>
       </div>
@@ -130,18 +130,19 @@
           <label for="not-deliver">Meetup at the dinning hall</label>
           <input type="radio" name="delivery" id="not-deliver" value="not-deliver">
         </fieldset>
-        <input type="submit" data-role="none" value="Next" class="ui-btn home-buttons" style="margin-top: 20px">
+        <input type="submit" data-role="none" value="Next" class="ui-btn" style="margin-top: 20px">
       </div>
-      <div data-role="footer"  data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
-        <div data-role="navbar">
-          <ul>
-            <li><a href="#delivery-page">Buy</a></li>
-            <li><a href="b.html">Sell</a></li>
-            <li><a href="#orders-page">Orders</a></li>
-            <li><a href="#profile-page">Me</a></li>
-          </ul>
-        </div>
+      <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
       </div>
+    </div>
     </div>
 
     <div data-role="page" id="profile-page">
@@ -165,15 +166,14 @@
           <li data-role="none" style="font-size: 15px"><a href="#changepwd-page">Change Password</a></li>
         </ul>
       </div>
-      <div data-role="footer" data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
-        <div data-role="navbar">
-          <ul>
-            <li><a href="#delivery-page">Buy</a></li>
-            <li><a href="b.html">Sell</a></li>
-            <li><a href="#orders-page">Orders</a></li>
-            <li><a href="#profile-page">Me</a></li>
-          </ul>
-        </div>
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
       </div>
     </div>
 
@@ -192,20 +192,23 @@
             <input type="password" name="new-pwd" id="new-pwd">
             <label for="re-new-pwd">Re-type New Password:</label>
             <input type="password" name="re-new-pwd" id="re-new-pwd">
-            <input type="submit" data-role="none" value="Change Password" class="ui-btn home-buttons" style="margin-top: 20px">
+            <a href="#" id="changepwd-submit" data-role="none" value="Change Password" class="ui-btn" style="margin-top: 20px">Change Password</a>
           </div>
         </form>
-      </div>
-      <div data-role="footer" data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
-        <div data-role="navbar">
-          <ul>
-            <li><a href="#delivery-page">Buy</a></li>
-            <li><a href="b.html">Sell</a></li>
-            <li><a href="#orders-page">Orders</a></li>
-            <li><a href="#profile-page">Me</a></li>
-          </ul>
+        <div id="changepwd-error">
         </div>
       </div>
+      <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
     </div>
 
     <div data-role="page" id="orders-page">
@@ -236,16 +239,16 @@
           </li>
         </ul>
       </div>
-      <div data-role="footer" data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">
-        <div data-role="navbar">
-          <ul>
-            <li><a href="#delivery-page">Buy</a></li>
-            <li><a href="b.html">Sell</a></li>
-            <li><a href="#orders-page">Orders</a></li>
-            <li><a href="#profile-page">Me</a></li>
-          </ul>
-        </div>
+      <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+        </ul>
       </div>
+    </div>
     </div>
 
   </body>

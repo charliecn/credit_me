@@ -1,6 +1,9 @@
 var userPwd = {};
 
 window.addEventListener('load', function(){
+	// var btnWidth = $("#signup-btn").width();
+	// $(".ui-btn").css("width", btnWidth);
+	// alert(btnWidth);
 	document.getElementById("login-form").addEventListener('submit', function(e){
 		e.preventDefault();
 		login();
@@ -30,8 +33,68 @@ window.addEventListener('load', function(){
 
 var prevName;
 var prevEmail;
-
+var btnWidth;
 // $("[data-role=footer]").fixedtoolbar({tapToggle: false});
+
+$(document).on("pagecreate", "#login-page", function(){
+	//e.preventDefault();
+	$("#login-submit").click(function(){
+		var email = $.trim($("#login-user").val()).replace(/\s/g, '+');
+		var pwd = $.trim($("#login-pwd").val()).replace(/\s/g, '+');
+		console.log(email + " " + pwd);
+		var postParameters = {email: email, pwd: pwd};
+		// $.post("/userlogin",postParameters,function(responseJSON){
+
+		// })
+		$.mobile.changePage($("#delivery-page"));
+	})
+});
+
+$(document).on("pagecreate", "#signup-page", function(){
+	//e.preventDefault();
+	$("#signup-submit").click(function(){
+		var username = $.trim($("#signup-name").val()).replace(/\s/g, '+');
+		var email = $.trim($("#signup-user").val()).replace(/\s/g, '+');
+		var pwd = $.trim($("#signup-pwd").val()).replace(/\s/g, '+');
+		var subscribe = document.getElementById("subscribe").checked;
+		console.log(username + " " + email + " " + pwd + " " + subscribe);
+		var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
+		// $.post("/usersignup",postParameters,function(responseJSON){
+
+		// })
+	})
+});
+
+$(document).on("pagecreate", "#forgetpwd-page", function(){
+	//e.preventDefault();
+	$("#forgetpwd-submit").click(function(){
+		var email = $.trim($("#signup-user").val()).replace(/\s/g, '+');
+		console.log(email);
+		var postParameters = {email: email};
+		// $.post("/userforgetpwd",postParameters,function(responseJSON){
+
+		// })
+	})
+});
+
+$(document).on("pagecreate", "#changepwd-page", function(){
+	//e.preventDefault();
+	$("#changepwd-submit").click(function(){
+		$("#changepwd-error").html('');
+		var prevPwd = $.trim($("#prev-pwd").val()).replace(/\s/g, '+');
+		var newPwd = $.trim($("#new-pwd").val()).replace(/\s/g, '+');
+		var reNewPwd = $.trim($("#re-new-pwd").val()).replace(/\s/g, '+');
+		if (newPwd != reNewPwd) {
+			$("#changepwd-error").html('<span style="font-weight: bold">Passwords do not match</span><br> You must enter the same password twice in order to confirm it.');
+			return;
+		}
+		console.log(prevPwd + " " + newPwd + " " + reNewPwd);
+		var postParameters = {prevPwd: prevPwd, newPwd: newPwd};
+		// $.post("/userforgetpwd",postParameters,function(responseJSON){
+
+		// })
+	})
+});
 
 $(document).on("pagecreate", "#orders-page", function(){
 	$("#order-id-a").on("tap", function(e){

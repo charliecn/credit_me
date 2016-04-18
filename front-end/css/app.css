@@ -8,16 +8,109 @@
 
 h1{
 	font-family: "Lobster Two",cursive;
-	font-size: 1.5em;
+	color:#C99BA7;
 }
+
+h2{
+	text-align: center;
+	font-family: Arial;
+	font-size: 25px;
+/*	top: 50%;
+	vertical-align: middle;
+	line-height: 200px;*/
+}
+
+/*
+p{
+	font-family: Arial;
+	font-size: 20px;
+	top: -80px;
+	position: relative;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+*/
 .eatery{
  	text-align: center;
 }
 
-.eatery_description{
-	white-space:normal;
+.home-buttons{
+	position: absolute;
+	display: block;
+	top: 60%;
+	width: 100%;
+/*	margin-top: auto;*/
 }
 
 .back img{
-	width: 15%;
+	width: 80%;
 }
+
+
+
+/*
+home-button{
+	margin-top: 10px;
+	height: 40%;
+	width: 100%;
+box-shadow: 0px 3px 3px 0 #bfbfc0;
+	border: none;
+	border-top: 0.5px solid;
+	border-bottom: 0.5px solid;
+	border-color: #b8b8ba;
+	background-color: white;
+	line-height: 40%;
+vertical-align: middle;
+
+}
+*/
+
+#buy-button{
+	height: 40%;
+}
+
+.centered{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.ui-widget-header {
+	background: lightblue;
+	color: #333333;
+	font-weight: bold;
+	border:none;
+}
+
+.ui-widget-content{
+	border:none;
+	height: 10px;
+}
+
+.ui-footer.ui-fixed-hidden {
+    position: fixed !important;
+}
+
+#progress_bar_2{
+	margin-top: 8%;
+}
+
+#progress_bar{
+	margin-top: 6%;
+	margin-bottom: 7.5%;
+}
+
+ul li a p{
+	margin:0;
+}
+
+#bottom_ul li a img{
+	margin-top: 5px;
+}
+/*
+
+.login-button{
+	width: 100%;
+	margin-top: 20px;
+}
+*/

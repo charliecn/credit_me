@@ -1,0 +1,126 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreditMe@Brown</title>
+    <link rel="stylesheet" href="../css/foundation/css/foundation.css">
+    <link rel="stylesheet" href="../css/app.css">
+    <script src="../css/foundation/js/vendor/jquery.js"></script>
+    <script src="../css/foundation/js/vendor/what-input.js"></script>
+    <script src="../css/foundation/js/vendor/foundation.js"></script>
+    <script src="../css/foundation/js/app.js"></script>
+    <script type="text/javascript" src="../js/home.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Lobster+Two:400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+      $(document).bind('mobileinit',function(){
+          $.mobile.changePage.defaults.changeHash = false;
+          $.mobile.hashListeningEnabled = false;
+          $.mobile.pushStateEnabled = false;
+          $.mobile.ignoreContentEnabled = true;
+      });
+    </script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  </head>
+  <body>
+
+    <div data-role="page" id="home-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+      <div data-enhance="false" class="ui-content centered home-buttons">
+        <a href="#login-page" data-role="none" class="ui-btn" >Buy Credit</a>
+        <a href="#login-page" data-role="none" id="sell-button" class="ui-btn">Sell Credit</a>
+      </div>
+    </div>
+
+    <div data-role="page" id="login-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+      <div data-role="main" class="ui-content centered">
+        <form id="login-form">
+          <div class="ui-field-contain">
+            <label for="login-user">Email:</label>
+            <input type="text" name="login-user" id="login-user" placeholder="@brown.edu">
+            <label for="login-pwd">Password:</label>
+            <input type="text" name="login-pwd" id="login-pwd">
+            <input type="submit" data-role="none" value="Log In" class="ui-btn home-buttons" style="margin-top: 20px">
+          </div>
+<!--           <input type="submit" data-role="none" value="Log In" class="ui-btn " style="width: 100%"> -->
+        </form>
+        <a href="#signup-page" data-role="none" class="ui-btn home-buttons" style="margin-top: 0px">Sign Up</a>
+        <a href="#forgetpwd-page" data-role="none" class="ui-btn home-buttons" style="margin-top: 0px">Forget Password?</a>
+      </div>
+    </div>
+
+    <div data-role="page" id="signup-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+      <div data-role="main" class="ui-content centered">
+        <form id="signup-form">
+          <div class="ui-field-contain">
+            <label for="signup-user">Email:</label>
+              <input type="text" name="signup-user" id="signup-user" placeholder="@brown.edu">
+            <label for="signup-pwd">Password:</label>
+              <input type="text" name="signup-pwd" id="signup-pwd">
+            <fieldset data-role="controlgroup" style="margin-top: 10px">
+              <label for="subscribe">Subscribe to our mailing list?</label>
+              <input type="checkbox" name="mailing-list" id="subscribe" value="Subscribe?">
+            </fieldset>
+<!--             <p>Please check your email to confirm your login.</p> -->
+            <input type="submit" data-role="none" value="Log In" class="ui-btn home-buttons" style="margin-top: 20px">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div data-role="page" id="forgetpwd-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+      <div data-role="main" class="ui-content centered">
+        <form id="forgetpwd-form">
+          <div class="ui-field-contain">
+            <label for="forgetpwd-user">Email:</label>
+            <input type="text" name="forgetpwd-user" id="forgetpwd-user" placeholder="@brown.edu">
+            <input type="submit" data-role="none" value="Email me a link to reset password" class="ui-btn home-buttons" style="margin-top: 20px">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div data-role="page" id="delivery-page">
+      <div data-role="header" class="row">
+        <div class="small-6 small-centered columns logo">
+          <h1>CreditMe@Brown</h1>
+        </div>
+      </div>
+      <div data-role="main" class="ui-content centered">
+        <h2>Delivery or Not?</h2>
+        <fieldset data-role="controlgroup">
+<!--           <h2>Delivery or Not?</h2> -->
+          <legend>Would you like to have your food delivered to a place of your choice, or meet up at the dinning hall?</legend>
+          <label for="to-deliver">Delivery to a place of my choice</label>
+          <input type="radio" name="delivery" id="to-deliver" value="to-deliver">
+          <label for="not-deliver">Meetup at the dinning hall</label>
+          <input type="radio" name="delivery" id="not-deliver" value="not-deliver">
+        </fieldset>
+        <input type="submit" data-role="none" value="Next" class="ui-btn home-buttons" style="margin-top: 20px">
+      </div>
+    </div>
+
+  </body>
+</html>

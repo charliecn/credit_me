@@ -218,7 +218,22 @@
         <h2>Orders</h2>
         <h3>Current</h3>
         <ul data-role="listview" style="padding-top: 30px">
-          <li>Offered 1 credit to <span class="order-name">Mickey Mouse</span><p style="font-size: 15px">Time: 2016-4-17-9-29pm</p></li>
+          <li id="order-id">
+            <a href="#"><h3>Offer:</h3><p style="font-size: 15px">Dining Hall: Andrews Common<br> Time: 2016-4-17-9-29pm</p></a><a href="#delete-popup" data-rel="popup" data-icon="delete"></a>
+          </li>
+        </ul>
+        <div data-role="popup" id="delete-popup">
+          <div data-role="main" class="ui-content">
+            <h3>Are you sure you want to delete this request/offer?</h3>
+            <a href="#" id="order-id-a" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back">Delete</a>
+            <a href="#" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back">Go Back</a>
+          </div>
+        </div>
+        <h3 style="padding-top: 25px">History</h3>
+        <ul data-role="listview" style="padding-top: 20px">
+          <li id="hist-id">
+            <h3>Offered 1 credit to</h3><p style="font-size: 15px">Mickey Mouse<br>Dining Hall: Blueroom<br>Time: 2016-4-17-9-29pm</p>
+          </li>
         </ul>
       </div>
       <div data-role="footer" data-tap-toggle="false" position="fixed" data-id="foo1" data-position="fixed" data-id="persistent">

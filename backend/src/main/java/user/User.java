@@ -42,13 +42,17 @@ public abstract class User {
 		this.email = email;
 		this.password = password;
 		this.pastOrders = new ArrayList<Deal>();
-	  this.subscribe = subscribe;
+		this.subscribe = subscribe;
 	}
 	
-	public boolean deleteUser(String email, String password) {
+	public static boolean deleteUser(String email, String password) {
 		//return Global.getDb().deleteUser(email, password));
 		
-		return Query.deleteUser(this , Global.getDb().getConnection());
+		return Query.deleteUser(email, password, Global.getDb().getConnection());
+	}
+	
+	public boolean getSubscribe(){
+		return subscribe;
 	}
 		
 	public void setSubsribe(boolean s) {

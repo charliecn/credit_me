@@ -10,7 +10,6 @@ public class Location {
 	private String id;
 	private String name;
 	private String section;
-	private String description;
 
 	/**
 	 * A location constructor.
@@ -19,11 +18,10 @@ public class Location {
 	 * @param section - section on map
 	 * @param description - description of location
 	 */
-	public Location(String id, String name, String section, String description){
+	public Location(String id, String name, String section){
 		this.id = id;
 		this.name = name;
 		this.section = section;
-		this.description = description;
 	}
 
 	public String getId() {
@@ -39,9 +37,6 @@ public class Location {
 		return section;
 	}
 
-	public String getDescription() {
-		return description;
-	}
 
 
 }

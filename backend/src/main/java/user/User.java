@@ -48,9 +48,7 @@ public abstract class User {
 	public boolean deleteUser(String email, String password) {
   	return Global.getDb().deleteUser(email, password));
 	}
-	
-	public abstract Request postRequest();
-	
+		
 	public String getContact() {
 	  return contact;
 	}

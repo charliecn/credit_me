@@ -2,8 +2,6 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,16 +9,18 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import deal.Deal;
+import deal.Order;
 import freemarker.template.Configuration;
 import global.Global;
 import global.Matcher;
-import spark.ModelAndView;
+import locationfood.Food;
+import locationfood.Location;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 import user.BrownUser;
 import user.User;
@@ -165,16 +165,39 @@ public class Gui {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
-      String method = qm.value("method");
       String address = qm.value("address");
-      String user = qm.value("user");
+      String email = qm.value("user");
       String menu = qm.value("menu");
-      String price = qm.value("price");
-      String eatery = qm.value("eatery");
-    	
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("", ).put("", ).build();
-      return GSON.toJson(variables);
+      int duration = Integer.parseInt(qm.value("duration"));
+      double price = Double.parseDouble(qm.value("price"));
+      double priceBound = Double.parseDouble(qm.value("priceBound"));
+      String eateryName = qm.value("eatery");
+      
+      String[] foodIds = menu.split("//s");
+      List<Food> foods = new ArrayList<>();
+      for (String s : foodIds) {
+      	foods.add(Global.getDb().getFood(s));
+      }
+      
+      User user = Global.getDb().getUser(email);
+      Location eatery = Global.getDb().getLocation(eateryName);
+      Location location;
+      if (address == null) {
+      	 location = null;
+      } else {
+      	location = Global.getDb().getLocation(location);
+      }
+      Order order = new Order(location, eatery, priceBound, price, duration * 600000, foods, user);
+      Deal deal = matcher.matchOrder(order);
+      if (deal == null) {
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("deal", deal).build();
+	      return GSON.toJson(variables);
+      } else {
+	      Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("deal", deal).build();
+	      return GSON.toJson(variables);
+      }
     }
   }
   

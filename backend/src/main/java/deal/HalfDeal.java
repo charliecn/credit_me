@@ -1,28 +1,31 @@
 package deal;
 
-import geo.Location;
+import java.util.List;
+
+import locationfood.Food;
+import locationfood.Location;
 import user.User;
 
 public abstract class HalfDeal {
-  public final int ID;
   protected Location location;
+  protected Location eatery;
   protected int duration;
-  protected String userNote;
-  protected double priceLowerBound;
-  protected double priceUpperBound;
+  protected List<Food> orders;
+  protected double priceBound;
   protected User user;
+  protected double actualPrice;
 
   enum type {
     deliver, meetup;
   }
 
-  public HalfDeal(int id, Location loc, int dur, String note, double upper, double lower, User usr) {
-    ID = id;
+  public HalfDeal(Location loc, Location ety, double bound, double price, int dur, List<Food> order, User usr) {
     location = loc;
+    eatery = ety;
+    actualPrice = price;
     duration = dur;
-    userNote = note;
-    priceUpperBound = upper;
-    priceLowerBound = lower;
+    orders = order;
+    priceBound = bound;
     user = usr;
   }
   
@@ -39,24 +42,12 @@ public abstract class HalfDeal {
     this.location = location;
   }
 
-  public String getUserNote() {
-    return userNote;
+  public List<Food> getOrders() {
+    return orders;
   }
 
-  public double getPriceLowerBound() {
-    return priceLowerBound;
-  }
-
-  public void setPriceLowerBound(double priceLowerBound) {
-    this.priceLowerBound = priceLowerBound;
-  }
-
-  public double getPriceUpperBound() {
-    return priceUpperBound;
-  }
-
-  public void setPriceUpperBound(double priceUpperBound) {
-    this.priceUpperBound = priceUpperBound;
+  public double getPriceBound() {
+    return priceBound;
   }
 
   public User getUser() {

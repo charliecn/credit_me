@@ -2,32 +2,25 @@ package global;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import database.Database;
 import deal.Offer;
-import deal.Request;
-import user.User;
+import deal.Order;
 
 public class Global {
-  private static Queue<Request> requests = new PriorityQueue<>();
-  private static Queue<Offer> offers = new PriorityQueue<>();
-  private static Map<String, User> activeUsers = new HashMap<>();
+  private static List<Order> orders = new ArrayList<>();
+  private static List<Offer> offers = new ArrayList<>();
   private static Database database = new Database();
   
-  public static Queue<Offer> getOffer() {
+  public static List<Offer> getOffer() {
     return offers;
   }
 
-  public static Queue<Request> getRequests() {
-    return requests;
-  }
-  
-  public static Map<String, User> getUsers() {
-    return activeUsers;
+  public static List<Order> getOrders() {
+    return orders;
   }
 
   public static Database getDb() {

@@ -1,7 +1,5 @@
 package user;
 import deal.Offer;
-import deal.Request;
-import global.Global;
 /**
  * a BrownUser is anyone with a Brown email address
  * who can post offers to sell meal credits
@@ -29,9 +27,4 @@ public class BrownUser extends User {
 	public Offer postOffer(Offer offer){
     return offer;
 	}
-
-  @Override
-  public Request postRequest() {
-    return null;
-  }
 }

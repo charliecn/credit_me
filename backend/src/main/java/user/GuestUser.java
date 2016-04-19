@@ -1,7 +1,5 @@
 package user;
 
-import deal.Request;
-
 /**
  * a guest user is a user who does not have a brown email address
  * @author lucieackley
@@ -20,10 +18,4 @@ public class GuestUser extends User {
 	  super(name, email, password, subscribe);
 		
 	}
-
-  @Override
-  public Request postRequest() {
-    return null;
-  }
-
 }

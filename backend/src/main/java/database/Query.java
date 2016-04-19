@@ -96,6 +96,16 @@ public class Query {
 	
 	public static boolean changePassword(String email, 
 			String oldPwd, String newPwd, Connection conn){
-		
+		PreparedStatement prep;
+		try {
+			prep = conn.prepareStatement(
+			"UPDATE user SET password = ? WHERE email = ? AND password = ?");
+			prep.setString(1, newPwd);
+			prep.setString(2, email);
+			prep.setString(3, oldPwd);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
 	}
 }

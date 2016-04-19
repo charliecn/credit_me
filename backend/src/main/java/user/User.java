@@ -2,6 +2,7 @@ package user;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.Query;
 import deal.Deal;
 import deal.Request;
 import global.Global;
@@ -46,7 +47,9 @@ public abstract class User {
 	}
 	
 	public boolean deleteUser(String email, String password) {
-  	return Global.getDb().deleteUser(email, password));
+		//return Global.getDb().deleteUser(email, password));
+		
+		return Query.deleteUser(this , Global.getDb().getConnection());
 	}
 		
 	public String getContact() {
@@ -92,4 +95,23 @@ public abstract class User {
 	public List<Deal> getPastDeals(){
 		return pastOrders;
 	}
+
+	/**
+	 * gets the user's password
+	 * @return
+	 */
+	public String getPassword() {
+		return password;
+	}
+	
+	public String getGenderString(){
+		if(gender.equals(gender.male)){
+			return "male";
+		} else if(gender.equals(gender.female)){
+			return "female";
+		} else {
+			return "undisclosed";
+		}
+	}
+	
 }

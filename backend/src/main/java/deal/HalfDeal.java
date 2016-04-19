@@ -1,74 +1,55 @@
 package deal;
 
-import java.time.Clock;
-import java.time.Duration;
-
-import geo.Location;
+import locationfood.Eatery;
+import locationfood.Location;
 import user.User;
 
 public abstract class HalfDeal {
-  public final int ID;
-  private Location location;
-  private Clock time;
-  private Duration duration;
-  private String userNote;
-  private double priceLowerBound;
-  private double priceUpperBound;
-  private User user;
+  protected Location location;
+  protected Eatery eatery;
+  protected int duration;
+  protected double priceBound;
+  protected User user;
+  protected double actualPrice;
+  protected boolean isDeliver;
 
   enum type {
     deliver, meetup;
   }
 
-  public HalfDeal(int id, Location loc, Clock clock, Duration dur,
-      String note, double upper, double lower, User usr) {
-    ID = id;
+  public HalfDeal(Location loc, Eatery ety, double bound, double price, int dur, User usr) {
     location = loc;
+    eatery = ety;
+    actualPrice = price;
     duration = dur;
-    time = clock;
-    userNote = note;
-    priceUpperBound = upper;
-    priceLowerBound = lower;
+    priceBound = bound;
     user = usr;
+    if (location == null) {
+    	isDeliver = false;
+    } else {
+    	isDeliver = true;
+    }
   }
-
-  public abstract void extend(Duration dur);
-
+  
+  protected abstract void start();
+  
   public abstract void cancel();
-
-  public abstract void expire();
 
   // getters and setters
   public Location getLocation() {
     return location;
   }
 
-  public void setLocation(Location location) {
-    this.location = location;
+  public boolean isDeliver() {
+  	return isDeliver;
   }
+  
+  public Eatery getEatery() {
+  	return eatery;
+}
 
-  public Clock getTime() {
-    return time;
-  }
-
-  public String getUserNote() {
-    return userNote;
-  }
-
-  public double getPriceLowerBound() {
-    return priceLowerBound;
-  }
-
-  public void setPriceLowerBound(double priceLowerBound) {
-    this.priceLowerBound = priceLowerBound;
-  }
-
-  public double getPriceUpperBound() {
-    return priceUpperBound;
-  }
-
-  public void setPriceUpperBound(double priceUpperBound) {
-    this.priceUpperBound = priceUpperBound;
+  public double getPriceBound() {
+    return priceBound;
   }
 
   public User getUser() {

@@ -5,9 +5,9 @@ public class Deal {
   public final boolean complete;
   public final String comment;
   private Offer offer;
-  private Request request;
+  private Order request;
 
-  public Deal(Offer of, Request req, int rt, String cmt, boolean comp) {
+  public Deal(Offer of, Order req, int rt, String cmt, boolean comp) {
     complete = comp;
     rate = rt;
     offer = of;
@@ -15,12 +15,11 @@ public class Deal {
     comment = cmt;
   }
 
-  public Request getRequest() {
+  public Order getRequest() {
     return request;
   }
 
   public Offer getOffer() {
     return offer;
   }
-
 }

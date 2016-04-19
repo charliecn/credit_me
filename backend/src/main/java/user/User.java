@@ -2,8 +2,9 @@ package user;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.Query;
 import deal.Deal;
-import deal.Request;
+import global.Global;
 
 /**
  * represents a class for containing information about a user
@@ -15,11 +16,12 @@ public abstract class User {
 	private List<Deal> pastOrders;
 	private String name;
 	private String email;
-	private String id;
-	private int rating;
-	private title[] titles;
+	private int totalRating;
+	private int ratingNum;
 	private gender gender;
 	private String contact;
+	private boolean subscribe;
+	private String password;
 	
 	enum title {
 	  
@@ -36,21 +38,30 @@ public abstract class User {
 	 * @param id - the id of the user
 	 * @param rating - the rating of the user
 	 */
-	public User(String name, String email, String id, int rating, gender gender){
+	public User(String name, String email, String password, boolean subscribe){
 		this.name = name;
 		this.email = email;
-		this.id = id;
-		this.rating = rating;
+		this.password = password;
 		this.pastOrders = new ArrayList<Deal>();
+		this.subscribe = subscribe;
 	}
 	
-	public abstract void deleteUser();
+	public static boolean deleteUser(String email, String password) {
+		//return Global.getDb().deleteUser(email, password));
+		
+		return Query.deleteUser(email, password, Global.getDb().getConnection());
+	}
+		
+	public void setSubsribe(boolean s) {
+		subscribe = s;
+	}
 	
-	public abstract Request postRequest();
+	public boolean getSubscribe() {
+		return subscribe;
+	}
 	
-	
-	public title[] getTitles() {
-	  return titles;
+	public void setContact(String con) {
+		contact = con;
 	}
 	
 	public String getContact() {
@@ -62,7 +73,7 @@ public abstract class User {
 	 * @return name
 	 */
 	public String getName(){
-		return this.name;
+		return name;
 	}
 	
 	/**
@@ -70,23 +81,28 @@ public abstract class User {
 	 * @return email
 	 */
 	public String getEmail(){
-		return this.email;
-	}
-	
-	/**
-	 * returns the user's id
-	 * @return id
-	 */
-	public String getId(){
-		return this.id;
+		return email;
 	}
 	
 	/**
 	 * returns the users rating
 	 * @return rating
 	 */
-	public int getRating(){
-		return this.rating;
+	public double getRating(){
+		return (double) totalRating/ (double) ratingNum;
+	}
+	
+	public void addRating(int r) {
+		totalRating += r;
+		ratingNum++;
+	}
+	
+	public int getTotalRating() {
+		return totalRating;
+	}
+	
+	public int getRatingNum() {
+		return ratingNum;
 	}
 	
 	/**
@@ -94,8 +110,7 @@ public abstract class User {
 	 * @param deal - deal to add
 	 */
 	public void addDeal(Deal deal){
-		pastOrders.add(deal);
-		updateTitles();
+		
 	}
 	
 	/**
@@ -105,6 +120,23 @@ public abstract class User {
 	public List<Deal> getPastDeals(){
 		return pastOrders;
 	}
+
+	/**
+	 * gets the user's password
+	 * @return
+	 */
+	public String getPassword() {
+		return password;
+	}
 	
-	protected abstract void updateTitles();
+	public String getGenderString(){
+		if(gender.equals(gender.male)){
+			return "male";
+		} else if(gender.equals(gender.female)){
+			return "female";
+		} else {
+			return "undisclosed";
+		}
+	}
+	
 }

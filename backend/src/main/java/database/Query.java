@@ -5,6 +5,7 @@ import user.BrownUser;
 import user.GuestUser;
 import locationfood.Eatery;
 import locationfood.Food;
+import locationfood.Location;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -181,8 +182,25 @@ public class Query {
 			
 		return new Eatery(id, eateryName, section, start, end, description);
 		
+	}
+	
+	public static Location getLocation(String name, Connection conn) throws SQLException{
+		PreparedStatement prep = 
+				conn.prepareStatement("SELECT id, section FROM location WHERE name = ?");
 		
-
+		prep.setString(1, name);
+		
+		ResultSet rs = prep.executeQuery();
+		
+		if(rs.next() == false){
+			return null;
+		}
+		String id = rs.getString("id");
+		String section = rs.getString("section");		
+		
+			
+		return new Location(id, name, section);
+		
 	}
 	
 	/**

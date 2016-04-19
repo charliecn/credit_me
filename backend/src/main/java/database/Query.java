@@ -121,18 +121,19 @@ public class Query {
 		PreparedStatement prep;
 		try {
 			prep = conn.prepareStatement(
-			"INSERT INTO user (email, name, password, contact, rating, gender, title, subscribe)" +
+			"INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
 			" VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			prep.setString(1, user.getEmail());
 			prep.setString(2, user.getName());
 			prep.setString(3, user.getPassword());
 			prep.setString(4, user.getContact());
-			prep.setDouble(5, user.getRating());
-			prep.setString(6, user.getGenderString());
+			prep.setInt(5, user.getTotalRating());
+			prep.setInt(6, user.getRatingNum());
+			prep.setString(7, user.getGenderString());
 			//TODO: WHAT IS A TITLE STRING
-			String titleString = "?";
-			prep.setString(7, titleString);
-			prep.setBoolean(8, user.getSubscribe());
+			String titleString = "";
+			prep.setString(8, titleString);
+			prep.setBoolean(9, user.getSubscribe());
 		} catch (SQLException e) {
 			return false;
 		}
@@ -207,6 +208,4 @@ public class Query {
 		return new Food(price, name);
 		
 	}
-	
-	
 }

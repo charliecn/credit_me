@@ -3,6 +3,7 @@ package deal;
 import java.util.List;
 
 import global.Global;
+import locationfood.Eatery;
 import locationfood.Food;
 import locationfood.Location;
 import user.User;

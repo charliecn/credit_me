@@ -1,6 +1,7 @@
 package deal;
 
 import global.Global;
+import locationfood.Eatery;
 import locationfood.Location;
 import user.User;
 

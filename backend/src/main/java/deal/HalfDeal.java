@@ -1,5 +1,6 @@
 package deal;
 
+import locationfood.Eatery;
 import locationfood.Location;
 import user.User;
 

@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import deal.Order;
 import freemarker.template.Configuration;
 import global.Global;
 import global.Matcher;
+import locationfood.Eatery;
 import locationfood.Food;
 import locationfood.Location;
 import spark.QueryParamsMap;
@@ -93,8 +95,12 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
       String password = qm.value("password");
-      //get user
-      User user = Global.getDb().getUser(email, Global.md5(password));
+      User user = null;
+			try {
+				user = Query.getUser(email, Global.md5(password), Global.getDb().getConnection());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
       if (user == null) {
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("error", "incorrect email address or password!").build();
@@ -123,7 +129,7 @@ public class Gui {
       }
     	User user = new BrownUser(name, email, Global.md5(pwd), subs);
     	//put user
-    	Global.getDb().putUser(user);
+    	Query.putUser(user, Global.getDb().getConnection());
       Map<String, Object> variables = new ImmutableMap.Builder().build();
       return GSON.toJson(variables);
     }
@@ -148,13 +154,18 @@ public class Gui {
       String email = qm.value("email");
       String prevPwd = qm.value("prevPwd");
       String newPwd = qm.value("newPwd");
-      User user = Global.getDb().getUser(email, Global.md5(prevPwd));
+      User user;
+			try {
+				user = Query.getUser(email, Global.md5(prevPwd), Global.getDb().getConnection());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
       if (user == null) {
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("error", "incorrect password!").build();
 	      return GSON.toJson(variables);
       } else {
-      	Global.getDb().changePassword(email, prevPwd, newPwd);
+      	Query.changePassword(email, prevPwd, newPwd, Global.getDb().getConnection());
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("done", "done").build();
 	      return GSON.toJson(variables);
@@ -181,14 +192,14 @@ public class Gui {
       }
       
       User user = Query.getUser(email, Global.getDb().getConnection());
-      Location eatery = Query.getEatery(eateryName, Global.getDb().getConnection());
+      Eatery eatery = Query.getEatery(eateryName, Global.getDb().getConnection());
       Location location;
       if (address == null) {
       	 location = null;
       } else {
-      	location = Query.getEatery(location, Global.getDb().getConnection());
+      	location = Query.getLocation(address, Global.getDb().getConnection());
       }
-      Order order = new Order(location, eatery, priceBound, price, duration * 600000, user, food);
+      Order order = new Order(location, eatery, priceBound, price, duration * 600000, user, foods);
       Deal deal = matcher.matchOrder(order);
       if (deal == null) {
       	Map<String, Object> variables = new ImmutableMap.Builder()

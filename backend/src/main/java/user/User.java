@@ -94,4 +94,23 @@ public abstract class User {
 	public List<Deal> getPastDeals(){
 		return pastOrders;
 	}
+
+	/**
+	 * gets the user's password
+	 * @return
+	 */
+	public String getPassword() {
+		return password;
+	}
+	
+	public String getGenderString(){
+		if(gender.equals(gender.male)){
+			return "male";
+		} else if(gender.equals(gender.female)){
+			return "female";
+		} else {
+			return "undisclosed";
+		}
+	}
+	
 }

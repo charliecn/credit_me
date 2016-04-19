@@ -1,4 +1,20 @@
-1. Deal class (Request, Offer) + cancel
-2. User class (Brown User, Guest User)
-3. Database
-4. GUI
+I have created a database in the directory and there are four tables:
+
+user: id, name, password, contact, rating, gender, title, subscribe.
+(key, username, password-'md5'ed, contact info, average rating, gender, the index of titles that the user has, separated by spaces, whether the user is subscribed to the mailing list)
+order: id, buyer, seller, eatery, location, time, price, rate, comment, complete.
+(key, buyer id, seller id, the eatery id, the deliver location id-null if not delivering order, time (YYYY MM DD HH MM), price, rating, comment, whether the order is complete)
+food: id, name, price, eatery.
+(key, name, price, eatery)
+location: id, name, eatery.
+(key, name, whether it is an eatery)
+food_location: food, location.
+(food id, location id)
+
+For you:
+fill the database query class. methods: 
+getUser(String email, String password) -> User();
+putUser(User user) -> boolean success                             : true if success false if the user already exist;
+deleteUser(String email, String password) -> boolean success      : true if deleted false if the password incorrect;
+
+maybe some other stuff i dont know yet

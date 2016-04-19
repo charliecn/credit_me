@@ -2,31 +2,31 @@ package deal;
 
 import geo.Location;
 import global.Global;
-
-import java.time.Clock;
-import java.time.Duration;
-
 import user.User;
 
 public class Offer extends HalfDeal{
-
-  public Offer(int id, Location loc, Clock clock, Duration dur,
+  Runnable counting = () -> {
+  	try {
+			Thread.sleep(duration);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+  	Global.getOffer().remove(this);
+  };
+	
+  public Offer(int id, Location loc, int dur,
       String note, double upper, double lower, User usr) {
-    super(id, loc, clock, dur, note, upper, lower, usr);
+    super(id, loc, dur, note, upper, lower, usr);
     Global.getOffer().add(this);
   }
-
+  
+  @Override
+  protected void start() {
+  	new Thread(counting).start();
+  }
+  
   @Override
   public void cancel() {
     Global.getOffer().remove(this);
   }
-
-  @Override
-  public void expire() {    
-  }
-
-  @Override
-  public void extend(Duration dur) {
-  }
-  
 }

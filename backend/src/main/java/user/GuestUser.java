@@ -16,18 +16,10 @@ public class GuestUser extends User {
 	 * @param id - id of user
 	 * @param rating - rating of user
 	 */
-	public GuestUser(String name, String email, String id, int rating, gender gend) {
-	  super(name, email, id, rating, gend);
+	public GuestUser(String name, String email, String password, boolean subscribe) {
+	  super(name, email, password, subscribe);
 		
 	}
-
-  @Override
-  public void deleteUser() {   
-  }
-
-  @Override
-  protected void updateTitles() {
-  }
 
   @Override
   public Request postRequest() {

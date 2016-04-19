@@ -1,42 +1,34 @@
 package deal;
 
-import java.time.Clock;
-import java.time.Duration;
-
 import geo.Location;
 import user.User;
 
 public abstract class HalfDeal {
   public final int ID;
-  private Location location;
-  private Clock time;
-  private Duration duration;
-  private String userNote;
-  private double priceLowerBound;
-  private double priceUpperBound;
-  private User user;
+  protected Location location;
+  protected int duration;
+  protected String userNote;
+  protected double priceLowerBound;
+  protected double priceUpperBound;
+  protected User user;
 
   enum type {
     deliver, meetup;
   }
 
-  public HalfDeal(int id, Location loc, Clock clock, Duration dur,
-      String note, double upper, double lower, User usr) {
+  public HalfDeal(int id, Location loc, int dur, String note, double upper, double lower, User usr) {
     ID = id;
     location = loc;
     duration = dur;
-    time = clock;
     userNote = note;
     priceUpperBound = upper;
     priceLowerBound = lower;
     user = usr;
   }
-
-  public abstract void extend(Duration dur);
-
+  
+  protected abstract void start();
+  
   public abstract void cancel();
-
-  public abstract void expire();
 
   // getters and setters
   public Location getLocation() {
@@ -45,10 +37,6 @@ public abstract class HalfDeal {
 
   public void setLocation(Location location) {
     this.location = location;
-  }
-
-  public Clock getTime() {
-    return time;
   }
 
   public String getUserNote() {

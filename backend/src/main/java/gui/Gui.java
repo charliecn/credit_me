@@ -9,6 +9,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import database.Query;
 import deal.Deal;
 import deal.Order;
 import freemarker.template.Configuration;
@@ -94,6 +95,7 @@ public class Gui {
       String password = qm.value("password");
       //get user
       User user = Global.getDb().getUser(email, Global.md5(password));
+      
       if (user == null) {
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("error", "incorrect email address or password!").build();
@@ -176,16 +178,16 @@ public class Gui {
       String[] foodIds = menu.split("//s");
       List<Food> foods = new ArrayList<>();
       for (String s : foodIds) {
-      	foods.add(Query.getFood(s, Global.getDb().getConnection()));
+      	foods.add(Global.getDb().getFood(s));
       }
       
-      User user = Query.getUser(email, Global.getDb().getConnection());
-      Location eatery = Query.getLocation(eateryName, Global.getDb().getConnection());
+      User user = Global.getDb().getUser(email);
+      Location eatery = Global.getDb().getLocation(eateryName);
       Location location;
       if (address == null) {
       	 location = null;
       } else {
-      	location = Query.getLocation(location, Global.getDb().getConnection());
+      	location = Global.getDb().getLocation(location);
       }
       Order order = new Order(location, eatery, priceBound, price, duration * 600000, foods, user);
       Deal deal = matcher.matchOrder(order);

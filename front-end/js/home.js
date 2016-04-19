@@ -1,6 +1,9 @@
 var userPwd = {};
 
 window.addEventListener('load', function(){
+	// var btnWidth = $("#signup-btn").width();
+	// $(".ui-btn").css("width", btnWidth);
+	// alert(btnWidth);
 	document.getElementById("login-form").addEventListener('submit', function(e){
 		e.preventDefault();
 		login();
@@ -28,10 +31,133 @@ window.addEventListener('load', function(){
 	// }, false);
 });
 
+
+//user information
+var email;
+var contact;
+var username;
+var pwd;
+var subscribe;
+var history; //history is a list of strings?
+
+//other variables.
 var prevName;
 var prevEmail;
+var prevContact;
+var btnWidth;
 
-// $("[data-role=footer]").fixedtoolbar({tapToggle: false});
+function checkLoginEmail(email) {
+	var emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+	if (!email.match(emailPattern)) {
+		$("#login-error").html('<span style="font-weight: bold">Email is not valid</span><br>Please enter a valid brown email address');
+		return false;
+	}
+	var edu = email.substring(email.length-10, email.length);
+	console.log("edu: " + edu);
+	if (edu != "@brown.edu") {
+		$("#login-error").html('<span style="font-weight: bold">Email is not valid</span><br>Please enter a valid brown email address');
+		return false;
+	}
+	return true;
+}
+
+function checkSignupEmail(email) {
+	var emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+	if (!email.match(emailPattern)) {
+		$("#signup-error").html('<span style="font-weight: bold">Email is not valid</span><br>Please enter a valid brown email address');
+		return false;
+	}
+	var edu = email.substring(email.length-10, email.length);
+	console.log("edu: " + edu);
+	if (edu != "@brown.edu") {
+		$("#signup-error").html('<span style="font-weight: bold">Email is not valid</span><br>Please enter a valid brown email address');
+		return false;
+	}
+	return true;
+}
+
+$(document).on("pagecreate", "#login-page", function(){
+	$("#login-submit").click(function(){
+		$("#login-error").html('');
+		var enteredEmail = $("#login-user").val();
+		var pwd = $.trim($("#login-pwd").val()).replace(/\s/g, '+');
+		if (!checkLoginEmail(enteredEmail)) {
+			console.log('email invalid');
+			return;
+		}
+		email = enteredEmail;
+		console.log(email + " " + pwd);
+		var postParameters = {email: email, pwd: pwd};
+
+		//this variable is used to indicate if the login is valid.
+		// var validlogin;
+		// $.post("/userlogin",postParameters,function(responseJSON){
+		// 	validlogin = JSON.parse(responseJSON).validlogin;
+		// 	if (!validlogin) {
+		// 		$("#login-error").html('<span style="font-weight: bold">Login failed</span>Please check your email and password.<br>');
+		// 	}
+		// 	username = JSON.parse(responseJSON).username;
+		// 	contact = JSON.parse(responseJSON).contact;
+		// 	history = JSON.parse(responseJSON).history;
+		// 	subscribe = JSON.parse(responseJSON).subscribe;
+		// })
+	
+		$.mobile.changePage($("#delivery-page"));
+	})
+});
+
+$(document).on("pagecreate", "#signup-page", function(){
+	//e.preventDefault();
+	$("#signup-submit").click(function(){
+		var username = $.trim($("#signup-name").val()).replace(/\s/g, '+');
+		var enteredEmail = $.trim($("#signup-user").val()).replace(/\s/g, '+');
+		var pwd = $.trim($("#signup-pwd").val()).replace(/\s/g, '+');
+		var subscribe = document.getElementById("subscribe").checked;
+		console.log(username + " " + enteredEmail + " " + pwd + " " + subscribe);
+		
+		if (!checkSignupEmail(enteredEmail)) {
+			console.log('email invalid');
+			return;
+		}
+		email = enteredEmail;
+
+		var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
+		// $.post("/usersignup",postParameters,function(responseJSON){
+
+		// })
+	})
+});
+
+$(document).on("pagecreate", "#forgetpwd-page", function(){
+	//e.preventDefault();
+	$("#forgetpwd-submit").click(function(){
+		var email = $.trim($("#signup-user").val()).replace(/\s/g, '+');
+		console.log(email);
+		var postParameters = {email: email};
+		// $.post("/userforgetpwd",postParameters,function(responseJSON){
+
+		// })
+	})
+});
+
+$(document).on("pagecreate", "#changepwd-page", function(){
+	//e.preventDefault();
+	$("#changepwd-submit").click(function(){
+		$("#changepwd-error").html('');
+		var prevPwd = $.trim($("#prev-pwd").val()).replace(/\s/g, '+');
+		var newPwd = $.trim($("#new-pwd").val()).replace(/\s/g, '+');
+		var reNewPwd = $.trim($("#re-new-pwd").val()).replace(/\s/g, '+');
+		if (newPwd != reNewPwd) {
+			$("#changepwd-error").html('<span style="font-weight: bold">Passwords do not match</span><br> You must enter the same password twice in order to confirm it.');
+			return;
+		}
+		console.log("change: " + prevPwd + " " + newPwd + " " + reNewPwd + " " + email);
+		var postParameters = {prevPwd: prevPwd, newPwd: newPwd, email: email};
+		// $.post("/userforgetpwd",postParameters,function(responseJSON){
+
+		// })
+	})
+});
 
 $(document).on("pagecreate", "#orders-page", function(){
 	$("#order-id-a").on("tap", function(e){
@@ -43,6 +169,8 @@ $(document).on("pagecreate", "#orders-page", function(){
 $(document).on("pagecreate", "#profile-page", function(){
 	//alert('here');
 	//var prevEmail
+	$("#profile-name").css("color", "#c2c2c2");
+	$("#profile-contact").css("color", "#c2c2c2");
 	$("#profile-name").on("tap", function(e){
 		e.preventDefault();
 		//alert('tap');
@@ -69,41 +197,52 @@ $(document).on("pagecreate", "#profile-page", function(){
 		$("#profile-name").html(newName);
 		if (newName === "" && prevName === ""){
 			//alert(prevEmail);
-			$("#profile-name").html('type in your name');
+			$("#profile-name").css("color", "#c2c2c2");
+			$("#profile-name").html('username');
 		}
 		$("#profile-name").css('border-bottom', '1px solid #989797');
 	});
 
-	// $("#profile-email").on("tap", function(e){
-	// 	e.preventDefault();
-	// 	//alert('tap');
-	// 	prevEmail = $(this).text();
-	// 	//alert(prevEmail);
-	// 	//alert("email: " + email);
-	// 	//$(this).css('border', 'none');
-	// 	$(this).html('');
-	// 	$('<input></input>').attr({
-	// 		'type': 'text',
-	// 		'name': 'profile-email',
-	// 		'id': 'profile-email-in',
-	// 		'value': prevEmail
-	// 	}).appendTo("#profile-email");
-	// 	$('#profile-email-in').focus();
-	// 	$(this).css('border', 'none');
-	// });
+	$("#profile-contact").on("tap", function(e){
+		e.preventDefault();
+		//alert('tap');
+		prevContact = $(this).text();
+		//alert(prevEmail);
+		//alert("email: " + email);
+		//$(this).css('border', 'none');
+		$(this).html('');
+		$('<input></input>').attr({
+			'type': 'text',
+			'name': 'profile-contact',
+			'id': 'profile-contact-in',
+			'value': prevContact
+		}).appendTo("#profile-contact");
+		$('#profile-contact-in').focus();
+		$(this).css('border', 'none');
+	});
 
-	// $(document).on('blur', '#profile-email-in', function(){
-	// 	//alert(prevEmail);
-	// 	var newEmail = $(this).val();
-	// 	//alert(newEmail)
-	// 	$("#profile-email").html('');
-	// 	$("#profile-email").html(newEmail);
-	// 	if (newEmail === "" && prevEmail === ""){
-	// 		//alert(prevEmail);
-	// 		$("#profile-email").html('type in your email');
-	// 	}
-	// 	$("#profile-email").css('border-bottom', '1px solid #989797');
-	// });
+	$(document).on('blur', '#profile-contact-in', function(){
+		//alert(prevEmail);
+		var newContact = $(this).val();
+		//alert(newEmail)
+		$("#profile-contact").html('');
+		$("#profile-contact").html(newContact);
+		if (newContact === "" && prevContact === ""){
+			//alert(prevEmail);
+			$("#profile-contact").css("color", "#c2c2c2");
+			$("#profile-contact").html('000-000-0000');
+		}
+		$("#profile-contact").css('border-bottom', '1px solid #989797');
+	});
+
+	$("#profile-subscribe").change(function(){
+		console.log(this.checked);
+		subscribe = this.checked;
+		var postParameters = {subscribe: subscribe};
+		// $.post("/userforgetpwd",postParameters,function(responseJSON){
+
+		// })
+	});
 });
 
 function login() {

@@ -4,7 +4,6 @@ import java.util.List;
 
 import database.Query;
 import deal.Deal;
-import deal.Request;
 import global.Global;
 
 /**
@@ -17,7 +16,8 @@ public abstract class User {
 	private List<Deal> pastOrders;
 	private String name;
 	private String email;
-	private double rating;
+	private int totalRating;
+	private int ratingNum;
 	private gender gender;
 	private String contact;
 	private boolean subscribe;
@@ -51,11 +51,19 @@ public abstract class User {
 		
 		return Query.deleteUser(email, password, Global.getDb().getConnection());
 	}
+		
+	public void setSubsribe(boolean s) {
+		subscribe = s;
+	}
 	
-	public boolean getSubscribe(){
+	public boolean getSubscribe() {
 		return subscribe;
 	}
-		
+	
+	public void setContact(String con) {
+		contact = con;
+	}
+	
 	public String getContact() {
 	  return contact;
 	}
@@ -81,7 +89,20 @@ public abstract class User {
 	 * @return rating
 	 */
 	public double getRating(){
-		return rating;
+		return (double) totalRating/ (double) ratingNum;
+	}
+	
+	public void addRating(int r) {
+		totalRating += r;
+		ratingNum++;
+	}
+	
+	public int getTotalRating() {
+		return totalRating;
+	}
+	
+	public int getRatingNum() {
+		return ratingNum;
 	}
 	
 	/**

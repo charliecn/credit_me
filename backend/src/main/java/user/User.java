@@ -51,9 +51,7 @@ public abstract class User {
 		
 		return Query.deleteUser(this , Global.getDb().getConnection());
 	}
-	
-	public abstract Request postRequest();
-	
+		
 	public String getContact() {
 	  return contact;
 	}

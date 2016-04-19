@@ -1,4 +1,4 @@
-package geo;
+package locationfood;
 
 public class Location {
   public Type type;

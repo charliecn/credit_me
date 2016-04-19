@@ -176,16 +176,16 @@ public class Gui {
       String[] foodIds = menu.split("//s");
       List<Food> foods = new ArrayList<>();
       for (String s : foodIds) {
-      	foods.add(Global.getDb().getFood(s));
+      	foods.add(Query.getFood(s, Global.getDb().getConnection()));
       }
       
-      User user = Global.getDb().getUser(email);
-      Location eatery = Global.getDb().getLocation(eateryName);
+      User user = Query.getUser(email, Global.getDb().getConnection());
+      Location eatery = Query.getLocation(eateryName, Global.getDb().getConnection());
       Location location;
       if (address == null) {
       	 location = null;
       } else {
-      	location = Global.getDb().getLocation(location);
+      	location = Query.getLocation(location, Global.getDb().getConnection());
       }
       Order order = new Order(location, eatery, priceBound, price, duration * 600000, foods, user);
       Deal deal = matcher.matchOrder(order);

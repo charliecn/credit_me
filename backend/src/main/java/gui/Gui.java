@@ -9,6 +9,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import database.Query;
 import deal.Deal;
 import deal.Order;
 import freemarker.template.Configuration;
@@ -180,14 +181,14 @@ public class Gui {
       }
       
       User user = Query.getUser(email, Global.getDb().getConnection());
-      Location eatery = Query.getLocation(eateryName, Global.getDb().getConnection());
+      Location eatery = Query.getEatery(eateryName, Global.getDb().getConnection());
       Location location;
       if (address == null) {
       	 location = null;
       } else {
-      	location = Query.getLocation(location, Global.getDb().getConnection());
+      	location = Query.getEatery(location, Global.getDb().getConnection());
       }
-      Order order = new Order(location, eatery, priceBound, price, duration * 600000, foods, user);
+      Order order = new Order(location, eatery, priceBound, price, duration * 600000, user, food);
       Deal deal = matcher.matchOrder(order);
       if (deal == null) {
       	Map<String, Object> variables = new ImmutableMap.Builder()

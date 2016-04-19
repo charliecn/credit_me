@@ -25,10 +25,28 @@ public class Matcher {
     return match(Global.getOffer(), Global.getOrders());
   }
 
-  public static Deal matchOrder(Order orders) {
+  public static Deal matchOrder(Order order) {
+  	boolean isDeliver = order.isDeliver();
+  	List<Offer> offers = Global.getOffer();
+  	if (isDeliver) {
+	  	for (Offer of : offers) {
+	  		if (deliver != isDeliver) {
+	  			continue;
+	  		}
+	  		
+	  	}
+  	} else {
+	  	for (Offer of : offers) {
+	  		if (deliver != isDeliver) {
+	  			continue;
+	  		}
+	  		if (!order.getEatery().equals(of.getEatery())) {
+	  			continue;
+	  		}
+	  	}
+  	}
+  	
     Deal deal;
-
-
     return null;
   }
 

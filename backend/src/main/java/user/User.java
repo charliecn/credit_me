@@ -4,7 +4,6 @@ import java.util.List;
 
 import database.Query;
 import deal.Deal;
-import deal.Request;
 import global.Global;
 
 /**
@@ -52,6 +51,18 @@ public abstract class User {
 		return Query.deleteUser(this , Global.getDb().getConnection());
 	}
 		
+	public void setSubsribe(boolean s) {
+		subscribe = s;
+	}
+	
+	public boolean getSubscribe() {
+		return subscribe;
+	}
+	
+	public void setContact(String con) {
+		contact = con;
+	}
+	
 	public String getContact() {
 	  return contact;
 	}
@@ -78,6 +89,10 @@ public abstract class User {
 	 */
 	public double getRating(){
 		return rating;
+	}
+	
+	public void addRating(int r) {
+		//change rating
 	}
 	
 	/**

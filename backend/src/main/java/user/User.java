@@ -11,7 +11,8 @@ import global.Global;
  * @author lucieackley
  *
  */
-public abstract class User {
+public class User {
+	private boolean isBrownUser = false;
 	private List<Deal> pastOrders;
 	private String name = "";
 	private String email = "";
@@ -39,13 +40,14 @@ public abstract class User {
 		this.pastOrders = new ArrayList<Deal>();
 		this.subscribe = subscribe;
 		pastOrders = new ArrayList<Deal>();
+		if (email.endsWith("@brown.edu")) {
+			isBrownUser = true;
+		}
 	}
 	
-	public static boolean deleteUser(String email, String password) {
-		//return Global.getDb().deleteUser(email, password));
-		
-		return Query.deleteUser(email, password, Global.getDb().getConnection());
-	}
+	//public static boolean deleteUser(String email, String password) {
+	//	return Query.deleteUser(email, password, Global.getDb().getConnection());
+	//}
 		
 	public void setSubsribe(boolean s) {
 		subscribe = s;
@@ -127,15 +129,4 @@ public abstract class User {
 	public String getPassword() {
 		return password;
 	}
-	
-	public String getGenderString(){
-		if(gender.equals("male")){
-			return "male";
-		} else if(gender.equals("female")){
-			return "female";
-		} else {
-			return "undisclosed";
-		}
-	}
-	
 }

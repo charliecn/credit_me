@@ -42,11 +42,7 @@ public class Query {
 		String name = rs.getString("name");
 		Boolean subscribe = rs.getBoolean("subscribe");
 		
-		if(isBrownEmail(email)){
-			return new BrownUser(name, email, password, subscribe);
-		} else {
-			return new GuestUser(name, email, password, subscribe);
-		}
+		return new User(name, email, password, subscribe);
 	}
 	
 	/**
@@ -73,24 +69,7 @@ public class Query {
 		Boolean subscribe = rs.getBoolean("subscribe");
 		String password = rs.getString("password");
 		
-		if(isBrownEmail(email)){
-			return new BrownUser(name, email, password, subscribe);
-		} else {
-			return new GuestUser(name, email, password, subscribe);
-		}
-	}
-
-	/**
-	 * Determines whether string is a brown email address.
-	 * @param email - email address to check
-	 * @return true if email is brown email address
-	 */
-	private static boolean isBrownEmail(String email) {
-		int atInd = email.indexOf("@");
-		if(atInd == -1){
-			return false;
-		}
-		return email.substring(atInd).equals("brown.edu");
+		return new User(name, email, password, subscribe);
 	}
 	
 	/**

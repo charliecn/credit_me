@@ -43,5 +43,5 @@ public class EmailSender {
 		}catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
-	}
+	
 }

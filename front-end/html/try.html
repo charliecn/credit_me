@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreditMe@Brown</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script>
+      $(document).bind('mobileinit',function(){
+          $.mobile.pushStateEnabled = false;
+      });
+    </script>
+    
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="../css/app.css">
+    <script src="../js/request.js"></script>
+    
+  </head>
+  <body>
+
+  <div class="logo" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+    <div data-role="page" id="page_buy_1">
+
+    
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:100%">
+             <div id="progress_bar"></div>
+          </div>
+        </div>
+
+        <ul data-role="listview" data-inset="true">
+          <li data-role="divider">How you wanna get the food?</li>
+          <li>
+            <a class="meet_up_confirm" href="#page_buy_2">
+            <img src="../image/meet.png" style="height:100%">
+            <h2>Meet up</h2>
+            <p style="white-space:normal;">Meet with a credit provider.</p>
+            </a>
+            <a class="meet_up_confirm" href="#page_buy_2" data-transition="fade" data-icon="arrow-r"></a>
+          </li>
+          
+          <li>
+            <a class="deliver_confirm" href="#page_deliver">
+            <img src="../image/deliver.png">
+            <h2>Delivery</h2>
+            <p style="white-space:normal;">Feel lazy? Choose delivery!</p>
+            </a>
+            <a class="deliver_confirm" href="#page_deliver" data-transition="fade" data-icon="arrow-r"></a>
+          </li>
+
+        </ul>
+      </div>
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  </body>
+</html>

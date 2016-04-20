@@ -16,7 +16,6 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lobster+Two:400italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../css/app.css">
     <script src="../js/request.js"></script>
     
@@ -143,30 +142,30 @@
         <ul data-role="listview" data-inset="true">
           <li data-role="divider">Pick your eatery</li>
           <li>
-            <a href="#page_buy_3">
+            <a href="#page_buy_3" class="andrews">
             <img src="../image/andrews.png">
             <h2>Andrews Commons</h2>
             <p style="white-space:normal;">They say some eat Andrews 24/7.</p>
             </a>
-            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r"></a>
+            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r" class="andrews"></a>
           </li>
           
           <li>
-            <a href="#page_buy_3">
+            <a href="#page_buy_3" class="blueroom">
             <img src="../image/blueroom.png">
             <h2>Blue Room</h2>
             <p style="white-space:normal;">Best known to campus visitors :)</p>
             </a>
-            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r"></a>
+            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r" class="blueroom"></a>
           </li>
           
           <li>
-            <a href="#page_buy_3">
+            <a href="#page_buy_3" class="josiahs">
             <img src="../image/johs.png">
             <h2>Josiah's</h2>
             <p style="white-space:normal;">We talk business there after party.</p>
             </a>
-            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r"></a>
+            <a href="#page_buy_3" data-transition="fade" data-icon="arrow-r" class="josiahs"></a>
           </li>
         </ul>
       </div>
@@ -191,6 +190,81 @@
 
   <div data-role="page" id="page_buy_3">
     
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_3"></div>
+
+          </div>
+        </div>
+
+        <p>What do you wanna eat?</p>
+        <p>Total: <span style="color:#9D8189">$0.00</span></p>
+        <form id="menu">
+          <fieldset data-role="controlgroup" data-iconpos="right" id="menu_fieldset">
+            <div class="ui-controlgroup-controls" id="menu_fieldset_div">
+              
+            </div>
+          </fieldset>
+      </form>
+
+      <a href="#page_buy_4" class="ui-btn" id="menu_confirm" style="background-color:#FFCAD4;color:#9D8189;display: none;">Continue</a>
+
+    </div>
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>    
+  </div>
+
+  <div id="page_buy_4" data-role="page">
+
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_4"></div>
+
+          </div>
+        </div>
+    </div>
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div> 
   </div>
 
 

@@ -97,12 +97,17 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
       String password = qm.value("password");
+
+      //get user
+     
       User user = null;
+
 			try {
 				user = Query.getUser(email, Global.md5(password), Global.getDb().getConnection());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+
       if (user == null) {
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("error", "incorrect email address or password!").build();

@@ -54,13 +54,11 @@ public class Global {
   }
   
   public static String randomLink() {
-  	    char[] text = new char[linklength];
-  	    for (int i = 0; i < linklength; i++)
-  	    {
-  	        text[i] = charStorage.charAt(random.nextInt(charStorage.length()));
-  	    }
-  	    String linkTail = new String(text);
-  	    return linkHead + linkTail;
-  	}
-  }
+	    char[] text = new char[linklength];
+	    for (int i = 0; i < linklength; i++) {
+        text[i] = charStorage.charAt(random.nextInt(charStorage.length()));
+	    }
+	    String linkTail = new String(text);
+	    return linkHead + linkTail;
+	}
 }

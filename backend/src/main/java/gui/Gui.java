@@ -340,17 +340,21 @@ public class Gui {
       Order order = new Order(location, eatery, priceBound, price, duration * 600000, user, foods);
       // match deals
       List<Deal> deal = matcher.matchOrder(order);
-      if (deal.size() <= 3) {
+      if (deal.size() == 0) {
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("result", "nothing").build();
+	      return GSON.toJson(variables);
+    	} else if (deal.size() <= 3) {
       	// no match
       	Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("deal", deal)
-	          .put("type", "suggestions").build();
+	          .put("result", "suggestions").build();
 	      return GSON.toJson(variables);
       } else {
       	// has match
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("deal", deal.get(0))
-	          .put("type", "match").build();
+	          .put("result", "match").build();
 	      return GSON.toJson(variables);
       }
     }

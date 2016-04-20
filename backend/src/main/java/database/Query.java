@@ -125,8 +125,7 @@ public class Query {
 		PreparedStatement prep;
 		try {
 			prep = conn.prepareStatement(
-			"INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+			"INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			//System.out.println(user.getEmail() + " " + user.getName() + " " + user.getPassword() + " ");
 			prep.setString(1, user.getEmail());
 			prep.setString(2, user.getName());

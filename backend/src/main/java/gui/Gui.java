@@ -14,6 +14,7 @@ import database.Query;
 import deal.Deal;
 import deal.Offer;
 import deal.Order;
+import emailer.EmailSender;
 import freemarker.template.Configuration;
 import global.Global;
 import global.Matcher;
@@ -134,8 +135,12 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-    	//send email
-      Map<String, Object> variables = new ImmutableMap.Builder().build();
+      String subject = "credit_me sign up verification";
+      String link = Global.randomLink();
+      String body = "Welcome! click the following link to verify your email:\n" + link;
+    	EmailSender.sendEmail(email, subject, body);
+      Map<String, Object> variables = new ImmutableMap.Builder()
+      		.put("link", link).build();
       return GSON.toJson(variables);
     }
   }
@@ -167,10 +172,12 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-
-      // send email
+      String subject = "credit_me forget password";
+      String link = Global.randomLink();
+      String body = "Visit the following link to reset your password:\n" + link;
+    	EmailSender.sendEmail(email, subject, body);
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("done", true).build();
+          .put("link", link).build();
       return GSON.toJson(variables);
     }
   }

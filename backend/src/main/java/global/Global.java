@@ -3,6 +3,7 @@ package global;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import database.Database;
@@ -13,6 +14,11 @@ public class Global {
   private static List<Order> orders = new CopyOnWriteArrayList<>();
   private static List<Offer> offers = new CopyOnWriteArrayList<>();
   private static Database database = new Database();
+  private static String linkHead = "localhost:4000/verify/";
+  private static Random random = new Random();
+  private static String charStorage = 
+  		"1234567890!@#$%^&*qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+  private static int linklength = 20;
   
   public static List<Offer> getOffer() {
     return offers;
@@ -45,5 +51,16 @@ public class Global {
   		sb.append(String.format("%02x", b & 0xff));
   	}
   	return sb.toString();
+  }
+  
+  public static String randomLink() {
+  	    char[] text = new char[linklength];
+  	    for (int i = 0; i < linklength; i++)
+  	    {
+  	        text[i] = charStorage.charAt(random.nextInt(charStorage.length()));
+  	    }
+  	    String linkTail = new String(text);
+  	    return linkHead + linkTail;
+  	}
   }
 }

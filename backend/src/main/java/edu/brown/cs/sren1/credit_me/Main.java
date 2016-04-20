@@ -1,15 +1,16 @@
 package edu.brown.cs.sren1.credit_me;
 
+import gui.Gui;
+
 public class Main {
   public static void main(String[] args) {
-    new Main(args).run();
+    new Main().run();
   }
-
-  private String[] args;
-  private Main(String[] args) {
-    this.args = args;
+  
+  private Main() {
   }
 
   private void run() {
+  	new Gui("creditMe.sqlite3").run();
   }
 }

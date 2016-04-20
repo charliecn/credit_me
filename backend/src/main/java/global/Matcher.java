@@ -13,49 +13,127 @@ import deal.Order;
  * @author lucieackley
  */
 public class Matcher {
-
-  public static List<Deal> match(List<Offer> offer, List<Order> orders) {
-    List<Deal> deals = new ArrayList<>();
-
-
-    return deals;
-  }
-  
-  public static List<Deal> match() {
-    return match(Global.getOffer(), Global.getOrders());
-  }
-
-  public static Deal matchOrder(Order order) {
+  public static List<Deal> matchOrder(Order order) {
+  	double actualPrice = order.getActualPrice();
   	boolean isDeliver = order.isDeliver();
+    Deal match = null;
+    List<Deal> suggestions = new ArrayList<>();
   	List<Offer> offers = Global.getOffer();
-  	if (isDeliver) {
-	  	for (Offer of : offers) {
-	  		if (deliver != isDeliver) {
-	  			continue;
-	  		}
-	  		
-	  	}
-  	} else {
-	  	for (Offer of : offers) {
-	  		if (deliver != isDeliver) {
-	  			continue;
-	  		}
-	  		if (!order.getEatery().equals(of.getEatery())) {
-	  			continue;
-	  		}
-	  		
-	  	}
+  	for (Offer of : offers) {
+  		// check whether deliver method matches
+  		if (of.isDeliver() != isDeliver) {
+  			continue;
+  		}
+  		// check whether the location matches
+  		if (isDeliver && !order.getLocation().equals(of.getLocation())) {
+  			continue;
+  		}
+  		// check whether the eatery matches
+  		if (!order.getEatery().equals(of.getEatery())) {
+  			continue;
+  		}
+  		// adjust lowbound price
+  		double creditBound = order.getPriceBound();
+  		double lowerBound = generateLowerBound(actualPrice, creditBound);
+  		// match by price
+  		if (order.getPriceBound() < lowerBound) {
+  			// price out of bound: put in suggestion
+  			Deal deal = new Deal(of, order, lowerBound);
+  			suggestions.add(deal);
+  			if (suggestions.size() == 3) {
+  				break;
+  			}
+  		} else {
+  			// in bound: match found
+  			match = new Deal(of, order, lowerBound);
+  			Global.getOrders().remove(order);
+  			Global.getOrders().remove(of);
+  			break;
+  		}
   	}
   	
-    Deal deal;
-    return null;
+  	if (match == null) {
+  		return suggestions;
+  	} else {
+  		ArrayList<Deal> toReturn = new ArrayList<>();
+  		toReturn.add(match);
+  		toReturn.add(match);
+  		toReturn.add(match);
+  		toReturn.add(match);
+  		return toReturn;
+  	}
   }
 
-  public static Deal matchOffer(Offer offer) {
-    Deal deal;
-
-
-    return null;
+  public static List<Deal> matchOffer(Offer offer) {
+		double creditBound = offer.getPriceBound();
+  	boolean isDeliver = offer.isDeliver();
+    Deal match = null;
+    List<Deal> suggestions = new ArrayList<>();
+  	List<Order> orders = Global.getOrders();
+  	for (Order or : orders) {
+  		// check whether deliver method matches
+  		if (or.isDeliver() != isDeliver) {
+  			continue;
+  		}
+  		// check whether the location matches
+  		if (isDeliver && !offer.getLocation().equals(or.getLocation())) {
+  			continue;
+  		}
+  		// check whether the eatery matches
+  		if (!offer.getEatery().equals(or.getEatery())) {
+  			continue;
+  		}
+  		// adjust lowbound price
+  		double actualPrice = or.getActualPrice();
+  		double lowerBound = generateLowerBound(actualPrice, creditBound);
+  		// match by price
+  		if (or.getPriceBound() < lowerBound) {
+  			// price out of bound: put in suggestion
+  			Deal deal = new Deal(offer, or, lowerBound);
+  			suggestions.add(deal);
+  			if (suggestions.size() == 3) {
+  				break;
+  			}
+  		} else {
+  			// in bound: match found
+  			match = new Deal(offer, or, lowerBound);
+  			Global.getOrders().remove(offer);
+  			Global.getOrders().remove(or);
+  			break;
+  		}
+  	}
+  	
+  	if (match == null) {
+  		return suggestions;
+  	} else {
+  		ArrayList<Deal> toReturn = new ArrayList<>();
+  		toReturn.add(match);
+  		toReturn.add(match);
+  		toReturn.add(match);
+  		toReturn.add(match);
+  		return toReturn;
+  	}
   }
+  
+  private static double generateLowerBound(double actualPrice, double creditBound) {
+  	double points = 0;
+  	int creditNum = 0;
+		if (actualPrice > 14.6) {
+			points = actualPrice - 14.6;
+			creditNum = 2;
+		} else if (actualPrice > 7.3) {
+			points = actualPrice - 7.3;
+			creditNum = 1;
+		}
 
+		double lowerBound;
+		if (creditNum == 0) {
+			lowerBound = creditBound;
+		} else if (creditNum == 1) {
+			lowerBound = Math.min(creditBound + points, creditBound * 2);
+		} else {
+			lowerBound = creditBound * 2 + points;
+		}
+	  return lowerBound;
+  }
 }

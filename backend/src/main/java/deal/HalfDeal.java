@@ -10,17 +10,15 @@ public abstract class HalfDeal {
   protected int duration;
   protected double priceBound;
   protected User user;
-  protected double actualPrice;
   protected boolean isDeliver;
 
   enum type {
     deliver, meetup;
   }
 
-  public HalfDeal(Location loc, Eatery ety, double bound, double price, int dur, User usr) {
+  public HalfDeal(Location loc, Eatery ety, double bound, int dur, User usr) {
     location = loc;
     eatery = ety;
-    actualPrice = price;
     duration = dur;
     priceBound = bound;
     user = usr;
@@ -51,7 +49,7 @@ public abstract class HalfDeal {
   public double getPriceBound() {
     return priceBound;
   }
-
+  
   public User getUser() {
     return user;
   }

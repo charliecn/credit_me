@@ -12,7 +12,7 @@ import global.Global;
  *
  */
 public abstract class User {
-	
+	private boolean isBrownUser;
 	private List<Deal> pastOrders;
 	private String name;
 	private String email;
@@ -66,6 +66,10 @@ public abstract class User {
 	
 	public String getContact() {
 	  return contact;
+	}
+	
+	public void setName(String newName) {
+		name = newName;
 	}
 	
 	/**

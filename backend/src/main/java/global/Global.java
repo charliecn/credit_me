@@ -2,17 +2,16 @@ package global;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import database.Database;
 import deal.Offer;
 import deal.Order;
 
 public class Global {
-  private static List<Order> orders = new ArrayList<>();
-  private static List<Offer> offers = new ArrayList<>();
+  private static List<Order> orders = new CopyOnWriteArrayList<>();
+  private static List<Offer> offers = new CopyOnWriteArrayList<>();
   private static Database database = new Database();
   
   public static List<Offer> getOffer() {

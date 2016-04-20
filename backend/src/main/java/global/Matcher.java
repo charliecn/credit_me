@@ -117,19 +117,19 @@ public class Matcher {
   
   private static double generateLowerBound(double actualPrice, double creditBound) {
   	double points = 0;
-  	int creditNum = 0;
-		if (actualPrice > 14.6) {
+  	int state = 0;
+		if (actualPrice > 11.3) {
 			points = actualPrice - 14.6;
-			creditNum = 2;
+			state = 2;
 		} else if (actualPrice > 7.3) {
 			points = actualPrice - 7.3;
-			creditNum = 1;
+			state = 1;
 		}
 
 		double lowerBound;
-		if (creditNum == 0) {
+		if (state == 0) {
 			lowerBound = creditBound;
-		} else if (creditNum == 1) {
+		} else if (state == 1) {
 			lowerBound = Math.min(creditBound + points, creditBound * 2);
 		} else {
 			lowerBound = creditBound * 2 + points;

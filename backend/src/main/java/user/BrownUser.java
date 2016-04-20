@@ -19,12 +19,4 @@ public class BrownUser extends User {
 		super(name, email, password, subscribe);
 		
 	}
-	
-	/**
-	 * a brown user can post an offer to sell a meal credit
-	 * @param offer
-	 */
-	public Offer postOffer(Offer offer){
-    return offer;
-	}
 }

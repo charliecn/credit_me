@@ -85,8 +85,11 @@ public class Gui {
     // Setup Spark Routes
     Spark.post("/userlogin", new UserLoginHandler());
     Spark.post("/usersignup", new UserSignUpHandler());
+    Spark.post("/signupsuccess", new SignUpSuccessHandler());
     Spark.post("/userforgetpwd", new UserForgetPwdHandler());
+    Spark.post("/changepasswordsuccess", new ChangePasswordSuccessHandler());
     Spark.post("/userchangepwd", new UserChangePwdHandler());
+    Spark.post("/changeinfo", new ChangeInfoHandler());
     Spark.post("/placeorder", new PlaceOrderHandler());
     Spark.post("/placeoffer", new PlaceOfferHandler());
   }
@@ -135,9 +138,21 @@ public class Gui {
       	subs = false;
       }
     	User user = new BrownUser(name, email, Global.md5(pwd), subs);
-    	//put user
+    	//send email
     	Query.putUser(user, Global.getDb().getConnection());
-      Map<String, Object> variables = new ImmutableMap.Builder().build();
+      Map<String, Object> variables = new ImmutableMap.Builder()
+      		.put("success", true).build();
+      return GSON.toJson(variables);
+    }
+  }
+  
+  private class SignUpSuccessHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      QueryParamsMap qm = req.queryMap();
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("done", true).build();
       return GSON.toJson(variables);
     }
   }
@@ -147,9 +162,20 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-      //
+      // send email
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("done", "done").build();
+          .put("success", true).build();
+      return GSON.toJson(variables);
+    }
+  }
+  
+  private class ChangePasswordSuccessHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      QueryParamsMap qm = req.queryMap();
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("done", true).build();
       return GSON.toJson(variables);
     }
   }
@@ -180,6 +206,36 @@ public class Gui {
       }
     }
   }
+  
+  private class ChangeInfoHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String name = qm.value("username");
+      String contact = qm.value("contact");
+      String email = qm.value("email");
+      String subscribe = qm.value("subscribe");
+      boolean subs;
+      if (subscribe.equals("true")) {
+      	subs = true;
+      } else {
+      	subs = false;
+      }
+    	User user;
+			try {
+				user = Query.getUser(email, Global.getDb().getConnection());
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+    	user.setContact(contact);
+    	user.setSubsribe(subs);
+    	user.setName(name);
+    	Query.putUser(user, Global.getDb().getConnection());
+      Map<String, Object> variables = new ImmutableMap.Builder().build();
+      return GSON.toJson(variables);
+    }
+  }
 
   private class PlaceOfferHandler implements Route {
     @Override
@@ -189,7 +245,6 @@ public class Gui {
       String email = qm.value("user");
       int creditNum = Integer.parseInt(qm.value("creditNum"));
       int duration = Integer.parseInt(qm.value("duration"));
-      double price = Double.parseDouble(qm.value("price"));
       double priceBound = Double.parseDouble(qm.value("priceBound"));
       String eateryName = qm.value("eatery");
       // set fields

@@ -1,25 +1,32 @@
 package deal;
 
+import java.util.List;
+
 import global.Global;
 import locationfood.Eatery;
+import locationfood.Food;
 import locationfood.Location;
 import user.User;
 
-public class Offer extends HalfDeal{
+public class Order extends HalfDeal {
   Runnable counting = () -> {
   	try {
 			Thread.sleep(duration);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-  	Global.getOffer().remove(this);
+  	Global.getOrders().remove(this);
   };
-  int creditNum;
-	
-  public Offer(Location loc, Eatery ety, double upper, double price, int dur, User usr, int num) {
+  protected List<Food> orders;
+  
+  public Order(Location loc, Eatery ety, double upper, double price, int dur, User usr, List<Food> food) {
     super(loc, ety, upper, price, dur, usr);
-    creditNum = num;
-    Global.getOffer().add(this);
+    orders = food;
+    Global.getOrders().add(this);
+  }
+
+  public List<Food> getOrders() {
+    return orders;
   }
   
   @Override
@@ -29,6 +36,6 @@ public class Offer extends HalfDeal{
   
   @Override
   public void cancel() {
-    Global.getOffer().remove(this);
+    Global.getOrders().remove(this);
   }
 }

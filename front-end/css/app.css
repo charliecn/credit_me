@@ -16,6 +16,7 @@ h2{
 	text-align: center;
 	font-family: Arial;
 	font-size: 25px;
+	margin: autp;
 /*	top: 50%;
 	vertical-align: middle;
 	line-height: 200px;*/
@@ -145,6 +146,18 @@ ul li a p{
 	left: 10px;
 }
 
+#profile-contact{
+	background-image: url('../css/pencil.png');
+	background-position: 10px 5px;
+	background-size: 23px;
+	padding-left: 40px;
+	margin-top: 10px;
+/*	height: 20px;
+	width: 20px;*/
+	background-repeat: no-repeat;
+	left: 10px;
+}
+
 #profile-email{
 /*	background-image: url('../css/pencil.png');
 	background-position: 10px 5px;
@@ -181,6 +194,15 @@ ul li a p{
 	font-size: 1.1em;
 }
 
+<<<<<<< HEAD
 label{
 	
+=======
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+.ui-btn-me {
+	box-shadow: none;
+>>>>>>> 7ca002f8b51ae8b95b6ff38379eab5c4d924a86f
 }

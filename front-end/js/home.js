@@ -34,10 +34,10 @@ window.addEventListener('load', function(){
 
 //user information
 var email;
-var contact;
-var username;
-var pwd;
-var subscribe;
+var contact = "000-000-0000";
+var username = "lmhly";
+var password;
+var subscribe = false;//boolean
 var history; //history is a list of strings?
 
 //other variables.
@@ -76,6 +76,32 @@ function checkSignupEmail(email) {
 	return true;
 }
 
+// function checkLoginPwd(pwd) {
+// 	if (pwd == "") {
+// 		$("#login-error").html('<span style="font-weight: bold">Password is not valid</span><br>Password cannot be empty');
+// 		return false;
+// 	}
+// }
+
+function checkSignupPwd(pwd) {
+	if (pwd == "") {
+		$("#signup-error").html('<span style="font-weight: bold">Password is not valid</span><br>Password cannot be empty');
+		return false;
+	}
+	return true;
+}
+
+
+//only accepts characters, underscore and numbers yet.
+function checkSignupUsername(username) {
+	var pattern = /^\w+$/;
+	if (!username.match(pattern)) {
+		$("#signup-error").html('<span style="font-weight: bold">Username is not valid</span><br>It should only contains underline and characters');
+		return false;
+	}
+	return true;
+}
+
 $(document).on("pagecreate", "#login-page", function(){
 	$("#login-submit").click(function(){
 		$("#login-error").html('');
@@ -85,9 +111,9 @@ $(document).on("pagecreate", "#login-page", function(){
 			console.log('email invalid');
 			return;
 		}
-		email = enteredEmail;
+		//email = enteredEmail;
 		console.log(email + " " + pwd);
-		var postParameters = {email: email, pwd: pwd};
+		var postParameters = {email: enteredEmail, pwd: pwd};
 
 		//this variable is used to indicate if the login is valid.
 		// var validlogin;
@@ -100,8 +126,10 @@ $(document).on("pagecreate", "#login-page", function(){
 		// 	contact = JSON.parse(responseJSON).contact;
 		// 	history = JSON.parse(responseJSON).history;
 		// 	subscribe = JSON.parse(responseJSON).subscribe;
+			email = enteredEmail;
+			password = pwd;
 		// })
-	
+
 		$.mobile.changePage($("#delivery-page"));
 	})
 });
@@ -109,6 +137,7 @@ $(document).on("pagecreate", "#login-page", function(){
 $(document).on("pagecreate", "#signup-page", function(){
 	//e.preventDefault();
 	$("#signup-submit").click(function(){
+		$("#signup-error").html('');
 		var username = $.trim($("#signup-name").val()).replace(/\s/g, '+');
 		var enteredEmail = $.trim($("#signup-user").val()).replace(/\s/g, '+');
 		var pwd = $.trim($("#signup-pwd").val()).replace(/\s/g, '+');
@@ -117,6 +146,12 @@ $(document).on("pagecreate", "#signup-page", function(){
 		
 		if (!checkSignupEmail(enteredEmail)) {
 			console.log('email invalid');
+			return;
+		} else if (!checkSignupPwd(pwd)) {
+			console.log('pwd invalid');
+			return;
+		} else if (!checkSignupUsername(username)) {
+			console.log('username invalid');
 			return;
 		}
 		email = enteredEmail;
@@ -150,16 +185,20 @@ $(document).on("pagecreate", "#changepwd-page", function(){
 		if (newPwd != reNewPwd) {
 			$("#changepwd-error").html('<span style="font-weight: bold">Passwords do not match</span><br> You must enter the same password twice in order to confirm it.');
 			return;
+		} else if (password != prevPwd) {
+			$("#changepwd-error").html('<span style="font-weight: bold">Current Password Not Correct</span><br> You must enter your current password correctly.');
 		}
+		$("#changepwd-error").html('<span style="font-weight: bold">Processing</span><br> Please wait.');
 		console.log("change: " + prevPwd + " " + newPwd + " " + reNewPwd + " " + email);
 		var postParameters = {prevPwd: prevPwd, newPwd: newPwd, email: email};
 		// $.post("/userforgetpwd",postParameters,function(responseJSON){
-
+			$("#changepwd-error").html('<span style="font-weight: bold">Password Changed Successfully.</span>')
 		// })
 	})
 });
 
 $(document).on("pagecreate", "#orders-page", function(){
+	$("#changepwd-error").html('');
 	$("#order-id-a").on("tap", function(e){
 		//alert("taped!");
 		$("#order-id").remove();
@@ -167,10 +206,14 @@ $(document).on("pagecreate", "#orders-page", function(){
 });
 
 $(document).on("pagecreate", "#profile-page", function(){
-	//alert('here');
-	//var prevEmail
-	$("#profile-name").css("color", "#c2c2c2");
-	$("#profile-contact").css("color", "#c2c2c2");
+	
+	//preset the returned value from login.
+	$("#profile-subscribe").prop('checked', subscribe);
+	$("#profile-name").text(username);
+	$("#profile-contact").text(contact);
+	$("#profile-email").text(email);
+
+
 	$("#profile-name").on("tap", function(e){
 		e.preventDefault();
 		//alert('tap');
@@ -197,8 +240,8 @@ $(document).on("pagecreate", "#profile-page", function(){
 		$("#profile-name").html(newName);
 		if (newName === "" && prevName === ""){
 			//alert(prevEmail);
-			$("#profile-name").css("color", "#c2c2c2");
-			$("#profile-name").html('username');
+			//$("#profile-name").css("color", "#c2c2c2");
+			$("#profile-name").html(username);
 		}
 		$("#profile-name").css('border-bottom', '1px solid #989797');
 	});
@@ -229,8 +272,8 @@ $(document).on("pagecreate", "#profile-page", function(){
 		$("#profile-contact").html(newContact);
 		if (newContact === "" && prevContact === ""){
 			//alert(prevEmail);
-			$("#profile-contact").css("color", "#c2c2c2");
-			$("#profile-contact").html('000-000-0000');
+			//$("#profile-contact").css("color", "#c2c2c2");
+			$("#profile-contact").html(contact);
 		}
 		$("#profile-contact").css('border-bottom', '1px solid #989797');
 	});

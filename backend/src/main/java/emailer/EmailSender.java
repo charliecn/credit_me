@@ -1,14 +1,13 @@
 package emailer;
 
 import java.util.*;
-
+/*
 import javax.mail.*;
 import javax.mail.internet.*;
-
+*/
 
 public class EmailSender {
-	public void sendEmail(String to, String from, String subject, String body)
-	{    
+	/*public void sendEmail(String to, String from, String subject, String body) {    
 
 		// host right now is set to local houst
 		String host = "localhost";
@@ -43,5 +42,5 @@ public class EmailSender {
 		}catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
-	}
+	}*/
 }

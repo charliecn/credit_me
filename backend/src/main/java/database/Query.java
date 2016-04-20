@@ -1,8 +1,7 @@
 package database;
 
 import user.User;
-import user.BrownUser;
-import user.GuestUser;
+
 import locationfood.Eatery;
 import locationfood.Food;
 import locationfood.Location;
@@ -42,11 +41,7 @@ public class Query {
 		String name = rs.getString("name");
 		Boolean subscribe = rs.getBoolean("subscribe");
 		
-		if(isBrownEmail(email)){
-			return new BrownUser(name, email, password, subscribe);
-		} else {
-			return new GuestUser(name, email, password, subscribe);
-		}
+		return new User(name, email, password, subscribe);
 	}
 	
 	/**
@@ -73,24 +68,7 @@ public class Query {
 		Boolean subscribe = rs.getBoolean("subscribe");
 		String password = rs.getString("password");
 		
-		if(isBrownEmail(email)){
-			return new BrownUser(name, email, password, subscribe);
-		} else {
-			return new GuestUser(name, email, password, subscribe);
-		}
-	}
-
-	/**
-	 * Determines whether string is a brown email address.
-	 * @param email - email address to check
-	 * @return true if email is brown email address
-	 */
-	private static boolean isBrownEmail(String email) {
-		int atInd = email.indexOf("@");
-		if(atInd == -1){
-			return false;
-		}
-		return email.substring(atInd).equals("brown.edu");
+		return new User(name, email, password, subscribe);
 	}
 	
 	/**
@@ -125,17 +103,16 @@ public class Query {
 		PreparedStatement prep;
 		try {
 			prep = conn.prepareStatement(
-			"INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			"INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			prep.setString(1, user.getEmail());
 			prep.setString(2, user.getName());
 			prep.setString(3, user.getPassword());
 			prep.setString(4, user.getContact());
 			prep.setInt(5, user.getTotalRating());
 			prep.setInt(6, user.getRatingNum());
-			prep.setString(7, user.getGenderString());
 			//TODO: WHAT IS A TITLE STRING
 			String titleString = "placeholder";
+			prep.setString(7, "?");
 			prep.setString(8, titleString);
 			prep.setBoolean(9, user.getSubscribe());
 	    prep.addBatch();

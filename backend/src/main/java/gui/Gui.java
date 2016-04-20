@@ -28,7 +28,6 @@ import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
-import user.BrownUser;
 import user.User;
 
 public class Gui {
@@ -54,7 +53,6 @@ public class Gui {
 	 * constructor.
 	 */
   public Gui(String db) {
-  	matcher = new Matcher();
   	Global.setDb(db);
   }
 
@@ -94,9 +92,9 @@ public class Gui {
     Spark.get("/buy", new BuyHandler(), freeMarker);
     Spark.post("/userlogin", new UserLoginHandler());
     Spark.post("/usersignup", new UserSignUpHandler());
-    Spark.post("/signupsuccess", new SignUpSuccessHandler());
+    Spark.post("/signupemail", new SignUpEmailHandler());
     Spark.post("/userforgetpwd", new UserForgetPwdHandler());
-    Spark.post("/changepasswordsuccess", new ChangePasswordSuccessHandler());
+    Spark.post("/passwordemail", new PasswordEmailHandler());
     Spark.post("/userchangepwd", new UserChangePwdHandler());
     Spark.post("/changeinfo", new ChangeInfoHandler());
     Spark.post("/placeorder", new PlaceOrderHandler());
@@ -136,13 +134,14 @@ public class Gui {
       System.out.println("login: " + email + " " + password);
 
       //get user
-     
       User user = null;
-
 			try {
 				user = Query.getUser(email, Global.md5(password), Global.getDb().getConnection());
 			} catch (SQLException e) {
-				e.printStackTrace();
+      	e.printStackTrace();
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
 			}
 
       if (user == null) {
@@ -158,38 +157,47 @@ public class Gui {
     }
   }
   
+  private class SignUpEmailHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String email = qm.value("email");
+    	//send email
+      Map<String, Object> variables = new ImmutableMap.Builder().build();
+      return GSON.toJson(variables);
+    }
+  }
+  
   private class UserSignUpHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
-      System.out.println("intohandler");
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("username");
       String pwd = qm.value("pwd");
       String email = qm.value("email");
       String subscribe = qm.value("subscribe");
       boolean subs;
-      //System.out.println("");
       if (subscribe.equals("true")) {
       	subs = true;
       } else {
       	subs = false;
       }
-    	User user = new BrownUser(name, email, Global.md5(pwd), subs);
-      System.out.println("pwd: " + user.getPassword());
-    	//send email
-    	Query.putUser(user, Global.getDb().getConnection());
-      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-      		.put("success", true).build();
+    	User user = new User(name, email, Global.md5(pwd), subs);
+    	boolean success = Query.putUser(user, Global.getDb().getConnection());
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("done", success).build();
       return GSON.toJson(variables);
     }
   }
   
-  private class SignUpSuccessHandler implements Route {
+  private class PasswordEmailHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
-      
-      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+      String email = qm.value("email");
+
+      // send email
+      Map<String, Object> variables = new ImmutableMap.Builder()
           .put("done", true).build();
       return GSON.toJson(variables);
     }
@@ -200,19 +208,8 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-      // send email
-      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-          .put("success", true).build();
-      return GSON.toJson(variables);
-    }
-  }
-  
-  private class ChangePasswordSuccessHandler implements Route {
-    @Override
-    public Object handle(final Request req, final Response res) {
-      QueryParamsMap qm = req.queryMap();
-      
-      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+
+      Map<String, Object> variables = new ImmutableMap.Builder()
           .put("done", true).build();
       return GSON.toJson(variables);
     }
@@ -229,8 +226,10 @@ public class Gui {
 			try {
 				user = Query.getUser(email, Global.md5(prevPwd), Global.getDb().getConnection());
 			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
+      	e.printStackTrace();
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
 			}
       if (user == null) {
 	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
@@ -263,8 +262,10 @@ public class Gui {
 			try {
 				user = Query.getUser(email, Global.getDb().getConnection());
 			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
+      	e.printStackTrace();
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
 			}
     	user.setContact(contact);
     	user.setSubsribe(subs);
@@ -303,21 +304,32 @@ public class Gui {
 		    }
       } catch (SQLException e) {
       	e.printStackTrace();
-      	return null;
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
       }
-      
+      // create offer
       Offer offer = new Offer(location, eatery, priceBound, duration * 600000, user, creditNum);
-      List<Deal> deal = matcher.matchOffer(offer);
-      if (deal == null) {
-      	Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-	          .put("deal", deal).build();
+      // match deals
+      List<Deal> deal = Matcher.matchOffer(offer);
+      if (deal.size() == 0) {
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("result", "nothing").build();
+	      return GSON.toJson(variables);
+    	} else if (deal.size() <= 3) {
+      	// no match
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("deal", deal)
+	          .put("result", "suggestions").build();
 	      return GSON.toJson(variables);
       } else {
-	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-	          .put("deal", deal).build();
+      	// has match
+	      Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("deal", deal.get(0))
+	          .put("result", "match").build();
 	      return GSON.toJson(variables);
-      }
-    }
+		  }
+		}
   }
   
 
@@ -356,23 +368,29 @@ public class Gui {
 		    }
       } catch (SQLException e) {
       	e.printStackTrace();
-      	return null;
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
       }
       // create order
       Order order = new Order(location, eatery, priceBound, price, duration * 600000, user, foods);
       // match deals
-      List<Deal> deal = matcher.matchOrder(order);
-      if (deal.size() <= 3) {
+      List<Deal> deal = Matcher.matchOrder(order);
+      if (deal.size() == 0) {
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("result", "nothing").build();
+	      return GSON.toJson(variables);
+    	} else if (deal.size() <= 3) {
       	// no match
       	Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("deal", deal)
-	          .put("type", "suggestions").build();
+	          .put("result", "suggestions").build();
 	      return GSON.toJson(variables);
       } else {
       	// has match
 	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("deal", deal.get(0))
-	          .put("type", "match").build();
+	          .put("result", "match").build();
 	      return GSON.toJson(variables);
       }
     }

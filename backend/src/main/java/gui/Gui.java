@@ -44,6 +44,11 @@ public class Gui {
 	 * matcher.
 	 */
 	Matcher matcher;
+	
+	/**
+	 * Used to keep email consistent when redirect to buy.ftl
+	 */
+	private String loginEmail;
 
 	/**
 	 * constructor.
@@ -86,6 +91,7 @@ public class Gui {
     FreeMarkerEngine freeMarker = createEngine();
     // Setup Spark Routes
     Spark.get("/home", new LandingPage(), freeMarker);
+    Spark.get("/buy", new BuyHandler(), freeMarker);
     Spark.post("/userlogin", new UserLoginHandler());
     Spark.post("/usersignup", new UserSignUpHandler());
     Spark.post("/signupsuccess", new SignUpSuccessHandler());
@@ -107,12 +113,27 @@ public class Gui {
     }
   }
   
+  private static class BuyHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String email = qm.value("email");
+      System.out.println(email);
+      
+      Map<String, Object> variables = ImmutableMap.of("email",
+          "my_email@brown.edu");
+      return new ModelAndView(variables, "buy.ftl");
+    }
+  }
+  
   private class UserLoginHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-      String password = qm.value("password");
+      //loginEmail = email;
+      String password = qm.value("pwd");
+      System.out.println("login: " + email + " " + password);
 
       //get user
      
@@ -129,6 +150,7 @@ public class Gui {
 	          .put("error", "incorrect email address or password!").build();
 	      return GSON.toJson(variables);
       } else {
+        //loginEmail = email;
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("user", user).build();
 	      return GSON.toJson(variables);
@@ -156,7 +178,7 @@ public class Gui {
       System.out.println("pwd: " + user.getPassword());
     	//send email
     	Query.putUser(user, Global.getDb().getConnection());
-      Map<String, Object> variables = new ImmutableMap.Builder()
+      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
       		.put("success", true).build();
       return GSON.toJson(variables);
     }
@@ -167,7 +189,7 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       
-      Map<String, Object> variables = new ImmutableMap.Builder()
+      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("done", true).build();
       return GSON.toJson(variables);
     }
@@ -179,7 +201,7 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
       // send email
-      Map<String, Object> variables = new ImmutableMap.Builder()
+      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("success", true).build();
       return GSON.toJson(variables);
     }
@@ -190,7 +212,7 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       
-      Map<String, Object> variables = new ImmutableMap.Builder()
+      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
           .put("done", true).build();
       return GSON.toJson(variables);
     }
@@ -211,12 +233,12 @@ public class Gui {
 				return null;
 			}
       if (user == null) {
-	      Map<String, Object> variables = new ImmutableMap.Builder()
+	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("error", "incorrect password!").build();
 	      return GSON.toJson(variables);
       } else {
       	Query.changePassword(email, prevPwd, newPwd, Global.getDb().getConnection());
-	      Map<String, Object> variables = new ImmutableMap.Builder()
+	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("done", "done").build();
 	      return GSON.toJson(variables);
       }
@@ -248,7 +270,7 @@ public class Gui {
     	user.setSubsribe(subs);
     	user.setName(name);
     	Query.putUser(user, Global.getDb().getConnection());
-      Map<String, Object> variables = new ImmutableMap.Builder().build();
+      Map<String, Object> variables = ImmutableMap.<String, Object>builder().build();
       return GSON.toJson(variables);
     }
   }
@@ -287,11 +309,11 @@ public class Gui {
       Offer offer = new Offer(location, eatery, priceBound, duration * 600000, user, creditNum);
       List<Deal> deal = matcher.matchOffer(offer);
       if (deal == null) {
-      	Map<String, Object> variables = new ImmutableMap.Builder()
+      	Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("deal", deal).build();
 	      return GSON.toJson(variables);
       } else {
-	      Map<String, Object> variables = new ImmutableMap.Builder()
+	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("deal", deal).build();
 	      return GSON.toJson(variables);
       }
@@ -342,13 +364,13 @@ public class Gui {
       List<Deal> deal = matcher.matchOrder(order);
       if (deal.size() <= 3) {
       	// no match
-      	Map<String, Object> variables = new ImmutableMap.Builder()
+      	Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("deal", deal)
 	          .put("type", "suggestions").build();
 	      return GSON.toJson(variables);
       } else {
       	// has match
-	      Map<String, Object> variables = new ImmutableMap.Builder()
+	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("deal", deal.get(0))
 	          .put("type", "match").build();
 	      return GSON.toJson(variables);

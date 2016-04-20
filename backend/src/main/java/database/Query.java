@@ -126,8 +126,7 @@ public class Query {
 		try {
 			prep = conn.prepareStatement(
 			"INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-			//System.out.println(user.getEmail() + " " + user.getName() + " " + user.getPassword() + " ");
+			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			prep.setString(1, user.getEmail());
 			prep.setString(2, user.getName());
 			prep.setString(3, user.getPassword());
@@ -136,10 +135,9 @@ public class Query {
 			prep.setInt(6, user.getRatingNum());
 			prep.setString(7, user.getGenderString());
 			//TODO: WHAT IS A TITLE STRING
-			String titleString = "";
+			String titleString = "placeholder";
 			prep.setString(8, titleString);
 			prep.setBoolean(9, user.getSubscribe());
-			System.out.println(prep);
 	    prep.addBatch();
 	    prep.executeBatch();
 	    prep.close();

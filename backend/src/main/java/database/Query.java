@@ -119,11 +119,15 @@ public class Query {
 	 * @return true if able to successfully add user, false otherwise
 	 */
 	public static boolean putUser(User user, Connection conn){
+		System.out.println(user.getEmail());
+		System.out.println(user.getName());
+
 		PreparedStatement prep;
 		try {
 			prep = conn.prepareStatement(
 			"INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
 			" VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+			//System.out.println(user.getEmail() + " " + user.getName() + " " + user.getPassword() + " ");
 			prep.setString(1, user.getEmail());
 			prep.setString(2, user.getName());
 			prep.setString(3, user.getPassword());
@@ -134,7 +138,12 @@ public class Query {
 			String titleString = "";
 			prep.setString(8, titleString);
 			prep.setBoolean(9, user.getSubscribe());
+			System.out.println(prep);
+	    prep.addBatch();
+	    prep.executeBatch();
+	    prep.close();
 		} catch (SQLException e) {
+		  System.out.println(e.getMessage());
 			return false;
 		}
 		return true;

@@ -31,49 +31,14 @@
     
 
       <div data-role="main" class="ui-content">
-
-        <div class="ui-grid-a">
-          <div class="ui-block-a" style="width:100%">
-             <div id="progress_bar"></div>
-          </div>
-        </div>
-
-        <ul data-role="listview" data-inset="true">
-          <li data-role="divider">How you wanna get the food?</li>
-          <li>
-            <a class="meet_up_confirm" href="#page_buy_2">
-            <img src="../image/meet.png" style="height:100%">
-            <h2>Meet up</h2>
-            <p style="white-space:normal;">Meet with a credit provider.</p>
-            </a>
-            <a class="meet_up_confirm" href="#page_buy_2" data-transition="fade" data-icon="arrow-r"></a>
-          </li>
-          
-          <li>
-            <a class="deliver_confirm" href="#page_deliver">
-            <img src="../image/deliver.png">
-            <h2>Delivery</h2>
-            <p style="white-space:normal;">Feel lazy? Choose delivery!</p>
-            </a>
-            <a class="deliver_confirm" href="#page_deliver" data-transition="fade" data-icon="arrow-r"></a>
-          </li>
-
-        </ul>
+        <form>
+            <label for="slider-2">Slider (default is "false"):</label>
+            <input type="range" name="slider-2" id="slider-2" data-highlight="true" min="0" max="100" value="50">
+        </form>
       </div>
 
 
 
-    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
-      <div data-role="navbar">
-        <ul id="bottom_ul">
-          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
-
-        </ul>
-      </div>
-    </div>
   </div>
 
 

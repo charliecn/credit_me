@@ -10,7 +10,6 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
-import command._and._gui.GUI.LandingPage;
 import database.Query;
 import deal.Deal;
 import deal.Offer;

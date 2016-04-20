@@ -1,15 +1,17 @@
 package database;
 
-import user.User;
-
-import locationfood.Eatery;
-import locationfood.Food;
-import locationfood.Location;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import deal.Deal;
+import locationfood.Eatery;
+import locationfood.Food;
+import locationfood.Location;
+import user.User;
 
 public class Query {
 
@@ -53,7 +55,7 @@ public class Query {
 	 */
 	public static User getUser(String email, Connection conn) throws SQLException{
 		PreparedStatement prep = 
-				conn.prepareStatement("SELECT name, subscribe FROM user WHERE email = ?");
+				conn.prepareStatement("SELECT * FROM user WHERE email = ?");
 		
 		prep.setString(1, email);
 		
@@ -67,8 +69,20 @@ public class Query {
 		String name = rs.getString("name");
 		Boolean subscribe = rs.getBoolean("subscribe");
 		String password = rs.getString("password");
+		String contact = rs.getString("contact");
+		int rating = rs.getInt("rating");
+		int ratingNum = rs.getInt("rating_num");
+		String gender = rs.getString("gender");
 		
-		return new User(name, email, password, subscribe);
+		prep = 
+				conn.prepareStatement("SELECT * FROM order WHERE seller = ? OR buyer = ?");
+		prep.setString(1, email);
+		prep.setString(2, email);
+		rs = prep.executeQuery();
+		
+	  List<Deal> pastDeals = new ArrayList<>();
+		// TODO add deals
+		return new User(name, email, password, rating, ratingNum, gender, contact, pastDeals, subscribe);
 	}
 	
 	/**

@@ -14,12 +14,16 @@ public class Offer extends HalfDeal{
 		}
   	Global.getOffer().remove(this);
   };
-  int creditNum;
+  private int creditNum;
 	
-  public Offer(Location loc, Eatery ety, double upper, double price, int dur, User usr, int num) {
-    super(loc, ety, upper, price, dur, usr);
+  public Offer(Location loc, Eatery ety, double upper, int dur, User usr, int num) {
+    super(loc, ety, upper, dur, usr);
     creditNum = num;
     Global.getOffer().add(this);
+  }
+  
+  public int getCreditNum() {
+  	return creditNum;
   }
   
   @Override

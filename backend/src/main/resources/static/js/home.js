@@ -62,6 +62,7 @@ function checkLoginEmail(email) {
 }
 
 function checkSignupEmail(email) {
+	console.log('1 in email');
 	var emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 	if (!email.match(emailPattern)) {
 		$("#signup-error").html('<span style="font-weight: bold">Email is not valid</span><br>Please enter a valid brown email address');
@@ -73,6 +74,7 @@ function checkSignupEmail(email) {
 		$("#signup-error").html('<span style="font-weight: bold">Email is not valid</span><br>Please enter a valid brown email address');
 		return false;
 	}
+	console.log('in email');
 	return true;
 }
 
@@ -84,21 +86,25 @@ function checkSignupEmail(email) {
 // }
 
 function checkSignupPwd(pwd) {
+	console.log('1 in pwd');
 	if (pwd == "") {
 		$("#signup-error").html('<span style="font-weight: bold">Password is not valid</span><br>Password cannot be empty');
 		return false;
 	}
+	console.log('in pwd');
 	return true;
 }
 
 
 //only accepts characters, underscore and numbers yet.
 function checkSignupUsername(username) {
+	console.log('1 in username');
 	var pattern = /^\w+$/;
 	if (!username.match(pattern)) {
 		$("#signup-error").html('<span style="font-weight: bold">Username is not valid</span><br>It should only contains underline and characters');
 		return false;
 	}
+	console.log('in username');
 	return true;
 }
 
@@ -156,10 +162,14 @@ $(document).on("pagecreate", "#signup-page", function(){
 		}
 		email = enteredEmail;
 
+		console.log('after email');
 		var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
-		// $.post("/usersignup",postParameters,function(responseJSON){
-
-		// })
+		console.log(postParameters);
+		$.post("/usersignup",postParameters,function(responseJSON){
+			console.log('reaches here');
+			var success = JSON.parse(responseJSON).success;
+			console.log(success);
+		})
 	})
 });
 

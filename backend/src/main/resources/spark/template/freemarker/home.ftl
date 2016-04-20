@@ -1,33 +1,5 @@
-<!doctype html>
-<html class="no-js" lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CreditMe@Brown</title>
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="../js/jquery-2.1.1.js"></script>
-<!--     <link rel="stylesheet" href="../css/foundation/css/foundation.css"> -->
-    <link rel="stylesheet" href="../css/app.css">
-    <script type="text/javascript" src="../js/home.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lobster+Two:400italic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <!-- script src="http://code.jquery.com/jquery-1.11.3.min.js"></script -->
-    <script>
-      $(document).bind('mobileinit',function(){
-          $.mobile.changePage.defaults.changeHash = false;
-          $.mobile.hashListeningEnabled = false;
-          $.mobile.pushStateEnabled = false;
-          $.mobile.ignoreContentEnabled = true;
-          //$.mobile.fixedToolbars.setTouchToggleEnabled(false);
-      });
-      //$("[data-role=footer]").toolbar({tapToggle: false});
-    </script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-  </head>
-  <body>
-
-    <div data-role="page" id="home-page">
+<#assign content>
+<div data-role="page" id="home-page">
       <div data-role="header" class="row">
         <div class="small-6 small-centered columns logo">
           <h1>CreditMe@Brown</h1>
@@ -37,16 +9,6 @@
         <a href="#login-page" data-role="button" class="ui-btn">Buy Credit</a>
         <a href="#login-page" data-role="button" id="sell-button" class="ui-btn">Sell Credit</a>
       </div>
- <!--      <div data-role="footer" data-id="foo1" data-position="fixed" data-id="persistent">
-        <div data-role="navbar">
-          <ul>
-            <li><a href="a.html">Buy</a></li>
-            <li><a href="b.html">Sell</a></li>
-            <li><a href="c.html">Orders</a></li>
-            <li><a href="d.html">Me</a></li>
-          </ul>
-        </div>
-      </div> -->
     </div>
 
     <div data-role="page" id="login-page">
@@ -265,5 +227,6 @@
       </div>
     </div>
 
-  </body>
-</html>
+
+</#assign>
+<#include "main.ftl">

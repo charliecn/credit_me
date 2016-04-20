@@ -1,22 +1,30 @@
 package deal;
 
 public class Deal {
-  public final int rate;
-  public final boolean complete;
-  public final String comment;
+  private int rate = -1;
+  private boolean complete = false;
+  private String comment = null;
   private Offer offer;
-  private Order request;
+  private Order order;
+  private double price;
 
-  public Deal(Offer of, Order req, int rt, String cmt, boolean comp) {
+  public Deal(Offer of, Order req, double pri) {
+    offer = of;
+    order = req;
+    price = pri;
+  }
+  
+  public Deal(Offer of, Order req, int rt, String cmt, boolean comp, double pri) {
     complete = comp;
     rate = rt;
     offer = of;
-    request = req;
+    order = req;
     comment = cmt;
+    price = pri;
   }
 
-  public Order getRequest() {
-    return request;
+  public Order getOrder() {
+    return order;
   }
 
   public Offer getOffer() {

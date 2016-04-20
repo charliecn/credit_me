@@ -12,23 +12,17 @@ import global.Global;
  *
  */
 public abstract class User {
-	
 	private List<Deal> pastOrders;
-	private String name;
-	private String email;
-	private int totalRating;
-	private int ratingNum;
-	private gender gender;
-	private String contact;
-	private boolean subscribe;
-	private String password;
+	private String name = "";
+	private String email = "";
+	private int totalRating = 0;
+	private int ratingNum = 0;
+	private String gender = "";
+	private String contact = "";
+	private boolean subscribe = false;
+	private String password = "";
 	
 	enum title {
-	  
-	}
-	
-	enum gender {
-	  male, female, undisclosed;
 	}
 	
 	/**
@@ -44,6 +38,7 @@ public abstract class User {
 		this.password = password;
 		this.pastOrders = new ArrayList<Deal>();
 		this.subscribe = subscribe;
+		pastOrders = new ArrayList<Deal>();
 	}
 	
 	public static boolean deleteUser(String email, String password) {
@@ -66,6 +61,10 @@ public abstract class User {
 	
 	public String getContact() {
 	  return contact;
+	}
+	
+	public void setName(String newName) {
+		name = newName;
 	}
 	
 	/**
@@ -130,9 +129,9 @@ public abstract class User {
 	}
 	
 	public String getGenderString(){
-		if(gender.equals(gender.male)){
+		if(gender.equals("male")){
 			return "male";
-		} else if(gender.equals(gender.female)){
+		} else if(gender.equals("female")){
 			return "female";
 		} else {
 			return "undisclosed";

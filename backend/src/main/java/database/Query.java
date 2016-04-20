@@ -123,7 +123,7 @@ public class Query {
 			prep.setInt(6, user.getRatingNum());
 			//TODO: WHAT IS A TITLE STRING
 			String titleString = "placeholder";
-			prep.setString(7, "?");
+			prep.setString(7, "");
 			prep.setString(8, "");
 			prep.setBoolean(9, user.getSubscribe());
 	    prep.addBatch();

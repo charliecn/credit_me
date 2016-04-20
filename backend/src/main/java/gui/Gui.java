@@ -111,7 +111,10 @@ public class Gui {
 			try {
 				user = Query.getUser(email, Global.md5(password), Global.getDb().getConnection());
 			} catch (SQLException e) {
-				e.printStackTrace();
+      	e.printStackTrace();
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
 			}
 
       if (user == null) {
@@ -153,7 +156,6 @@ public class Gui {
       }
     	User user = new User(name, email, Global.md5(pwd), subs);
     	boolean success = Query.putUser(user, Global.getDb().getConnection());
-
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("done", success).build();
       return GSON.toJson(variables);
@@ -196,8 +198,10 @@ public class Gui {
 			try {
 				user = Query.getUser(email, Global.md5(prevPwd), Global.getDb().getConnection());
 			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
+      	e.printStackTrace();
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
 			}
       if (user == null) {
 	      Map<String, Object> variables = new ImmutableMap.Builder()
@@ -230,8 +234,10 @@ public class Gui {
 			try {
 				user = Query.getUser(email, Global.getDb().getConnection());
 			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
+      	e.printStackTrace();
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
 			}
     	user.setContact(contact);
     	user.setSubsribe(subs);
@@ -270,7 +276,9 @@ public class Gui {
 		    }
       } catch (SQLException e) {
       	e.printStackTrace();
-      	return null;
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
       }
       // create offer
       Offer offer = new Offer(location, eatery, priceBound, duration * 600000, user, creditNum);
@@ -332,7 +340,9 @@ public class Gui {
 		    }
       } catch (SQLException e) {
       	e.printStackTrace();
-      	return null;
+      	Map<String, Object> variables = new ImmutableMap.Builder()
+	          .put("error", e.getMessage()).build();
+      	return variables;
       }
       // create order
       Order order = new Order(location, eatery, priceBound, price, duration * 600000, user, foods);

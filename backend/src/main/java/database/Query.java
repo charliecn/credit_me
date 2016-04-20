@@ -1,8 +1,7 @@
 package database;
 
 import user.User;
-import user.BrownUser;
-import user.GuestUser;
+
 import locationfood.Eatery;
 import locationfood.Food;
 import locationfood.Location;
@@ -112,7 +111,7 @@ public class Query {
 			prep.setString(4, user.getContact());
 			prep.setInt(5, user.getTotalRating());
 			prep.setInt(6, user.getRatingNum());
-			prep.setString(7, user.getGenderString());
+			prep.setString(7, "?");
 			String titleString = "";
 			prep.setString(8, titleString);
 			prep.setBoolean(9, user.getSubscribe());

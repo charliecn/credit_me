@@ -70,6 +70,14 @@ h2{
 	margin-top: 8%;
 }
 
+#progress_bar_3{
+	margin-top: 8%;
+}
+
+#progress_bar_4{
+	margin-top: 8%;
+}
+
 #progress_bar_deliver{
 	margin-top: 8%;
 }
@@ -84,6 +92,10 @@ ul li a p{
 }
 ul li a p{
 	margin:0;
+}
+
+.ui-menu-item{
+	background-color: white;
 }
 
 #bottom_ul li a img{
@@ -167,4 +179,8 @@ ul li a p{
 	font-weight: 100;
 	font-family: Arial;
 	font-size: 1.1em;
+}
+
+label{
+	
 }

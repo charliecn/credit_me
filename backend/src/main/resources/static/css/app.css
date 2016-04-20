@@ -1,0 +1,208 @@
+
+.logo{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	
+}
+
+h1{
+	font-family: "Lobster Two",Helvetica;
+	color:#9D8189;
+}
+
+h2{
+	text-align: center;
+	font-family: Arial;
+	font-size: 25px;
+	margin: autp;
+/*	top: 50%;
+	vertical-align: middle;
+	line-height: 200px;*/
+}
+
+.eatery{
+ 	text-align: center;
+}
+
+
+
+.home-buttons{
+	position: absolute;
+	display: block;
+	top: 60%;
+	width: 100%;
+/*	margin-top: auto;*/
+}
+
+.back img{
+	width: 80%;
+}
+
+
+#buy-button{
+	height: 40%;
+}
+
+.centered{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.ui-widget-header {
+	background: lightblue;
+	color: #333333;
+	font-weight: bold;
+	border:none;
+}
+
+.ui-widget-content{
+	border:none;
+	height: 10px;
+}
+
+.ui-footer.ui-fixed-hidden {
+    position: fixed !important;
+}
+
+#progress_bar_2{
+	margin-top: 8%;
+}
+
+#progress_bar_3{
+	margin-top: 8%;
+}
+
+#progress_bar_4{
+	margin-top: 8%;
+}
+
+#progress_bar_deliver{
+	margin-top: 8%;
+}
+
+#progress_bar{
+	margin-top: 6%;
+	margin-bottom: 7.5%;
+}
+
+ul li a p{
+	text-align: center;
+}
+ul li a p{
+	margin:0;
+}
+
+.ui-menu-item{
+	background-color: white;
+}
+
+#bottom_ul li a img{
+	margin-top: 5px;
+}
+
+.login-button{
+	width: 100%;
+	margin-top: 20px;
+}
+
+#profile-name-in{
+	border: none;
+	border-bottom: 1px solid #989797;
+	box-shadow: none;
+	background-color: #f9f9f9;
+	font-size: 1em;
+}
+
+#profile-email-in{
+	border: none;
+	border-bottom: 1px solid #989797;
+	box-shadow: none;
+	background-color: #f9f9f9;
+	font-size: 1em;
+}
+
+.profile-info{
+	font-size: 1em;
+	border: none;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #989797;
+	text-align: left;
+
+}
+
+#profile-name{
+	background-image: url('../css/pencil.png');
+	background-position: 10px 5px;
+	background-size: 23px;
+	padding-left: 40px;
+/*	height: 20px;
+	width: 20px;*/
+	background-repeat: no-repeat;
+	left: 10px;
+}
+
+#profile-contact{
+	background-image: url('../css/pencil.png');
+	background-position: 10px 5px;
+	background-size: 23px;
+	padding-left: 40px;
+	margin-top: 10px;
+/*	height: 20px;
+	width: 20px;*/
+	background-repeat: no-repeat;
+	left: 10px;
+}
+
+#profile-email{
+/*	background-image: url('../css/pencil.png');
+	background-position: 10px 5px;
+	background-size: 23px;
+	padding-left: 40px;*/
+/*	height: 20px;
+	width: 20px;*/
+/*	background-repeat: no-repeat;*/
+	left: 10px;
+	font-size: 1em;
+	border: none;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: left;
+
+}
+
+.half-input{
+	width: 60%;
+}
+
+.pub-prvt{
+	text-align: left;
+}
+
+.ui-footer.ui-fixed-hidden {
+	position: fixed !important;
+}
+
+.order-name{
+	font-weight: 100;
+	font-family: Arial;
+	font-size: 1.1em;
+}
+
+<<<<<<< HEAD
+label{
+	
+=======
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+.ui-btn-me {
+	box-shadow: none;
+>>>>>>> 7ca002f8b51ae8b95b6ff38379eab5c4d924a86f
+}

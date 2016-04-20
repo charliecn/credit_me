@@ -102,8 +102,8 @@ public class Gui {
     @Override
     public ModelAndView handle(Request req, Response res) {
       Map<String, Object> variables;
-      variables = ImmutableMap.of("title", "Maps", "error", "");
-      return new ModelAndView(variables, "landing.ftl");
+      variables = ImmutableMap.of();
+      return new ModelAndView(variables, "home.ftl");
     }
   }
   
@@ -139,18 +139,21 @@ public class Gui {
   private class UserSignUpHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
+      System.out.println("intohandler");
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("username");
       String pwd = qm.value("pwd");
       String email = qm.value("email");
       String subscribe = qm.value("subscribe");
       boolean subs;
+      //System.out.println("");
       if (subscribe.equals("true")) {
       	subs = true;
       } else {
       	subs = false;
       }
     	User user = new BrownUser(name, email, Global.md5(pwd), subs);
+      System.out.println("pwd: " + user.getPassword());
     	//send email
     	Query.putUser(user, Global.getDb().getConnection());
       Map<String, Object> variables = new ImmutableMap.Builder()

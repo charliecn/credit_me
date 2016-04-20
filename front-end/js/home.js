@@ -319,11 +319,11 @@ function resetpwd() {
 	//alert(username);
 }
 
-function changepwd() {
-	var currPwd = document.getElementById("prev-pwd").value;
-	var newPwd = document.getElementById("new-pwd").value;
-	var retypeNewPwd = document.getElementById("re-new-pwd").value;
-	if (newPwd == retypeNewPwd) {
-		alert(currPwd + " " + newPwd);
-	}
-}
+// function changepwd() {
+// 	var currPwd = document.getElementById("prev-pwd").value;
+// 	var newPwd = document.getElementById("new-pwd").value;
+// 	var retypeNewPwd = document.getElementById("re-new-pwd").value;
+// 	if (newPwd == retypeNewPwd) {
+// 		alert(currPwd + " " + newPwd);
+// 	}
+// }

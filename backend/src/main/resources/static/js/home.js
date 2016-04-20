@@ -177,6 +177,14 @@ $(document).on("pagecreate", "#signup-page", function(){
 		}
 		email = enteredEmail;
 
+		var postParameters = {email: email};
+		$.post("/signupemail", postParameters, function(responseJSON){
+			var url = JSON.parse(responseJSON).url;
+		});
+
+
+		$.mobile.changePage($("#signupwait-page"));
+
 		console.log('after email');
 		var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
 		console.log(postParameters);
@@ -186,6 +194,10 @@ $(document).on("pagecreate", "#signup-page", function(){
 			console.log(success);
 		})
 	})
+});
+
+$(document).on("pagecreate", "#signupwait-page", function(){
+
 });
 
 $(document).on("pagecreate", "#forgetpwd-page", function(){

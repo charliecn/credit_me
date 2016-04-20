@@ -91,39 +91,40 @@ public class Query {
 	}
 	
 	/**
-	 * Adds a user to the user table
-	 * @param user - user to add
-	 * @param conn - connection to database
-	 * @return true if able to successfully add user, false otherwise
-	 */
-	public static boolean putUser(User user, Connection conn){
-		System.out.println(user.getEmail());
-		System.out.println(user.getName());
+   * Adds a user to the user table
+   * @param user - user to add
+   * @param conn - connection to database
+   * @return true if able to successfully add user, false otherwise
+   */
+  public static boolean putUser(User user, Connection conn){
+    System.out.println(user.getEmail());
+    System.out.println(user.getName());
 
-		PreparedStatement prep;
-		try {
-			prep = conn.prepareStatement(
-			"INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			prep.setString(1, user.getEmail());
-			prep.setString(2, user.getName());
-			prep.setString(3, user.getPassword());
-			prep.setString(4, user.getContact());
-			prep.setInt(5, user.getTotalRating());
-			prep.setInt(6, user.getRatingNum());
-			//TODO: WHAT IS A TITLE STRING
-			String titleString = "placeholder";
-			prep.setString(7, "?");
-			prep.setString(8, titleString);
-			prep.setBoolean(9, user.getSubscribe());
-	    prep.addBatch();
-	    prep.executeBatch();
-	    prep.close();
-		} catch (SQLException e) {
-		  System.out.println(e.getMessage());
-			return false;
-		}
-		return true;
-	}
+    PreparedStatement prep;
+    try {
+      prep = conn.prepareStatement(
+      "INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
+      " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      prep.setString(1, user.getEmail());
+      prep.setString(2, user.getName());
+      prep.setString(3, user.getPassword());
+      prep.setString(4, user.getContact());
+      prep.setInt(5, user.getTotalRating());
+      prep.setInt(6, user.getRatingNum());
+      prep.setString(7, "gender");
+      //TODO: WHAT IS A TITLE STRING
+      String titleString = "placeholder";
+      prep.setString(8, titleString);
+      prep.setBoolean(9, user.getSubscribe());
+      prep.addBatch();
+      prep.executeBatch();
+      prep.close();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+    return true;
+  }
 	
 	public static boolean changePassword(String email, 
 			String oldPwd, String newPwd, Connection conn){

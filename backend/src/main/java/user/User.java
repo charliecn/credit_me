@@ -136,7 +136,7 @@ public class User {
 	 * @return pastOrders
 	 */
 	public List<Deal> getPastDeals(){
-		return pastOrders;
+		return null;
 	}
 
 	/**

@@ -121,6 +121,8 @@ public class Query {
 			prep.setString(4, user.getContact());
 			prep.setInt(5, user.getTotalRating());
 			prep.setInt(6, user.getRatingNum());
+			//TODO: WHAT IS A TITLE STRING
+			String titleString = "placeholder";
 			prep.setString(7, "?");
 			prep.setString(8, "");
 			prep.setBoolean(9, user.getSubscribe());

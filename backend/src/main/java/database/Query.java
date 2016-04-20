@@ -1,16 +1,17 @@
 package database;
 
-import user.User;
-import user.BrownUser;
-import user.GuestUser;
-import locationfood.Eatery;
-import locationfood.Food;
-import locationfood.Location;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import deal.Deal;
+import locationfood.Eatery;
+import locationfood.Food;
+import locationfood.Location;
+import user.User;
 
 public class Query {
 
@@ -42,11 +43,7 @@ public class Query {
 		String name = rs.getString("name");
 		Boolean subscribe = rs.getBoolean("subscribe");
 		
-		if(isBrownEmail(email)){
-			return new BrownUser(name, email, password, subscribe);
-		} else {
-			return new GuestUser(name, email, password, subscribe);
-		}
+		return new User(name, email, password, subscribe);
 	}
 	
 	/**
@@ -58,7 +55,7 @@ public class Query {
 	 */
 	public static User getUser(String email, Connection conn) throws SQLException{
 		PreparedStatement prep = 
-				conn.prepareStatement("SELECT name, subscribe FROM user WHERE email = ?");
+				conn.prepareStatement("SELECT * FROM user WHERE email = ?");
 		
 		prep.setString(1, email);
 		
@@ -72,25 +69,20 @@ public class Query {
 		String name = rs.getString("name");
 		Boolean subscribe = rs.getBoolean("subscribe");
 		String password = rs.getString("password");
+		String contact = rs.getString("contact");
+		int rating = rs.getInt("rating");
+		int ratingNum = rs.getInt("rating_num");
+		String gender = rs.getString("gender");
 		
-		if(isBrownEmail(email)){
-			return new BrownUser(name, email, password, subscribe);
-		} else {
-			return new GuestUser(name, email, password, subscribe);
-		}
-	}
-
-	/**
-	 * Determines whether string is a brown email address.
-	 * @param email - email address to check
-	 * @return true if email is brown email address
-	 */
-	private static boolean isBrownEmail(String email) {
-		int atInd = email.indexOf("@");
-		if(atInd == -1){
-			return false;
-		}
-		return email.substring(atInd).equals("brown.edu");
+		prep = 
+				conn.prepareStatement("SELECT * FROM order WHERE seller = ? OR buyer = ?");
+		prep.setString(1, email);
+		prep.setString(2, email);
+		rs = prep.executeQuery();
+		
+	  List<Deal> pastDeals = new ArrayList<>();
+		// TODO add deals
+		return new User(name, email, password, rating, ratingNum, gender, contact, pastDeals, subscribe);
 	}
 	
 	/**
@@ -119,32 +111,25 @@ public class Query {
 	 * @return true if able to successfully add user, false otherwise
 	 */
 	public static boolean putUser(User user, Connection conn){
-		System.out.println(user.getEmail());
-		System.out.println(user.getName());
-
 		PreparedStatement prep;
 		try {
 			prep = conn.prepareStatement(
-			"INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-			//System.out.println(user.getEmail() + " " + user.getName() + " " + user.getPassword() + " ");
+			"INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			prep.setString(1, user.getEmail());
 			prep.setString(2, user.getName());
 			prep.setString(3, user.getPassword());
 			prep.setString(4, user.getContact());
 			prep.setInt(5, user.getTotalRating());
 			prep.setInt(6, user.getRatingNum());
-			prep.setString(7, user.getGenderString());
 			//TODO: WHAT IS A TITLE STRING
-			String titleString = "";
-			prep.setString(8, titleString);
+			String titleString = "placeholder";
+			prep.setString(7, "?");
+			prep.setString(8, "");
 			prep.setBoolean(9, user.getSubscribe());
-			System.out.println(prep);
 	    prep.addBatch();
 	    prep.executeBatch();
 	    prep.close();
 		} catch (SQLException e) {
-		  System.out.println(e.getMessage());
 			return false;
 		}
 		return true;

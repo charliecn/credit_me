@@ -11,8 +11,9 @@ import global.Global;
  * @author lucieackley
  *
  */
-public abstract class User {
-	private List<Deal> pastOrders;
+public class User {
+	private boolean isBrownUser = false;
+	private List<Deal> pastDeals;
 	private String name = "";
 	private String email = "";
 	private int totalRating = 0;
@@ -36,17 +37,35 @@ public abstract class User {
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.pastOrders = new ArrayList<Deal>();
+		this.pastDeals = new ArrayList<Deal>();
 		this.subscribe = subscribe;
-		pastOrders = new ArrayList<Deal>();
+		pastDeals = new ArrayList<Deal>();
+		if (email.endsWith("@brown.edu")) {
+			isBrownUser = true;
+		}
 	}
 	
-	public static boolean deleteUser(String email, String password) {
-		//return Global.getDb().deleteUser(email, password));
-		
-		return Query.deleteUser(email, password, Global.getDb().getConnection());
+	public User(String name, String email, String password, int totalRating, int ratingNum, String gender, String contact, List<Deal> pastDeals, boolean subscribe){
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.pastDeals = new ArrayList<Deal>();
+		this.subscribe = subscribe;
+		this.totalRating = totalRating;
+		this.ratingNum = ratingNum;
+		this.contact = contact;
+		this.gender = gender;
+		this.pastDeals = pastDeals;
+		pastDeals = new ArrayList<Deal>();
+		if (email.endsWith("@brown.edu")) {
+			isBrownUser = true;
+		}
 	}
-		
+	
+	//public static boolean deleteUser(String email, String password) {
+	//	return Query.deleteUser(email, password, Global.getDb().getConnection());
+	//}
+	
 	public void setSubsribe(boolean s) {
 		subscribe = s;
 	}
@@ -108,8 +127,8 @@ public abstract class User {
 	 * adds a deal to the list of deals
 	 * @param deal - deal to add
 	 */
-	public void addDeal(Deal deal){
-		
+	public void addDeals(List<Deal> deal){
+		pastDeals = deal;
 	}
 	
 	/**
@@ -117,7 +136,7 @@ public abstract class User {
 	 * @return pastOrders
 	 */
 	public List<Deal> getPastDeals(){
-		return pastOrders;
+		return null;
 	}
 
 	/**
@@ -127,15 +146,4 @@ public abstract class User {
 	public String getPassword() {
 		return password;
 	}
-	
-	public String getGenderString(){
-		if(gender.equals("male")){
-			return "male";
-		} else if(gender.equals("female")){
-			return "female";
-		} else {
-			return "undisclosed";
-		}
-	}
-	
 }

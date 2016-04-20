@@ -18,15 +18,21 @@ public class Order extends HalfDeal {
   	Global.getOrders().remove(this);
   };
   protected List<Food> orders;
+  protected double actualPrice;
   
   public Order(Location loc, Eatery ety, double upper, double price, int dur, User usr, List<Food> food) {
-    super(loc, ety, upper, price, dur, usr);
+    super(loc, ety, upper, dur, usr);
     orders = food;
+    actualPrice = price;
     Global.getOrders().add(this);
   }
 
   public List<Food> getOrders() {
     return orders;
+  }
+  
+  public double getActualPrice() {
+  	return actualPrice;
   }
   
   @Override

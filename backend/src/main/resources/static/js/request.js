@@ -168,35 +168,20 @@ $( document ).on( "pageshow", "#page_buy_3", function(event) {
 
   var menu_order = {};
   var checked_count = 0;
-  var total_price = 0.00;
-  $('#price_span').text("$"+total_price);
   
   $('#menu :checkbox').click(function() {
     var $this = $(this);
-    var id = $this.attr('name');
     // $this will contain a reference to the checkbox   
     if ($this.is(':checked')) {
         checked_count +=1;
         $('#menu_confirm').css("display","block");
-        menu_order[id]=true;
-
-        total_price += menu[id].price;
-        total_price = Math.abs(total_price.toFixed(2));
-
-        
-        $('#price_span').text("$"+total_price);
-
+        menu_order[$this.attr('name')]=true;
     } else {
          checked_count-=1;
          if(checked_count==0){
           $('#menu_confirm').css("display","none");
          }
-         delete menu_order[id];
-         
-         total_price -= menu[id].price;
-         total_price=Math.abs(total_price.toFixed(2));
-
-         $('#price_span').text("$"+ total_price);
+         delete menu_order[$this.attr('name')];
     }
   });
 
@@ -204,9 +189,7 @@ $( document ).on( "pageshow", "#page_buy_3", function(event) {
     request = JSON.parse(localStorage.request);
     var menu_string = Object.keys(menu_order).join(' ');
     request.menu=menu_string;
-    request.price = total_price;
     localStorage.request= JSON.stringify(request);
-    console.log(request);
   })
 
 
@@ -217,42 +200,6 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
      value: 95
   });
 
-  $('#wrong_number').css("display","none");
-
-  request = JSON.parse(localStorage.request);
-
-  var tap_counter = 0;
-
-  $('#payment_suggestion').tap(function(){
-    if (tap_counter%2==0){
-      $('#payment_suggestion_detail').css("display","block");
-    } else{
-      $('#payment_suggestion_detail').css("display","none");
-    }
-    tap_counter+=1;
-  })
-
-  $("#final_confirm").click(function(){
-    
-    var phone = $('#tel-1').val().trim();
-    console.log(phone);
-    
-    if(phone.match(/\d/g).length===10 && phone.length==10){
-      $('#wrong_number').css("display","none");
-      request.phone=phone;
-      request.duration = $('#duration').val();
-      request.bound = $('#bound').val();
-      console.log(request);
-      localStorage.request = JSON.stringify(request)
-
-      $.post("/placeorder",{user:email,address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
-        data = JSON.parse(response);
-        console.log(response);
-      })
-    } else{
-      $('#wrong_number').css("display","block");
-    }
-  })
-
   request = JSON.stringify(localStorage.request);
+  $("#page_buy_4").append(request);
 });

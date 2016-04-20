@@ -1,0 +1,46 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreditMe@Brown</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script>
+      $(document).bind('mobileinit',function(){
+          $.mobile.pushStateEnabled = false;
+      });
+    </script>
+    
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="../css/app.css">
+    <script src="../js/request.js"></script>
+    
+  </head>
+  <body>
+
+  <div class="logo" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+    <div data-role="page" id="page_buy_1">
+
+    
+
+      <div data-role="main" class="ui-content">
+        <form>
+            <label for="slider-2">Slider (default is "false"):</label>
+            <input type="range" name="slider-2" id="slider-2" data-highlight="true" min="0" max="100" value="50">
+        </form>
+      </div>
+
+
+
+  </div>
+
+
+  </body>
+</html>

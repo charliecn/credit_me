@@ -10,6 +10,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import command._and._gui.GUI.LandingPage;
 import database.Query;
 import deal.Deal;
 import deal.Offer;
@@ -20,11 +21,13 @@ import global.Matcher;
 import locationfood.Eatery;
 import locationfood.Food;
 import locationfood.Location;
+import spark.ModelAndView;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
+import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 import user.BrownUser;
 import user.User;
@@ -83,6 +86,7 @@ public class Gui {
     Spark.externalStaticFileLocation("src/main/resources/static");
     FreeMarkerEngine freeMarker = createEngine();
     // Setup Spark Routes
+    Spark.get("/home", new LandingPage(), freeMarker);
     Spark.post("/userlogin", new UserLoginHandler());
     Spark.post("/usersignup", new UserSignUpHandler());
     Spark.post("/signupsuccess", new SignUpSuccessHandler());
@@ -94,6 +98,16 @@ public class Gui {
     Spark.post("/placeoffer", new PlaceOfferHandler());
   }
 
+  /** The main view of the GUI. */
+  private class LandingPage implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) {
+      Map<String, Object> variables;
+      variables = ImmutableMap.of("title", "Maps", "error", "");
+      return new ModelAndView(variables, "landing.ftl");
+    }
+  }
+  
   private class UserLoginHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {

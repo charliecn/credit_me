@@ -39,8 +39,7 @@ PROJECT=$(basename "$(pwd)")
 MAIN=$(ls src/main/java/edu/brown/cs/*/$PROJECT/Main.java)
 [ -z "$MAIN" ] && echo "You need a Main.java" && exit 1
 [ ! -e "$MAIN" ] && echo "You can only have one Main.java" && exit 1
-PKG=$(basename $(dirname $(dirname $MAIN)))
 
 # The funny symbol: "$@" passes the command-line arguments on from
 # this script to your Java program.
-java -ea -cp $TARGET:$CP edu.brown.cs.$PKG.$PROJECT.Main "$@"
+java -ea -cp $TARGET:$CP edu.brown.cs.sren1.$PROJECT.Main "$@"

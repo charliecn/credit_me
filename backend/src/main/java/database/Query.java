@@ -131,7 +131,6 @@ public class Query {
 			prep.setInt(5, user.getTotalRating());
 			prep.setInt(6, user.getRatingNum());
 			prep.setString(7, user.getGenderString());
-			//TODO: WHAT IS A TITLE STRING
 			String titleString = "";
 			prep.setString(8, titleString);
 			prep.setBoolean(9, user.getSubscribe());

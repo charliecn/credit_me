@@ -1,9 +1,9 @@
 package emailer;
 
-//import java.util.*;
+import java.util.*;
 
-//import javax.mail.*;
-//import javax.mail.internet.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 
 public class EmailSender {
@@ -45,3 +45,4 @@ public class EmailSender {
 		}
 	
 	}
+}

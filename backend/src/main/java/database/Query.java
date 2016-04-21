@@ -114,12 +114,14 @@ public class Query {
    * @return true if able to successfully add user, false otherwise
    */
   public static boolean putUser(User user, Connection conn){
+    System.out.println(user.getEmail());
+    System.out.println(user.getName());
 
     PreparedStatement prep;
     try {
       prep = conn.prepareStatement(
       "INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
-      " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
       prep.setString(1, user.getEmail());
       prep.setString(2, user.getName());
       prep.setString(3, user.getPassword());

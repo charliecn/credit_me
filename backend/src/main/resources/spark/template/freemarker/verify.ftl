@@ -9,7 +9,7 @@
 
   <div data-role="main" class="ui-content">
     <p>Congrats! You have successfully signed up. Now log in and start exchaning credits!</p>
-    <a href="#login-page" data-role="button" id="sell-button" class="ui-btn">Go To Log In</a>
+    <a href="#" data-role="button" id="backtologin-submit" class="ui-btn">Go To Log In</a>
   </div>
 </div>
 

@@ -59,6 +59,13 @@ $(document).on("pagecreate", "#resetpwd-page", function(){
 	});
 });
 
+$(document).on("pagecreate", "#verify-page", function(){
+	$("#backtologin-submit").click(function(){
+		$(location).attr('href', '/home#login-page');
+		//alert('here!');
+	});
+});
+
 function checkLoginEmail(email) {
 	var emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 	if (!email.match(emailPattern)) {

@@ -240,6 +240,7 @@ $(document).on("pagecreate", "#signup-page", function(){
 $(document).on("pagecreate", "#forgetpwd-page", function(){
 	//e.preventDefault();
 	$("#forgetpwd-submit").click(function(){
+		$("#forgetpwd-processing").css('display', 'block');
 		var email = $("#forgetpwd-user").val();
 		//resetEmail = email;
 		console.log(email);

@@ -179,10 +179,10 @@ public class Gui {
       String link = Global.randomLink("verify/");
       String body = "Welcome! click the following link to verify your email:\n" + link;
     	Global.getRegisteringUsers().put(link, user);
-    	EmailSender.sendEmail(email, subject, body);
+    	boolean success = EmailSender.sendEmail(email, subject, body);
     	
       Map<String, Object> variables = new ImmutableMap.Builder()
-      		.put("link", link).build();
+      		.put("done", success).build();
       return GSON.toJson(variables);
     }
   }
@@ -192,8 +192,7 @@ public class Gui {
     public ModelAndView handle(final Request req, final Response res) {
       String link = req.params("link");
       User user = Global.getRegisteringUsers().remove(link);
-    	boolean success = Query.putUser(user, Global.getDb().getConnection());
-    	
+    	boolean success = Query.putUser(user, Global.getDb().getConnection());  	
       Map<String, Object> variables = new ImmutableMap.Builder().build();
       return new ModelAndView(variables, "verify.ftl");
     }
@@ -208,9 +207,9 @@ public class Gui {
       String link = Global.randomLink("forgetpwd/");
       String body = "Visit the following link to reset your password:\n" + link;
       Global.getForgetPwds().put(link, email);
-    	EmailSender.sendEmail(email, subject, body);
+    	boolean success = EmailSender.sendEmail(email, subject, body);
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("link", link).build();
+          .put("done", success).build();
       return GSON.toJson(variables);
     }
   }

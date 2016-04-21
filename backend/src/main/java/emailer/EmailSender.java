@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 
 
 public class EmailSender {
-	   private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
+	   private static boolean sendFromGMail(String from, String pass, String[] to, String subject, String body) {
 	        Properties props = System.getProperties();
 	        String host = "smtp.gmail.com";
 	        props.put("mail.smtp.starttls.enable", "true");
@@ -44,20 +44,23 @@ public class EmailSender {
 	            transport.connect(host, from, pass);
 	            transport.sendMessage(message, message.getAllRecipients());
 	            transport.close();
+	            return true;
 	        }
 	        catch (AddressException ae) {
 	            ae.printStackTrace();
+	            return false;
 	        }
 	        catch (MessagingException me) {
 	            me.printStackTrace();
+	            return false;
 	        }
 	    }
-	public static void sendEmail(String reciepient, String subject, String body)
+	public static boolean sendEmail(String reciepient, String subject, String body)
 	{    
 		String[] to = new String[1];
 		to[0] = reciepient;
 		String from = "creditmebrown";
 		String pass = "cs32brown";
-		sendFromGMail(from, pass, to, subject, body);
+		return sendFromGMail(from, pass, to, subject, body);
 	}
 }

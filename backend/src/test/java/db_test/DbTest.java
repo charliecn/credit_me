@@ -1,4 +1,4 @@
-package db_test;
+/*package db_test;
 
 
 import static org.junit.Assert.assertTrue;
@@ -28,7 +28,7 @@ import user.User;
 public class DbTest {
 	
 	  private static final String dbStr = 
-			  "/Users/lucieackley/Desktop/credit_me/backend/creditMe.sqlite3";
+			  "creditMe.sqlite3";
 	
 	  @BeforeClass
 	  public static void setUpClass() throws Exception {
@@ -77,4 +77,4 @@ public class DbTest {
 	public static void main(String[] args) throws IOException {
 		
 	}
-}
+}*/

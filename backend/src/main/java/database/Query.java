@@ -98,6 +98,9 @@ public class Query {
 			prep = conn.prepareStatement("DELETE FROM user WHERE email = ? AND password = ?");
 			prep.setString(1, email);
 			prep.setString(2, password);
+	    prep.addBatch();
+	    prep.executeBatch();
+	    prep.close();
 		} catch (SQLException e) {
 			return false;
 		}
@@ -144,6 +147,25 @@ public class Query {
 			prep.setString(1, newPwd);
 			prep.setString(2, email);
 			prep.setString(3, oldPwd);
+	    prep.addBatch();
+	    prep.executeBatch();
+	    prep.close();
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean changePassword(String email, String newPwd, Connection conn){
+		PreparedStatement prep;
+		try {
+			prep = conn.prepareStatement(
+			"UPDATE user SET password = ? WHERE email = ?");
+			prep.setString(1, newPwd);
+			prep.setString(2, email);
+	    prep.addBatch();
+	    prep.executeBatch();
+	    prep.close();
 		} catch (SQLException e) {
 			return false;
 		}

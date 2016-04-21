@@ -92,10 +92,11 @@ public class Gui {
     Spark.get("/home", new LandingPage(), freeMarker);
     Spark.get("/buy", new BuyHandler(), freeMarker);
     Spark.post("/userlogin", new UserLoginHandler());
-    Spark.post("/usersignup", new UserSignUpHandler());
     Spark.post("/signupemail", new SignUpEmailHandler());
+    Spark.get("/verify/:random", new VerifyHandler(), freeMarker);
     Spark.post("/userforgetpwd", new UserForgetPwdHandler());
     Spark.post("/passwordemail", new PasswordEmailHandler());
+    Spark.get("/forgetpwd/:random", new PasswordVerifyHandler(), freeMarker);
     Spark.post("/userchangepwd", new UserChangePwdHandler());
     Spark.post("/changeinfo", new ChangeInfoHandler());
     Spark.post("/placeorder", new PlaceOrderHandler());
@@ -163,23 +164,8 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-      String subject = "credit_me sign up verification";
-      String link = Global.randomLink();
-      String body = "Welcome! click the following link to verify your email:\n" + link;
-    	EmailSender.sendEmail(email, subject, body);
-      Map<String, Object> variables = new ImmutableMap.Builder()
-      		.put("link", link).build();
-      return GSON.toJson(variables);
-    }
-  }
-  
-  private class UserSignUpHandler implements Route {
-    @Override
-    public Object handle(final Request req, final Response res) {
-      QueryParamsMap qm = req.queryMap();
       String name = qm.value("username");
       String pwd = qm.value("pwd");
-      String email = qm.value("email");
       String subscribe = qm.value("subscribe");
       boolean subs;
       if (subscribe.equals("true")) {
@@ -188,21 +174,40 @@ public class Gui {
       	subs = false;
       }
     	User user = new User(name, email, Global.md5(pwd), subs);
-    	boolean success = Query.putUser(user, Global.getDb().getConnection());
+    	
+      String subject = "credit_me sign up verification";
+      String link = Global.randomLink("verify/");
+      String body = "Welcome! click the following link to verify your email:\n" + link;
+    	Global.getRegisteringUsers().put(link, user);
+    	EmailSender.sendEmail(email, subject, body);
+    	
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("done", success).build();
+      		.put("link", link).build();
       return GSON.toJson(variables);
     }
   }
-  
+
+  private class VerifyHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      String link = req.params("link");
+      User user = Global.getRegisteringUsers().remove(link);
+    	boolean success = Query.putUser(user, Global.getDb().getConnection());
+    	
+      Map<String, Object> variables = new ImmutableMap.Builder().build();
+      return new ModelAndView(variables, "verify.ftl");
+    }
+  }
+
   private class PasswordEmailHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
       String subject = "credit_me forget password";
-      String link = Global.randomLink();
+      String link = Global.randomLink("forgetpwd/");
       String body = "Visit the following link to reset your password:\n" + link;
+      Global.getForgetPwds().put(link, email);
     	EmailSender.sendEmail(email, subject, body);
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("link", link).build();
@@ -210,18 +215,31 @@ public class Gui {
     }
   }
   
+  private class PasswordVerifyHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      String link = req.params("link");
+      String email = Global.getForgetPwds().remove(link);
+    	
+      Map<String, Object> variables = new ImmutableMap.Builder()
+      		.put("email", email).build();
+      return new ModelAndView(variables, "forgetpwd.ftl");
+    }
+  }
+
   private class UserForgetPwdHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-
+      String password = qm.value("pwd");
+      boolean success = Query.changePassword(email, password, Global.getDb().getConnection());
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("done", true).build();
+          .put("done", success).build();
       return GSON.toJson(variables);
     }
   }
-  
+
   private class UserChangePwdHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
@@ -250,7 +268,7 @@ public class Gui {
       }
     }
   }
-  
+
   private class ChangeInfoHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
@@ -338,7 +356,6 @@ public class Gui {
 		  }
 		}
   }
-  
 
   private class PlaceOrderHandler implements Route {
     @Override
@@ -402,6 +419,4 @@ public class Gui {
       }
     }
   }
-  
-  
 }

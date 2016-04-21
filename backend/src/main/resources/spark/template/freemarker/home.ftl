@@ -1,25 +1,21 @@
 <#assign content>
 
 <div data-role="page" id="home-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content">
-    <a href="#login-page" data-role="button" class="ui-btn">Buy Credit</a>
-    <a href="#login-page" data-role="button" id="sell-button" class="ui-btn">Sell Credit</a>
+    <a href="#" data-role="button" id="buy-button"class="ui-btn">Buy Credit</a>
+    <a href="#" data-role="button" id="sell-button" class="ui-btn">Sell Credit</a>
   </div>
 </div>
 
 
 <div data-role="page" id="login-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content centered">
     <form id="login-form">
@@ -43,11 +39,9 @@
 
 
 <div data-role="page" id="signup-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content centered">
     <form id="signup-form">
@@ -73,11 +67,9 @@
 </div>
 
 <div data-role="page" id="signupwait-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content centered">
     <h2>Signup In Progress</h2>
@@ -86,11 +78,9 @@
 </div>
 
 <div data-role="page" id="resetpwdwait-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content centered">
     <h2>Please Check Your Email</h2>
@@ -100,11 +90,9 @@
 
 
 <div data-role="page" id="forgetpwd-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content centered">
     <form id="forgetpwd-form">
@@ -121,11 +109,9 @@
 
 
 <div data-role="page" id="profile-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content centered">
     <h2>Profile<h2>
@@ -151,7 +137,8 @@
   <div data-role="navbar">
     <ul id="bottom_ul">
       <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-      <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+      <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
       <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
       <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
@@ -162,11 +149,9 @@
 
 
 <div data-role="page" id="changepwd-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
 
   <div data-role="main" class="ui-content centered">
     <form id="changepwd-form">
@@ -188,7 +173,8 @@
   <div data-role="navbar">
     <ul id="bottom_ul">
       <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-      <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+      <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
       <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
       <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
     </ul>
@@ -198,11 +184,9 @@
 
 
 <div data-role="page" id="orders-page">
-  <div data-role="header" class="row">
-    <div class="small-6 small-centered columns logo">
-      <h1>CreditMe@Brown</h1>
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
     </div>
-  </div>
   
   <div data-role="main" class="ui-content centered">
     <h2>Orders</h2>
@@ -231,11 +215,35 @@
   	<div data-role="navbar">
     	<ul id="bottom_ul">
       		<li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-      		<li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+      		<li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
       		<li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
       		<li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
     	</ul>
   	</div>
+  </div>
+</div>
+
+<div data-role="page" id="waittobematched-page">
+  <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+  
+  <div data-role="main" class="ui-content centered">
+    <h2>Processing...</h2>
+    <p>We're Looking for a match.</p>
+  </div>
+  
+  <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" position="fixed" data-id="persistent">
+    <div data-role="navbar">
+      <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+      </ul>
+    </div>
   </div>
 </div>
     
@@ -285,7 +293,8 @@
     <div data-role="navbar">
       <ul id="bottom_ul">
         <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-        <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+        <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
         <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
         <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
       </ul>
@@ -320,7 +329,8 @@
     <div data-role="navbar">
       <ul id="bottom_ul">
         <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-        <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+        <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
         <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
         <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
       </ul>
@@ -384,7 +394,8 @@
     <div data-role="navbar">
       <ul id="bottom_ul">
         <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-        <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+        <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
         <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
         <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
@@ -435,7 +446,8 @@
     <div data-role="navbar">
       <ul id="bottom_ul">
         <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-        <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+        <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
         <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
         <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
@@ -461,7 +473,7 @@
 
         </div>
       </div>
-      <p style="font-size: 1.2em">Current order price: <span id="price_span" style="color: #9d8189">$15.00</span></p>
+      <p style="font-size: 1.2em">Current order price: <span id="price_span_2" style="color: #9d8189">$15.00</span></p>
 
       <p style="display: none" id="deliver_note">We have added <span style="color: #9d8189">$2</span> delivery tip.</p>
       
@@ -497,7 +509,8 @@
     <div data-role="navbar">
       <ul id="bottom_ul">
         <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-        <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+        <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+
         <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
         <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
@@ -505,6 +518,282 @@
     </div>
   </div> 
 </div>
+
+
+
+
+
+
+
+   <div data-role="page" id="page_sell_1">
+
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:100%">
+             <div id="progress_bar_sell"></div>
+          </div>
+        </div>
+
+        <ul data-role="listview" data-inset="true">
+          <li data-role="divider" style="white-space:normal;">How would you like to trade your credit?</li>
+          <li>
+            <a class="meet_up_confirm" href="#page_sell_2">
+            <img src="../image/sell_meet.png" style="height:100%; margin-left: 10px;margin-bottom: 10px;">
+            <h2>Meet up</h2>
+            <p style="white-space:normal;">Meet with a Brunonian and swipe a credit for him.</p>
+            </a>
+            <a class="meet_up_confirm" href="#page_sell_2" data-transition="fade" data-icon="arrow-r"></a>
+          </li>
+          
+          <li>
+            <a class="deliver_confirm" href="#page_sell_deliver">
+            <img src="../image/sell_deliver.png" style="height:100%; margin-left: 10px;margin-top: 10px;">
+            <h2>Meet + Deliver</h2>
+            <p style="white-space:normal; ">Besides meet-up, I can also deliver food and receive $2 for my endeavor.</p>
+            </a>
+            <a class="deliver_confirm" href="#page_sell_deliver" data-transition="fade" data-icon="arrow-r"></a>
+          </li>
+
+        </ul>
+      </div>
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div data-role="page" id="page_sell_deliver">
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_deliver_sell"></div>
+          </div>
+        </div>
+
+        <ul id="campus_section_list" data-role="listview" data-inset="true">
+           <li data-role="divider" style="white-space:normal;background-color: #9d8189;color: white;text-shadow: none;">Choose part(s) of campus map you can deliver food to.</li>
+        </ul>
+        
+        <ul id="campus_section_list" data-role="listview" data-inset="true" style="margin-top: 30px">
+          <li data-role="divider" style="white-space:normal;font-size: 0.9em">North Campus (Pembroke, Bio-Med, Granoff) <span style="color: #9d8189;font-size: 1em">&#8595</span></li>
+          <li style="padding:0">
+            <img class="click" id="north_click" src="../image/click.png">
+            <div id="north_shadow" class="map_shadow"></div>
+
+          </li>
+        </ul>
+
+        <ul id="campus_section_list" data-role="listview" data-inset="true">
+
+          <li data-role="divider" style="white-space:normal;font-size: 0.9em">Central Campus (Main Green, Sci-Li, B&H) <span style="color: #9d8189;font-size: 1em">&#8595</span></li>
+          <li style="padding:0">
+            <img class="click" id="center_click" src="../image/click.png">
+            <div id="center_shadow" class="map_shadow"></div>
+          </li>
+        </ul>
+
+        <ul id="campus_section_list" data-role="listview" data-inset="true">
+
+          <li data-role="divider" style="white-space:normal;font-size: 0.9em">South Campus (Wriston Quad, New Dorm, Perkins) <span style="color: #9d8189;font-size: 1em">&#8595</span></li>
+          <li style="padding:0">
+            <img class="click" id="south_click" src="../image/click.png">
+            <div id="south_shadow" class="map_shadow"></div>
+          </li>
+
+        </ul>
+
+        <a href="#page_sell_2" class="ui-btn" id="address_confirm_sell" style="background-color:#FFCAD4;color:#9D8189;display: block;margin-top: 20px;">Continue</a>
+
+      </div>
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div data-role="page" id="page_sell_2">
+
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_2_sell"></div>
+
+          </div>
+        </div>
+          
+         
+
+        <ul data-role="listview" data-inset="true" id="menu_sell">
+          <li data-role="divider">Pick eatery(s) where you can go.</li>
+
+          <li style="background-color: #ffe5d9">
+                <img src="../image/andrews.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Andrews Commons" id=""/> Andrews Commons </label>
+          </li>
+
+          <li style="background-color: #E8E3E1">
+                <img src="../image/blueroom.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Blueroom" id=""/> Blueroom </label>
+          </li>
+
+          <li style="background-color: #ffe5d9">
+                <img src="../image/johs.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Josiah's" id=""/> Josiah's </label>
+          </li>
+
+          <li style="background-color: #E8E3E1">
+                <img src="../image/ivyroom.png" style="width: 60px;margin-top: 10px; margin-left: 10px">
+                <label><input type="checkbox" value="unchecked" name="Ivy Room" id=""/> Ivy Room </label>
+          </li>
+
+          <li style="background-color: #ffe5d9">
+                <img src="../image/ratty.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Ratty" id=""/> Ratty </label>
+          </li>
+
+          <li style="background-color: #E8E3E1">
+                <img src="../image/ivyroom.png" style="width: 60px;margin-top: 10px; margin-left: 10px">
+                <label><input type="checkbox" value="unchecked" name="V-Dub" id=""/> V-Dub </label>
+          </li>
+
+        </ul>
+
+        <a href="#page_sell_3" class="ui-btn" id="menu_confirm_sell" style="background-color:#FFCAD4;color:#9D8189;display: none;margin-top: 30px">Continue</a>
+      </div>
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div data-role="page" id="page_sell_3">
+    
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_3_sell"></div>
+
+          </div>
+        </div>
+
+        <div class="full_width">
+
+          <label style="margin-bottom: 20px;margin-top: 20px;" for="bound">How much would you like to pay for this order?</label>
+          <p style="color:#9d8189;" id="payment_suggestion_sell">tap to view suggestion</p>
+          <p style="display: none" id="payment_suggestion_detail_sell">Meal credits are usually traded at 10-15% off. Pick an ideal price to prompt your deal to finish.</p>
+         <input type="range" name="bound_sell" id="bound_sell" value="6.0" min="0" max="7.3" step="0.1">
+        
+        </div>
+        
+        <div style="margin-bottom: 30px" id="credit_number">
+
+          <label for="tel-1" style="margin-top: 20px;margin-bottom:20px;">How many credits are you willing to sell, at most?</label>
+          <label>
+              <input type="radio" data-mini="true" name="creditNum" id="credit_Num" value=1>One
+          </label>
+
+          <label for="radio-choice-0b">Two
+              <input type="radio" data-mini="true" name="creditNum" id="credit_Num" class="custom" value=2 checked>
+          </label>
+
+        </div>
+
+        <div style="margin-bottom: 30px" class="full_width">
+
+          <label for="tel-1" style="margin-top: 20px;margin-bottom:20px;font-size: 1.2em;">Your phone number <span style="color:#9d8189">&#x2193</span></label>
+          <input style="height: 40px;" type="tel" data-clear-btn="true" name="tel-1" id="tel-1_sell" value="" placeholder="buyer needs to contact you" >
+
+          <p style="display: none; color:red" id="wrong_number_sell">Phone number incorrect. Please input 10-digit number.</p>
+
+        </div>
+        
+
+        <div>
+          <label style="margin-bottom: 20px;margin-top: 20px;" for="duration_sell">How long can you wait for your offer to be matched? (minutes)</label>
+         <input type="range" name="duration_sell" id="duration_sell" value="30" min="0" max="120" step="10">
+        </div>
+
+        <a class="ui-btn" id="final_confirm_sell" style="margin-top: 40px;margin-bottom:40px;background-color: #ffe5d9">Yeah, let's do it!</a>
+      </div>
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
 </#assign>
 <#include "main.ftl">
 

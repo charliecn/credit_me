@@ -88,6 +88,27 @@ h2{
 	margin-bottom: 7.5%;
 }
 
+#progress_bar_2_sell{
+	margin-top: 8%;
+}
+
+#progress_bar_3_sell{
+	margin-top: 8%;
+}
+
+#progress_bar_4_sell{
+	margin-top: 8%;
+}
+
+#progress_bar_deliver_sell{
+	margin-top: 8%;
+}
+
+#progress_bar_sell{
+	margin-top: 6%;
+	margin-bottom: 7.5%;
+}
+
 ul li a p{
 	text-align: center;
 }
@@ -209,3 +230,92 @@ ul li a p{
 #reset-email {
 	display: none;
 }
+
+
+
+.full_width{
+	background-color: #ffe3e3; 
+	margin-left: -16px;
+	margin-right: -16px;
+	padding-left: 16px;
+	padding-right: 16px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.map_shadow{
+/*	position: absolute;
+	width:343px;
+	height:417px;*/
+	 /*rgba(200,200,200,0.8);*/
+
+	margin: 0;
+	padding: 0;
+	z-index: 5;
+}
+
+#north_shadow{
+	background: 
+		
+		linear-gradient(
+      		rgba(240, 240, 240, 0.5), 
+      		rgba(240, 240, 240, 0.5)
+    	),
+    	url('../image/north_new.jpeg');
+
+	height:117px;
+	background-size: 100%;
+
+}
+
+#center_shadow{
+	background: 
+		
+		linear-gradient(
+      		rgba(240, 240, 240, 0.5), 
+      		rgba(240, 240, 240, 0.5)
+    	),
+    	url('../image/center_new.jpeg');
+	height:126px;
+	background-size: 100%;
+
+}
+
+#south_shadow{
+	background: 
+		
+		linear-gradient(
+      		rgba(240, 240, 240, 0.5), 
+      		rgba(240, 240, 240, 0.5)
+    	),
+    	url('../image/south_new.jpeg');
+
+    background-size: 100%;
+	height:99px;
+}
+
+.map_shadow p{
+	margin: 0;
+	padding-left: 3%;
+	padding-top: 10%;
+	font-size: 13px;
+}
+
+.map_shadow button{
+
+	margin: 0;
+	position: relative;
+	left: 3%;
+	top: 6%;
+}
+
+.campus_section_list li{
+	margin: 0;
+	padding:0;
+}
+
+.click{
+	width: 50px;
+}
+
+

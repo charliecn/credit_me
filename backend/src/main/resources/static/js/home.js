@@ -1,36 +1,4 @@
-var userPwd = {};
-
-// window.addEventListener('load', function(){
-// 	// var btnWidth = $("#signup-btn").width();
-// 	// $(".ui-btn").css("width", btnWidth);
-// 	// alert(btnWidth);
-// 	document.getElementById("login-form").addEventListener('submit', function(e){
-// 		e.preventDefault();
-// 		login();
-// 	}, false);
-
-// 	document.getElementById("signup-form").addEventListener('submit', function(e){
-// 		e.preventDefault();
-// 		addSignUp();
-// 	}, false);
-
-// 	document.getElementById("forgetpwd-form").addEventListener('submit', function(e){
-// 		e.preventDefault();
-// 		resetpwd();
-// 	}, false);
-
-// 	document.getElementById("changepwd-form").addEventListener('submit', function(e){
-// 		e.preventDefault();
-// 		changepwd();
-// 	}, false);
-
-// 	// document.getElementById("delete-order").addEventListener('tap', function(e){
-// 	// 	e.preventDefault();
-// 	// 	alert("taped");
-// 	// 	//addSignUp();
-// 	// }, false);
-// });
-
+//var userPwd = {};
 
 //user information
 var email;
@@ -45,7 +13,16 @@ var prevName;
 var prevEmail;
 var prevContact;
 var btnWidth;
+var buysell = {};
+var buyorsell;
 //var resetEmail = "";
+
+function resetProfile(email, contact, username, subscribe) {
+	var postParameters = {email: email, contact: contact, username: username, subscribe: subscribe};
+	$.post("/changeinfo", postParameters, function(responseJSON) {
+		var done = JSON.parse(responseJSON).done;
+	});
+}
 
 $(document).on("pagecreate", "#resetpwd-page", function(){
 	//console.log('here in resetpwd-page');
@@ -74,13 +51,6 @@ $(document).on("pagecreate", "#verify-page", function(){
 		//alert('here!');
 	});
 });
-
-// $(document).on("pagecreate", "#resetpwd-page", function(){
-// 	$("#backtologin-submit").click(function(){
-// 		$(location).attr('href', '/home#login-page');
-// 		//alert('here!');
-// 	});
-// });
 
 function checkLoginEmail(email) {
 	var emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
@@ -144,6 +114,19 @@ function checkSignupUsername(username) {
 	return true;
 }
 
+$(document).on("pagecreate", "#home-page", function(){
+	console.log('in home page');
+	$("#buy-button").click(function(){
+		console.log('buybutton clicked');
+		buyorsell = 1;
+		$.mobile.changePage($("#login-page"));
+	});
+	$("#sell-button").click(function(){
+		buyorsell = 0;
+		$.mobile.changePage($("#login-page"));
+	});
+});
+
 $(document).on("pagecreate", "#login-page", function(){
 	$("#login-submit").click(function(){
 		$("#login-error").html('');
@@ -174,16 +157,24 @@ $(document).on("pagecreate", "#login-page", function(){
 				password = pwd;
 
 				//var buy = true;
-				var postParameters = {email: email};
+				//var postParameters = {email: email};
 				//send a request to server to change to Hong's buy page.
 				// $.get("/buy", postParameters, function(responseJSON){
 				// 	//var done = JSON.parse(responseJSON).done;
 				// });
 
 				//$.redirect("/buy", {email: email});
-
+				//buysell[email] = "login";
 				//$(location).attr('href', '/home#page_buy_1');
-				$.mobile.changePage($("#page_buy_1"));
+				console.log('buyorsell: ' + buyorsell);
+				if (buyorsell == 1) {
+					buysell[email] = 1;
+					$.mobile.changePage($("#page_buy_1"));
+				} else {
+					buysell[email] = 0;
+					$.mobile.changePage($("#page_sell_1"));
+				}
+				//$.mobile.changePage($("#page_buy_1"));
 			}
 		});
 
@@ -323,6 +314,10 @@ $(document).on("pagecreate", "#profile-page", function(){
 			$("#profile-name").html(username);
 		}
 		$("#profile-name").css('border-bottom', '1px solid #989797');
+		username = newName;
+
+		resetProfile(email, contact, username, subscribe);
+
 	});
 
 	$("#profile-contact").on("tap", function(e){
@@ -355,12 +350,17 @@ $(document).on("pagecreate", "#profile-page", function(){
 			$("#profile-contact").html(contact);
 		}
 		$("#profile-contact").css('border-bottom', '1px solid #989797');
+
+		contact = newContact;
+		resetProfile(email, contact, username, subscribe);
+
 	});
 
 	$("#profile-subscribe").change(function(){
 		console.log(this.checked);
 		subscribe = this.checked;
-		var postParameters = {subscribe: subscribe};
+		resetProfile(email, contact, username, subscribe);
+		//var postParameters = {subscribe: subscribe};
 		// $.post("/userforgetpwd",postParameters,function(responseJSON){
 
 		// })
@@ -371,7 +371,7 @@ $(document).on("pagecreate", "#profile-page", function(){
 
 
 
-
+localStorage.removeItem("request");
 request = JSON.parse(localStorage.request||'{}');
 localStorage.request = JSON.stringify(request);
 
@@ -407,6 +407,9 @@ $( document ).on( "pageinit", "#page_deliver", function(event) {
   locations=["Young Orchard Ave 010", "Marcy House: Wriston Quad", "Vartan Gregorian Quad A (New Dorm A)", "Richmond St 233", "Graduate Ctr A", "Davol Sq 003", "Young Orchard Ave 002", "Barbour Hall", "Sharpe House", "George St 180", "Peter Green House", "Hegeman Hall", "Brown St 068.5", "Caswell Hall", "Geo-Chem Bldg", "Manning Hall", "Ship St 070", "New Pembroke No. 4", "Bio-Med Grimshaw-Gudewicz", "Brown Stadium", "Perkins Hall", "Jameson-Mead: Keeney Quad", "Littlefield Hall", "University Hall", "List (Albert & Vera) Art Building", "Maddock Alumni Center", "Harkness House: Wriston Quad", "Sears House: Wriston Quad", "Watson Center For Information Tech", "Morrison-Gerard Studio", "Slater Hall", "George St 163", "Blistein House", "Waterman St 133", "Norwood House", "Goddard House: Wriston Quad", "Hope College", "Machado (Antonio) House", "Fones Alley 008", "Charlesfield St 059", "Miller Hall", "Metcalf Hall", "Bio-Med ACF", "Chapin House: Wriston Quad", "Dyer St 200", "Benevolent St 026", "Barus & Holley", "Manning St 029", "Faculty Club", "Giddings House", "Stimson Ave 002", "Emery: Pembroke Quad", "Rhode Island Hall", "Horace Mann House", "Robinson Hall", "Steinert Center", "Brook St 341", "Sciences Library", "Waterman St 094", "Bowen St 219", "Benevolent St 005", "OMAC Athletic Center", "Graduate Ctr D", "Prospect House", "Nelson Fitness Center", "Manning St 037", "Lincoln Field Building", "Lyman Hall", "Barus Building", "Metcalf Research Building", "Kassar (Edward W.) House", "Archibald-Bronson: Keeney Quad", "Granoff Ctr For The Creative Arts", "Walter Hall", "South Main St 121", "Sidney E. Frank Hall Life Sciences", "Meehan Auditorium", "Hoppin (Thomas P.) House", "New Pembroke No. 2", "Haffenreffer Barn", "Wilson Hall", "Diman House: Wriston Quad", "Meiklejohn House", "Graduate Ctr E", "Minden Hall", "Brown St 111", "Benevolent St 020", "West House", "Angell St 195", "Verney-Woolley Hall (VDub)", "Marston Hall", "Broadway 233", "Olney House: Wriston Quad", "George St 067", "Bio-Med Ctr", "MacMillan Hall", "Angell St 169", "Marston Boathouse", "Rochambeau House", "Waterman St 137", "MacFarlane House", "Brown Office Bldg", "Grant Fulton", "John Hay Library", "Morriss Hall: Pembroke Quad", "Arnold Lab", "Salomon Hall (Main Green)", "Medical Research Lab", "Faunce House", "Rockefeller Library", "Brown St 070", "Dyer House", "Urban Environmental Lab", "Gerard House, Samuel N.", "Thayer St 315", "Pizzitola", "Benoni Cooke House", "Orwig Music Hall", "Ladd Observatory", "5th Ave 500", "Andrews Hall", "Brook St 333", "Smith-Buonanno Hall", "King House", "Montgomery St 601", "Young Orchard Ave 004", "Graduate Ctr C", "Alumnae Hall", "Maxcy Hall", "George St 025", "Buxton House: Wriston Quad", "New Pembroke No. 3", "Waterman St 085", "Lippitt House", "Thayer St 135", "Nicholson House", "Graduate Ctr B", "Haffenreffer Outing Reservation Fac", "John St 050", "Pembroke Hall", "J. Walter Wilson Building", "Champlin: Pembroke Quad", "Vartan Gregorian Quad B (New Dorm B)", "Hemisphere Bldg", "T.F. Green Hall","Annmary Brown Memorial Library", "Everett-Poland: Keeney Quad", "Hope St 190", "Elm St 110", "Waterman St 131", "George St 182", "Waterman St 070", "Woolley Hall: Pembroke Quad", "Wayland House: Wriston Quad", "Partridge Hall & Annex", "Shirley Miller House", "Haffenreffer Museum Collections Res", "Churchill House", "John Carter Brown Library", "Sharpe Refectory (Ratty)", "Corliss-Brackett", "Feinstein", "Sayles Hall", "Prince Engineering Lab", "Richmond St 222 (Med Ed)", "Watson Institute", "George St 155", "New Pembroke No. 1", "Mencoff Hall", "Wilbour Hall"];
 
   $("#autocorrect").autocomplete({
+  	 open: function(event, ui) {
+        $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
+     },
      minLength:3,
      source: locations,
      select:function(){
@@ -448,21 +451,21 @@ $( document ).on( "pageinit", "#page_buy_2", function(event) {
 
   $(".andrews").click(function(){
     request = JSON.parse(localStorage.request);
-    request.eatery = "andrews";  
+    request.eatery = "Andrews Commons";  
     localStorage.request = JSON.stringify(request);
     //console.log(request);
   });
 
   $(".blueroom").click(function(){
     request = JSON.parse(localStorage.request);
-    request.eatery = "blueroom";  
+    request.eatery = "Blueroom";  
     localStorage.request = JSON.stringify(request);
     //console.log(request);
   });
 
   $(".josiahs").click(function(){
     request = JSON.parse(localStorage.request);
-    request.eatery = "jos";  
+    request.eatery = "Josiah's";  
     localStorage.request= JSON.stringify(request);
     //localStorage.request = JSON.stringify(request);
   })
@@ -593,6 +596,8 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
   $('#wrong_number').css("display","none");
 
   request = JSON.parse(localStorage.request);
+  $("#price_span_2").text("$"+request.price);
+  localStorage.request = JSON.stringify(request);
 
   var tap_counter = 0;
 
@@ -612,13 +617,15 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
     
     if(phone.match(/\d/g).length===10 && phone.length==10){
       $('#wrong_number').css("display","none");
+
+      request = JSON.parse(localStorage.request);
       request.phone=phone;
       request.duration = $('#duration').val();
       request.bound = $('#bound').val();
       console.log(request);
       localStorage.request = JSON.stringify(request)
 
-      $.post("/placeorder",{user:email,address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
+      $.post("/placeorder",{user:"silei_ren@brown.edu",address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
         data = JSON.parse(response);
         console.log(response);
       })
@@ -630,42 +637,274 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
   request = JSON.stringify(localStorage.request);
 });
 
-// function login() {
-// 	var email = document.getElementById("login-user").value;
-// 	var pwd = document.getElementById("login-pwd").value;
 
-// 	//alert(username + " " + pwd);
-// 	// if ( username in userPwd) {
-// 	// 	alert("yes!");
-// 	// }
-// 	// userPwd[username] = pwd;
-// 	//alert(userPwd[username]);
-// 	$.mobile.changePage($("#delivery-page"));
-// }
 
-// function addSignUp() {
-// 	var name = document.getElementById("signup-name").value;
-// 	var email = document.getElementById("signup-user").value;
-// 	var pwd = document.getElementById("signup-pwd").value;
-// 	var subscribe = document.getElementById("subscribe").checked;
 
-// 	//alert(email + " " + pwd + " " + name);
-// 	userPwd[email] = pwd;
-// 	$.mobile.changePage($("#delivery-page"));
-// 	//alert(userPwd[username] + " " + subscribe);
-// }
+//
+//SELL PART
+//
+//
 
-// function resetpwd() {
-// 	var email = document.getElementById("forgetpwd-user").value;
+offer = JSON.parse(localStorage.offer||'{}');
+localStorage.offer = JSON.stringify(offer);
 
-// 	//alert(username);
-// }
+$( document ).on( "pageinit", "#page_sell_1", function(event) {
+  $("#progress_bar_sell").progressbar({
+     value: 35
+  });
 
-// function changepwd() {
-// 	var currPwd = document.getElementById("prev-pwd").value;
-// 	var newPwd = document.getElementById("new-pwd").value;
-// 	var retypeNewPwd = document.getElementById("re-new-pwd").value;
-// 	if (newPwd == retypeNewPwd) {
-// 		alert(currPwd + " " + newPwd);
-// 	}
-// }
+  $(".meet_up_confirm").tap(function(){
+    offer = JSON.parse(localStorage.offer);
+    offer.method="meet";
+    offer.north_deliver = false;
+    offer.south_deliver = false;
+    offer.center_deliver = false;
+
+    localStorage.offer = JSON.stringify(offer);
+
+    console.log(offer)
+  })
+
+  $(".deliver_confirm").tap(function(){
+    offer = JSON.parse(localStorage.offer);
+    offer.method="meet_deliver";
+    localStorage.offer = JSON.stringify(offer);
+
+    console.log(offer)
+  })
+
+});
+
+$( document ).on( "pageshow", "#page_sell_deliver", function(event) {
+  
+  offer = JSON.parse(localStorage.offer);
+
+  offer.south_deliver = false;
+  offer.north_deliver = false;
+  offer.center_deliver=false;
+
+  localStorage.offer = JSON.stringify(offer);
+
+
+  $('#address_confirm_sell').css('display','none');
+
+  $("#progress_bar_deliver_sell").progressbar({
+     value: 60
+  });
+
+  var width = $(window).width()-16*2;
+
+  var north_height = 360*width/564.0 + "px";
+  var center_height = 335*width/564.0 +"px";
+  var south_height = 299*width/564.0 +"px";
+
+  $('#north_shadow').css("height",north_height);
+  $('#center_shadow').css("height",center_height);
+  $('#south_shadow').css("height",south_height);
+
+
+
+  var north_counter = 0;
+  var south_counter = 0;
+  var center_counter =0;
+
+  $('#north_shadow').click(function(){
+  	if(north_counter%2==0){
+  		$('#north_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0), rgba(240, 240, 240, 0)),url('../image/north_new.jpeg')");
+  		$('#north_shadow').css("background-size","100%");
+
+  		$('#north_click').attr('src','../image/confirm.png');
+  		//$('#north_check').css('display','block');
+  	} else{
+  		$('#north_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/north_new.jpeg')");
+		$('#north_shadow').css("background-size","100%");
+
+		$('#north_click').attr('src','../image/click.png');
+
+		//$('#north_check').css('display','none');
+  		//$('#north_des').css('display','block');
+  	}
+
+  	north_counter+=1;
+
+  	if(north_counter%2==0 && south_counter%2 == 0 && center_counter%2 == 0){
+  		  $('#address_confirm_sell').css('display','none');
+  	} else{
+  		  $('#address_confirm_sell').css('display','block');
+  	}
+  });
+
+  $('#center_shadow').click(function(){
+  	if(center_counter%2==0){
+  		$('#center_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0), rgba(240, 240, 240, 0)),url('../image/center_new.jpeg')");
+  		$('#center_shadow').css("background-size","100%");
+
+  		$('#center_click').attr('src','../image/confirm.png');
+
+  		//$('#center_des').css('display','none');
+  		//$('#center_check').css('display','block');
+  	} else{
+  		$('#center_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/center_new.jpeg')");
+	  	$('#center_shadow').css("background-size","100%");
+
+		$('#center_click').attr('src','../image/click.png');
+		//$('#center_check').css('display','none');
+  		//$('#center_des').css('display','block');
+  	}
+  	center_counter+=1;
+
+  	if(north_counter%2==0 && south_counter%2 == 0 && center_counter%2 == 0){
+  		  $('#address_confirm_sell').css('display','none');
+  	} else{
+  		  $('#address_confirm_sell').css('display','block');
+  	}
+  });
+
+  $('#south_shadow').click(function(){
+  	if(south_counter%2==0){
+  		$('#south_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0), rgba(240, 240, 240, 0)),url('../image/south_new.jpeg')");
+    	$('#south_shadow').css("background-size","100%");
+
+      	$('#south_click').attr('src','../image/confirm.png');
+
+  		//$('#south_des').css('display','none');
+  		//$('#south_check').css('display','block');
+  	} else{
+  		$('#south_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/south_new.jpeg')");
+		$('#south_shadow').css("background-size","100%");
+
+		$('#south_click').attr('src','../image/click.png');
+		//$('#south_check').css('display','none');
+  		//$('#south_des').css('display','block');
+  	}
+  	south_counter+=1;
+
+  	if(north_counter%2==0 && south_counter%2 == 0 && center_counter%2 == 0){
+  		  $('#address_confirm_sell').css('display','none');
+  	} else{
+  		  $('#address_confirm_sell').css('display','block');
+  	}
+  });
+
+
+  $('#address_confirm_sell').click(function(){
+    offer = JSON.parse(localStorage.offer);
+    if (north_counter % 2==1){
+    	offer.north_deliver = true;
+    } else{
+    	offer.north_deliver = false;
+    };
+
+    if (south_counter % 2==1){
+    	offer.south_deliver = true;
+    } else{
+    	offer.south_deliver = false;
+    };
+
+    if (center_counter % 2==1){
+    	offer.center_deliver = true;
+    } else{
+    	offer.center_deliver = false;
+    };
+
+    localStorage.offer = JSON.stringify(offer);
+
+    console.log(offer);
+  });
+
+});
+
+
+$( document ).on( "pageshow", "#page_sell_2", function(event) {
+
+  $("#progress_bar_2_sell").progressbar({
+    value: 70
+  });
+
+  console.log("arrived")
+
+  var eateries = {};
+  var checked_count = 0;
+
+  $(':checkbox').change(function() {
+  	console.log("get");
+    var $this = $(this);
+    var id = $this.attr('name');
+
+    if ($this.is(':checked')) {
+
+    	checked_count +=1;
+        $('#menu_confirm_sell').css("display","block");
+
+        eateries[id]=true;
+
+    } else{
+
+    	checked_count-=1;
+        
+        if(checked_count==0){
+          $('#menu_confirm_sell').css("display","none");
+        }
+    }
+
+   });
+
+  $('#menu_confirm_sell').tap(function(){
+    offer = JSON.parse(localStorage.offer);
+    var eatery_string = Object.keys(eateries).join(',');
+    offer.eatery=eatery_string;
+    localStorage.offer= JSON.stringify(offer);
+    console.log(offer);
+  })
+
+});
+
+$( document ).on( "pageshow", "#page_sell_3", function(event) {
+	$("#progress_bar_3_sell").progressbar({
+	    value: 90
+	 });
+
+	$('#wrong_number').css("display","none");
+
+	
+
+	var tap_counter = 0;
+
+	$('#payment_suggestion_sell').tap(function(){
+	  if (tap_counter%2==0){
+	    $('#payment_suggestion_detail_sell').css("display","block");
+	  } else{
+	    $('#payment_suggestion_detail_sell').css("display","none");
+	  }
+	  tap_counter+=1;
+	});
+
+	$("#final_confirm_sell").click(function(){
+    
+	    var phone = $('#tel-1_sell').val().trim();
+	    console.log(phone);
+	    
+	    if(phone.match(/\d/g).length===10 && phone.length==10){
+	      offer = JSON.parse(localStorage.offer);
+	      $('#wrong_number_sell').css("display","none");
+	      offer.phone=phone;
+	      offer.creditNum = $("input[name=creditNum]:checked").val();
+	      console.log(offer.creditNum)
+	      offer.duration = $('#duration_sell').val();
+	      offer.bound = $('#bound_sell').val();
+	      console.log(offer);
+	      localStorage.offer = JSON.stringify(offer)
+
+	      //$(location).attr('href', 'http://stackoverflow.com')
+	      
+	     $.post("/placeoffer",{user:"silei_ren@brown.edu",address:offer.address,eatery:offer.eatery,menu:offer.menu,duration:offer.duration,price:offer.price,bound:offer.bound,creditNum:offer.creditNum},function(response){
+	         data = JSON.parse(response);
+	         console.log(response);
+	      })
+    } else{
+      		$('#wrong_number_sell').css("display","block");
+    };
+  })
+
+})
+

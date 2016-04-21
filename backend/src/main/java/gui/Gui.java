@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,12 +50,14 @@ public class Gui {
 	 * Used to keep email consistent when redirect to buy.ftl
 	 */
 	private String loginEmail;
-
+	
+	private Connection conn;
 	/**
 	 * constructor.
 	 */
   public Gui(String db) {
   	Global.setDb(db);
+  	conn = Global.getDb().getConnection();
   }
 
   /**
@@ -91,6 +94,7 @@ public class Gui {
     // Setup Spark Routes
     Spark.get("/home", new LandingPage(), freeMarker);
     Spark.get("/buy", new BuyHandler(), freeMarker);
+    Spark.get("/sell", new SellHandler(), freeMarker);
     Spark.post("/userlogin", new UserLoginHandler());
     Spark.post("/signupemail", new SignUpEmailHandler());
     Spark.get("/verify/:random", new VerifyHandler(), freeMarker);
@@ -126,6 +130,20 @@ public class Gui {
     }
   }
   
+  
+  private static class SellHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String email = qm.value("email");
+      System.out.println(email);
+      
+      Map<String, Object> variables = ImmutableMap.of("email",
+          "my_email@brown.edu");
+      return new ModelAndView(variables, "sell.ftl");
+    }
+  }
+  
   private class UserLoginHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
@@ -133,12 +151,10 @@ public class Gui {
       String email = qm.value("email");
       //loginEmail = email;
       String password = qm.value("pwd");
-      System.out.println("login: " + email + " " + password);
-
       //get user
       User user = null;
 			try {
-				user = Query.getUser(email, Global.md5(password), Global.getDb().getConnection());
+				user = Query.getUser(email, Global.md5(password), conn);
 			} catch (SQLException e) {
       	e.printStackTrace();
       	Map<String, Object> variables = new ImmutableMap.Builder()
@@ -167,12 +183,8 @@ public class Gui {
       String name = qm.value("username");
       String pwd = qm.value("pwd");
       String subscribe = qm.value("subscribe");
-      boolean subs;
-      if (subscribe.equals("true")) {
-      	subs = true;
-      } else {
-      	subs = false;
-      }
+      boolean subs = Boolean.parseBoolean(subscribe);
+
     	User user = new User(name, email, Global.md5(pwd), subs);
     	
       String subject = "credit_me sign up verification";
@@ -235,7 +247,7 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
       String password = qm.value("pwd");
-      boolean success = Query.changePassword(email, Global.md5(password), Global.getDb().getConnection());
+      boolean success = Query.changePassword(email, Global.md5(password), conn);
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("done", success).build();
       return GSON.toJson(variables);
@@ -251,7 +263,7 @@ public class Gui {
       String newPwd = qm.value("newPwd");
       User user;
 			try {
-				user = Query.getUser(email, Global.md5(prevPwd), Global.getDb().getConnection());
+				user = Query.getUser(email, Global.md5(prevPwd), conn);
 			} catch (SQLException e) {
       	e.printStackTrace();
       	Map<String, Object> variables = new ImmutableMap.Builder()
@@ -263,7 +275,7 @@ public class Gui {
 	          .put("error", "incorrect password!").build();
 	      return GSON.toJson(variables);
       } else {
-      	Query.changePassword(email, prevPwd, newPwd, Global.getDb().getConnection());
+      	Query.changePassword(email, prevPwd, newPwd, conn);
 	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("done", "done").build();
 	      return GSON.toJson(variables);
@@ -279,26 +291,12 @@ public class Gui {
       String contact = qm.value("contact");
       String email = qm.value("email");
       String subscribe = qm.value("subscribe");
-      boolean subs;
-      if (subscribe.equals("true")) {
-      	subs = true;
-      } else {
-      	subs = false;
-      }
+      
     	User user;
-			try {
-				user = Query.getUser(email, Global.getDb().getConnection());
-			} catch (SQLException e) {
-      	e.printStackTrace();
-      	Map<String, Object> variables = new ImmutableMap.Builder()
-	          .put("error", e.getMessage()).build();
-      	return variables;
-			}
-    	user.setContact(contact);
-    	user.setSubsribe(subs);
-    	user.setName(name);
-    	Query.putUser(user, Global.getDb().getConnection());
-      Map<String, Object> variables = ImmutableMap.<String, Object>builder().build();
+    	System.out.println("name " + name + " contact "+ contact + " email " + email + " subscribe " + subscribe);
+      boolean success= Query.updateUser(email, name, contact, subscribe, conn);
+      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+          .put("done", success).build();
       return GSON.toJson(variables);
     }
   }
@@ -307,28 +305,45 @@ public class Gui {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
-      String address = qm.value("address");
+      
+      System.out.println(qm.value("creditNum"));
+      System.out.println(qm.value("duration"));
+      
       String email = qm.value("user");
       int creditNum = Integer.parseInt(qm.value("creditNum"));
       int duration = Integer.parseInt(qm.value("duration"));
-      double priceBound = Double.parseDouble(qm.value("priceBound"));
+      double priceBound = Double.parseDouble(qm.value("bound"));
       String eateryName = qm.value("eatery");
+      boolean north = Boolean.parseBoolean(qm.value("north_deliver"));
+      boolean center = Boolean.parseBoolean(qm.value("center_deliver"));
+      boolean south = Boolean.parseBoolean(qm.value("south_deliver"));
       // set fields
-      Eatery eatery;
-      Location location;
+      List<Eatery> eatery = new ArrayList<>();
+      List<Location> location = new ArrayList<>();
       User user;
       // initialize fields
       try {
 		    // user
-				user = Query.getUser(email, Global.getDb().getConnection());
+				user = Query.getUser(email, conn);
 				// eatery
-	      eatery = Query.getEatery(eateryName, Global.getDb().getConnection());
+	      String[] eateries = eateryName.split(",");
+	      for (String s : eateries) {
+	      	eatery.add(Query.getEatery(s, conn));
+	      }
+	      System.out.println("eatery:" + eatery);
+
+	      /*
 				// location
-		    if (address == null) {
-		    	 location = null;
-		    } else {
-					location = Query.getLocation(address, Global.getDb().getConnection());
+		    if (north) {
+		    	location.addAll(Query.getNorthLocation(conn));
 		    }
+		    if (south){
+		    	location.addAll(Query.getSouthLocation(conn));
+		    }
+		    if (center){
+		    	location.addAll(Query.getCenterLocation(conn));
+		    }
+		    */
       } catch (SQLException e) {
       	e.printStackTrace();
       	Map<String, Object> variables = new ImmutableMap.Builder()
@@ -336,9 +351,21 @@ public class Gui {
       	return variables;
       }
       // create offer
+      System.out.println("beforeOffer");
+
+      
       Offer offer = new Offer(location, eatery, priceBound, duration * 600000, user, creditNum);
       // match deals
+      System.out.println("beforeMatcher: " + offer);
       List<Deal> deal = Matcher.matchOffer(offer);
+      System.out.print(deal);
+      System.out.print("size: " + deal.size());
+      
+      
+      System.out.println("offers: " + Global.getOffer());
+      System.out.println("orders: " + Global.getOrders());
+      
+      
       if (deal.size() == 0) {
       	Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("result", "nothing").build();
@@ -351,8 +378,14 @@ public class Gui {
 	      return GSON.toJson(variables);
       } else {
       	// has match
-	      Map<String, Object> variables = new ImmutableMap.Builder()
-	          .put("deal", deal.get(0))
+      	Deal result = deal.get(0);
+      	String buyerName = result.getOrder().getUser().getName();
+      	double dealPrice = result.getPrice();
+      	String contact = result.getOrder().getUser().getContact();
+	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+	          .put("buyerName", buyerName)
+	          .put("dealPrice", dealPrice)
+	          .put("contact", contact)
 	          .put("result", "match").build();
 	      return GSON.toJson(variables);
 		  }
@@ -370,6 +403,9 @@ public class Gui {
       double price = Double.parseDouble(qm.value("price"));
       double priceBound = Double.parseDouble(qm.value("priceBound"));
       String eateryName = qm.value("eatery");
+      
+      System.out.println(email);
+
       // set fields
       List<Food> foods = new ArrayList<>();
       Eatery eatery;
@@ -380,17 +416,18 @@ public class Gui {
       	// food
         String[] foodIds = menu.split("//s");
 		    for (String s : foodIds) {
-						foods.add(Query.getFood(s, Global.getDb().getConnection()));
+						foods.add(Query.getFood(s, conn));
 		    }
 		    // user
-				user = Query.getUser(email, Global.getDb().getConnection());
+				user = Query.getUser(email, conn);
 				// eatery
-	      eatery = Query.getEatery(eateryName, Global.getDb().getConnection());
+	      eatery = Query.getEatery(eateryName, conn);
+	      System.out.println("eatery:" + eatery);
 				// location
 		    if (address == null) {
 		    	 location = null;
 		    } else {
-					location = Query.getLocation(address, Global.getDb().getConnection());
+					location = Query.getLocation(address, conn);
 		    }
       } catch (SQLException e) {
       	e.printStackTrace();
@@ -399,23 +436,53 @@ public class Gui {
       	return variables;
       }
       // create order
+      System.out.println("beforeOrder");
+
+      
       Order order = new Order(location, eatery, priceBound, price, duration * 600000, user, foods);
       // match deals
+      System.out.println("beforeMatcher: " + order);
+
+      
       List<Deal> deal = Matcher.matchOrder(order);
+      System.out.print(deal);
+      System.out.print("size: " + deal.size());
+      
+      System.out.println("offers: " + Global.getOffer());
+      System.out.println("orders: " + Global.getOrders());
+      
       if (deal.size() == 0) {
       	Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("result", "nothing").build();
 	      return GSON.toJson(variables);
     	} else if (deal.size() <= 3) {
       	// no match
+        User sellers = new List<User>();
+        User prices = new List<Double>();
+        User buyer = deal.get(0).getOrders().getUser();
+
+        for (Deal d : deal) {
+          User seller = d.getOffer().getUser();
+          double price = d.getPrice();
+          sellers.add(seller);
+          prices.add(Double(price));
+        }
       	Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-	          .put("deal", deal)
-	          .put("result", "suggestions").build();
+	          .put("sellers", sellers)
+            .put("prices", prices)
+	          .put("buyer", buyer)
+            .put("result", "suggestions").build();
 	      return GSON.toJson(variables);
       } else {
       	// has match
+      	Deal result = deal.get(0);
+      	User seller = result.getOffer().getUser();
+        User buyer = result.getOrder().getUser();
+      	double dealPrice = result.getPrice();
 	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-	          .put("deal", deal.get(0))
+	          .put("seller", result)
+	          .put("dealPrice", dealPrice)
+	          .put("buyer", buyer)
 	          .put("result", "match").build();
 	      return GSON.toJson(variables);
       }

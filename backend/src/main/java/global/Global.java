@@ -17,10 +17,10 @@ public class Global {
   private static List<Order> orders = new CopyOnWriteArrayList<>();
   private static List<Offer> offers = new CopyOnWriteArrayList<>();
   private static Database database = new Database();
-  private static String linkHead = "localhost:4000/";
+  public static final String linkHead = "localhost:4000/";
   private static Random random = new Random();
   private static String charStorage = 
-  		"1234567890!@#$%^&*qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+  		"1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
   private static int linklength = 20;
   private static Map<String, String> forgetPwd = new ConcurrentHashMap<>();
   private static Map<String, User> registeringUsers = new ConcurrentHashMap<>();

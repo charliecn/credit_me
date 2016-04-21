@@ -45,6 +45,42 @@ var prevName;
 var prevEmail;
 var prevContact;
 var btnWidth;
+//var resetEmail = "";
+
+$(document).on("pagecreate", "#resetpwd-page", function(){
+	//console.log('here in resetpwd-page');
+	var resetEmail = $("#reset-email").text();
+	//console.log(resetEmail);
+	$("#resetpwd-submit").click(function(){
+		var resetPwd = $("#resetpwd-pwd").val();
+		console.log("newpwd: " + resetPwd + " email: " + resetEmail);
+		var postParameters = {email: resetEmail, pwd: resetPwd};
+		$.post("/userforgetpwd",postParameters,function(responseJSON){
+			//console.log('here in user forget pwd');
+			var done = JSON.parse(responseJSON).done;
+			$("#reset-scd").css('display', 'block');
+		});
+	});
+
+	$("#backtologin-submit").click(function(){
+		$(location).attr('href', '/home#login-page');
+		//alert('here!');
+	});
+});
+
+$(document).on("pagecreate", "#verify-page", function(){
+	$("#backtologin-submit").click(function(){
+		$(location).attr('href', '/home#login-page');
+		//alert('here!');
+	});
+});
+
+// $(document).on("pagecreate", "#resetpwd-page", function(){
+// 	$("#backtologin-submit").click(function(){
+// 		$(location).attr('href', '/home#login-page');
+// 		//alert('here!');
+// 	});
+// });
 
 function checkLoginEmail(email) {
 	var emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
@@ -177,26 +213,42 @@ $(document).on("pagecreate", "#signup-page", function(){
 		}
 		email = enteredEmail;
 
-		console.log('after email');
 		var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
-		console.log(postParameters);
-		$.post("/usersignup",postParameters,function(responseJSON){
-			console.log('reaches here');
-			var success = JSON.parse(responseJSON).success;
-			console.log(success);
-		})
+		$.post("/signupemail", postParameters, function(responseJSON){
+			var done = JSON.parse(responseJSON).done;
+			console.log("signup: " + done);
+		});
+
+
+		$.mobile.changePage($("#signupwait-page"));
+
+		// console.log('after email');
+		// var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
+		// console.log(postParameters);
+		// $.post("/usersignup",postParameters,function(responseJSON){
+		// 	console.log('reaches here');
+		// 	var success = JSON.parse(responseJSON).success;
+		// 	console.log(success);
+		// })
 	})
 });
+
+// $(document).on("pagecreate", "#signupwait-page", function(){
+
+// });
 
 $(document).on("pagecreate", "#forgetpwd-page", function(){
 	//e.preventDefault();
 	$("#forgetpwd-submit").click(function(){
-		var email = $.trim($("#signup-user").val()).replace(/\s/g, '+');
+		var email = $("#forgetpwd-user").val();
+		//resetEmail = email;
 		console.log(email);
 		var postParameters = {email: email};
-		// $.post("/userforgetpwd",postParameters,function(responseJSON){
-
-		// })
+		$.post("/passwordemail",postParameters,function(responseJSON){
+			var done = JSON.parse(responseJSON).done;
+			$.mobile.changePage($("#resetpwdwait-page"));
+			//var done = JSON.parse(responseJSON).done;
+		})
 	});
 });
 

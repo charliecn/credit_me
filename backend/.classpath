@@ -27,6 +27,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/main/java/javax.mail.jar"/>
+	<classpathentry kind="lib" path="credit_me/src/main/java/javax.mail.jar"/>
+	<classpathentry kind="lib" path="credit_me/src/main/java/activation-1.1.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

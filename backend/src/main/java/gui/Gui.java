@@ -179,7 +179,8 @@ public class Gui {
       String body = "Welcome! click the following link to verify your email:\n" + link;
     	Global.getRegisteringUsers().put(link, user);
     	boolean success = EmailSender.sendEmail(email, subject, body);
-    	
+    	System.out.println("emailHandler: " + link);
+    	System.out.println("cache: " + Global.getRegisteringUsers().size());
       Map<String, Object> variables = new ImmutableMap.Builder()
       		.put("done", success).build();
       return GSON.toJson(variables);
@@ -216,8 +217,9 @@ public class Gui {
   private class PasswordVerifyHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String link = req.params("link");
-      String email = Global.getForgetPwds().remove(link);
+      //String person = req.params(":id");
+      String link = req.params(":random");
+      String email = Global.getForgetPwds().remove(Global.linkHead + "forgetpwd/" + link);
     	
       Map<String, Object> variables = new ImmutableMap.Builder()
       		.put("email", email).build();

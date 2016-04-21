@@ -51,13 +51,14 @@ public class Gui {
 	 */
 	private String loginEmail;
 	
-	Connection conn = Global.getDb().getConnection();
+	Connection conn;
 
 	/**
 	 * constructor.
 	 */
   public Gui(String db) {
   	Global.setDb(db);
+  	conn = Global.getDb().getConnection();
   }
 
   /**

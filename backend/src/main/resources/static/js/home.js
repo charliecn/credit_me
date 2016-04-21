@@ -240,7 +240,6 @@ $(document).on("pagecreate", "#signup-page", function(){
 $(document).on("pagecreate", "#forgetpwd-page", function(){
 	//e.preventDefault();
 	$("#forgetpwd-submit").click(function(){
-		$("#forgetpwd-processing").css('display', 'block');
 		var email = $("#forgetpwd-user").val();
 		//resetEmail = email;
 		console.log(email);
@@ -370,9 +369,10 @@ $(document).on("pagecreate", "#profile-page", function(){
 
 
 
+
+localStorage.removeItem("request");
 request = JSON.parse(localStorage.request||'{}');
 localStorage.request = JSON.stringify(request);
-
 
 $( document ).on( "pageinit", "#page_buy_1", function(event) {
 	console.log('in pagebuy1: ' + email);
@@ -383,7 +383,6 @@ $( document ).on( "pageinit", "#page_buy_1", function(event) {
   $(".meet_up_confirm").tap(function(){
     request = JSON.parse(localStorage.request);
     request.method="meet";
-
     delete request.address;
 
     localStorage.request = JSON.stringify(request);
@@ -448,22 +447,21 @@ $( document ).on( "pageinit", "#page_buy_2", function(event) {
 
   $(".andrews").click(function(){
     request = JSON.parse(localStorage.request);
-    request.eatery = "andrews";  
+    request.eatery = "Andrews Commons";  
     localStorage.request = JSON.stringify(request);
     //console.log(request);
   });
 
   $(".blueroom").click(function(){
     request = JSON.parse(localStorage.request);
-    request.eatery = "blueroom";  
+    request.eatery = "Blueroom";  
     localStorage.request = JSON.stringify(request);
     //console.log(request);
   });
 
   $(".josiahs").click(function(){
     request = JSON.parse(localStorage.request);
-    request.eatery = "jos"; 
-
+    request.eatery = "Josiah's";  
     localStorage.request= JSON.stringify(request);
     //localStorage.request = JSON.stringify(request);
   })
@@ -484,7 +482,6 @@ $( document ).on( "pageshow", "#page_buy_3", function(event) {
 
   //$('#page_buy_3').append("<p>"+request.eatery+"</p>");
   request = JSON.parse(localStorage.request);
-
   var eatery = request.eatery;
   var date = new Date();
   var day = date.getDay();
@@ -593,11 +590,11 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
   });
 
   $('#wrong_number').css("display","none");
-  
+
   request = JSON.parse(localStorage.request);
-  $('#price_span_2').text("$"+request.price);
-  localStorage.request=JSON.stringify(request);
-  
+  $("#price_span_2").text("$"+request.price);
+  localStorage.request = JSON.stringify(request);
+
   var tap_counter = 0;
 
   $('#payment_suggestion').tap(function(){
@@ -616,6 +613,7 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
     
     if(phone.match(/\d/g).length===10 && phone.length==10){
       $('#wrong_number').css("display","none");
+
       request = JSON.parse(localStorage.request);
       request.phone=phone;
       request.duration = $('#duration').val();
@@ -623,7 +621,7 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
       console.log(request);
       localStorage.request = JSON.stringify(request)
 
-      $.post("/placeorder",{user:email,address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
+      $.post("/placeorder",{user:"silei_ren@brown.edu",address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
         data = JSON.parse(response);
         console.log(response);
       })

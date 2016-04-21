@@ -71,15 +71,16 @@ public class Query {
 		String password = rs.getString("password");
 		String contact = rs.getString("contact");
 		int rating = rs.getInt("rating");
-		int ratingNum = rs.getInt("rating_num");
+		int ratingNum = rs.getInt("ratingNum");
 		String gender = rs.getString("gender");
 		
+		/*
 		prep = 
-				conn.prepareStatement("SELECT * FROM order WHERE seller = ? OR buyer = ?");
+				conn.prepareStatement("SELECT * FROM "order" WHERE seller = ? OR buyer = ?;");
 		prep.setString(1, email);
 		prep.setString(2, email);
 		rs = prep.executeQuery();
-		
+		*/
 	  List<Deal> pastDeals = new ArrayList<>();
 		// TODO add deals
 		return new User(name, email, password, rating, ratingNum, gender, contact, pastDeals, subscribe);
@@ -243,5 +244,47 @@ public class Query {
 		Double price = rs.getDouble("price");
 		return new Food(price, name);
 		
+	}
+		
+	public static List<Location> getNorthLocation(Connection conn) throws SQLException{
+		PreparedStatement prep = 
+				conn.prepareStatement("SELECT * FROM location WHERE section = 'north'");
+		
+		ResultSet rs = prep.executeQuery();
+		List<Location> toReturn = new ArrayList<>();
+		while(rs.next()){
+			String id = rs.getString("id");
+			String name = rs.getString("name");
+			toReturn.add(new Location(id, name, "north"));
+		}
+		return toReturn;
+	}
+	
+	public static List<Location> getSouthLocation(Connection conn) throws SQLException{
+		PreparedStatement prep = 
+				conn.prepareStatement("SELECT * FROM location WHERE section = 'south'");
+		
+		ResultSet rs = prep.executeQuery();
+		List<Location> toReturn = new ArrayList<>();
+		while(rs.next()){
+			String id = rs.getString("id");
+			String name = rs.getString("name");
+			toReturn.add(new Location(id, name, "south"));
+		}
+		return toReturn;
+	}
+	
+	public static List<Location> getCenterLocation(Connection conn) throws SQLException{
+		PreparedStatement prep = 
+				conn.prepareStatement("SELECT * FROM location WHERE section = 'center'");
+		
+		ResultSet rs = prep.executeQuery();
+		List<Location> toReturn = new ArrayList<>();
+		while(rs.next()){
+			String id = rs.getString("id");
+			String name = rs.getString("name");
+			toReturn.add(new Location(id, name, "center"));
+		}
+		return toReturn;
 	}
 }

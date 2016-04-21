@@ -24,17 +24,20 @@ public class Matcher {
   		if (of.isDeliver() != isDeliver) {
   			continue;
   		}
+  		/*
   		// check whether the location matches
-  		if (isDeliver && !order.getLocation().equals(of.getLocation())) {
+  		if (isDeliver && !of.getLocations().contains(order.getLocation())) {
   			continue;
   		}
+  		*/
   		// check whether the eatery matches
-  		if (!order.getEatery().equals(of.getEatery())) {
+  		if (!of.getEateries().contains(order.getEatery())) {
   			continue;
   		}
   		// adjust lowbound price
   		double creditBound = order.getPriceBound();
-  		double lowerBound = generateLowerBound(actualPrice, creditBound);
+  		int creditNum = of.getCreditNum();
+  		double lowerBound = generateLowerBound(creditNum, actualPrice, creditBound);
   		// match by price
   		if (order.getPriceBound() < lowerBound) {
   			// price out of bound: put in suggestion
@@ -51,7 +54,7 @@ public class Matcher {
   			break;
   		}
   	}
-  	
+  	  	
   	if (match == null) {
   		return suggestions;
   	} else {
@@ -66,6 +69,7 @@ public class Matcher {
 
   public static List<Deal> matchOffer(Offer offer) {
 		double creditBound = offer.getPriceBound();
+		int creditNum = offer.getCreditNum();
   	boolean isDeliver = offer.isDeliver();
     Deal match = null;
     List<Deal> suggestions = new ArrayList<>();
@@ -75,17 +79,19 @@ public class Matcher {
   		if (or.isDeliver() != isDeliver) {
   			continue;
   		}
+  		/*
   		// check whether the location matches
-  		if (isDeliver && !offer.getLocation().equals(or.getLocation())) {
+  		if (isDeliver && !offer.getLocations().contains(or.getLocation())) {
   			continue;
   		}
+  		*/
   		// check whether the eatery matches
-  		if (!offer.getEatery().equals(or.getEatery())) {
+  		if (!offer.getEateries().contains(or.getEatery())) {
   			continue;
   		}
   		// adjust lowbound price
   		double actualPrice = or.getActualPrice();
-  		double lowerBound = generateLowerBound(actualPrice, creditBound);
+  		double lowerBound = generateLowerBound(creditNum, actualPrice, creditBound);
   		// match by price
   		if (or.getPriceBound() < lowerBound) {
   			// price out of bound: put in suggestion
@@ -115,13 +121,18 @@ public class Matcher {
   	}
   }
   
-  private static double generateLowerBound(double actualPrice, double creditBound) {
+  private static double generateLowerBound(int creditNum, double actualPrice, double creditBound) {
   	double points = 0;
   	int state = 0;
-		if (actualPrice > 11.3) {
+		if (actualPrice > 11.3 && creditNum == 2) {
 			points = actualPrice - 14.6;
+			state = 4;
+		} else if (actualPrice > 11.3 && creditNum == 1) {
+			state = 3;
+		} else if (actualPrice > 7.3 && creditNum == 2) {
+			points = actualPrice - 7.3;
 			state = 2;
-		} else if (actualPrice > 7.3) {
+		} else if (actualPrice > 7.3 && creditNum == 1) {
 			points = actualPrice - 7.3;
 			state = 1;
 		}
@@ -130,7 +141,11 @@ public class Matcher {
 		if (state == 0) {
 			lowerBound = creditBound;
 		} else if (state == 1) {
+			lowerBound = creditBound + points;
+		} else if (state == 2) {
 			lowerBound = Math.min(creditBound + points, creditBound * 2);
+		} else if (state == 3) {
+			lowerBound = 100;
 		} else {
 			lowerBound = creditBound * 2 + points;
 		}

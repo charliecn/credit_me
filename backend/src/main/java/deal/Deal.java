@@ -23,6 +23,10 @@ public class Deal {
     price = pri;
   }
 
+  public double getPrice() {
+  	return price;
+  }
+  
   public Order getOrder() {
     return order;
   }

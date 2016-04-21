@@ -35,7 +35,6 @@
       </div>
 <!--  <input type="submit" data-role="none" value="Log In" class="ui-btn" style="margin-top: 20px"> -->
     </form>
-    <p style="color: grey">----------OR----------</p>
     <a href="#signup-page" data-role="none" class="ui-btn" style="margin-top: 0px" id="signup-btn">Sign Up</a>
     <a href="#forgetpwd-page" data-role="none" class="ui-btn" style="margin-top: 14px">Forget Password?</a>
   </div>
@@ -93,7 +92,7 @@
   </div>
 
   <div data-role="main" class="ui-content centered">
-    <h2>Please Check Your Email</h2>
+    <h2>Signup In Progress</h2>
     <p>We have sent a reset password link to your brown email address.<br>Please check your email and click the link we provide. If you still not receive it after 60 seconds, please click the following button. </p>
   </div>
 </div>
@@ -115,7 +114,6 @@
         <a href="#login-page" data-role="none" value="Login In" class="ui-btn" style="margin-top: 20px">Back To Login In</a>
       </div>
     </form>
-    <p id="forgetpwd-processing" style="display: none">Processing...</p>
   </div>
 </div>
 
@@ -461,7 +459,7 @@
 
         </div>
       </div>
-      <p style="font-size: 1.2em">Current order price: <span id="price_span" style="color: #9d8189">$15.00</span></p>
+      <p style="font-size: 1.2em">Current order price: <span id="price_span_2" style="color: #9d8189">$15.00</span></p>
 
       <p style="display: none" id="deliver_note">We have added <span style="color: #9d8189">$2</span> delivery tip.</p>
       

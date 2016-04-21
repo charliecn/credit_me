@@ -235,7 +235,7 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
       String password = qm.value("pwd");
-      boolean success = Query.changePassword(email, password, Global.getDb().getConnection());
+      boolean success = Query.changePassword(email, Global.md5(password), Global.getDb().getConnection());
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("done", success).build();
       return GSON.toJson(variables);

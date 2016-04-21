@@ -84,6 +84,19 @@
   </div>
 </div>
 
+<div data-role="page" id="resetpwdwait-page">
+  <div data-role="header" class="row">
+    <div class="small-6 small-centered columns logo">
+      <h1>CreditMe@Brown</h1>
+    </div>
+  </div>
+
+  <div data-role="main" class="ui-content centered">
+    <h2>Signup In Progress</h2>
+    <p>We have sent a reset password link to your brown email address.<br>Please check your email and click the link we provide. If you still not receive it after 60 seconds, please click the following button. </p>
+  </div>
+</div>
+
 
 <div data-role="page" id="forgetpwd-page">
   <div data-role="header" class="row">

@@ -11,13 +11,13 @@
   	<form id="resetpwd-form">
       <div class="ui-field-contain">
         <label for="resetpwd-user">New Password:</label>
-        <input type="text" name="resetpwd-pwd" id="resetpwd-pwd">
+        <input type="password" name="resetpwd-pwd" id="resetpwd-pwd">
         <a href="#" id="resetpwd-submit" ata-role="none" class="ui-btn" style="margin-top: 20px">Reset Password</a>
       </div>
     </form>
     <div id="reset-scd">
     	<p>You have successfully reset your password. Now go back to log in!</p>
-    	<a href="#login-page" data-role="button" class="ui-btn">Go To Log In</a>
+    	<a href="#" data-role="button" id="backtologin-submit" class="ui-btn">Go To Log In</a>
     </div>
     <div id="reset-email">${email}</div>
   </div>

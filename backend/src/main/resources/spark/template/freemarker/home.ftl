@@ -35,6 +35,7 @@
       </div>
 <!--  <input type="submit" data-role="none" value="Log In" class="ui-btn" style="margin-top: 20px"> -->
     </form>
+    <p style="color: grey">----------OR----------</p>
     <a href="#signup-page" data-role="none" class="ui-btn" style="margin-top: 0px" id="signup-btn">Sign Up</a>
     <a href="#forgetpwd-page" data-role="none" class="ui-btn" style="margin-top: 14px">Forget Password?</a>
   </div>
@@ -92,7 +93,7 @@
   </div>
 
   <div data-role="main" class="ui-content centered">
-    <h2>Signup In Progress</h2>
+    <h2>Please Check Your Email</h2>
     <p>We have sent a reset password link to your brown email address.<br>Please check your email and click the link we provide. If you still not receive it after 60 seconds, please click the following button. </p>
   </div>
 </div>
@@ -114,6 +115,7 @@
         <a href="#login-page" data-role="none" value="Login In" class="ui-btn" style="margin-top: 20px">Back To Login In</a>
       </div>
     </form>
+    <p id="forgetpwd-processing" style="display: none">Processing...</p>
   </div>
 </div>
 

@@ -37,21 +37,23 @@
         </div>
 
         <ul data-role="listview" data-inset="true">
-          <li data-role="divider" style="white-space:normal;">Welcome, brave provider of meal credit. Choose either or both of following ways of deal.</li>
+          <li data-role="divider" style="white-space:normal;">How would you like to trade your credit?</li>
           <li>
-            <img src="../image/meet.png" style="height:100%">
+            <a class="meet_up_confirm" href="#page_sell_2">
+            <img src="../image/sell_meet.png" style="height:100%; margin-left: 10px;margin-bottom: 10px;">
             <h2>Meet up</h2>
-            <p style="white-space:normal;">Meet with a credit provider.</p>
-
+            <p style="white-space:normal;">Meet with a Brunonian and swipe a credit for him.</p>
+            </a>
+            <a class="meet_up_confirm" href="#page_sell_2" data-transition="fade" data-icon="arrow-r"></a>
           </li>
           
           <li>
-            <a class="deliver_confirm" href="#page_deliver">
-            <img src="../image/deliver.png">
-            <h2>Delivery</h2>
-            <p style="white-space:normal;">Feel lazy? Choose delivery!</p>
+            <a class="deliver_confirm" href="#page_sell_deliver">
+            <img src="../image/sell_deliver.png" style="height:100%; margin-left: 10px;margin-top: 10px;">
+            <h2>Meet + Deliver</h2>
+            <p style="white-space:normal; ">Besides meet-up, I can also deliver food and receive $2 for my endeavor.</p>
             </a>
-            <a class="deliver_confirm" href="#page_deliver" data-transition="fade" data-icon="arrow-r"></a>
+            <a class="deliver_confirm" href="#page_sell_deliver" data-transition="fade" data-icon="arrow-r"></a>
           </li>
 
         </ul>
@@ -62,14 +64,230 @@
     <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
       <div data-role="navbar">
         <ul id="bottom_ul">
-          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
           <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
           <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
         </ul>
       </div>
     </div>
+  </div>
+
+  <div data-role="page" id="page_sell_deliver">
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_deliver"></div>
+          </div>
+        </div>
+
+        <ul id="campus_section_list" data-role="listview" data-inset="true">
+           <li data-role="divider" style="white-space:normal;background-color: #9d8189;color: white;text-shadow: none;">Choose part(s) of campus map you can deliver food to.</li>
+        </ul>
+        
+        <ul id="campus_section_list" data-role="listview" data-inset="true" style="margin-top: 30px">
+          <li data-role="divider" style="white-space:normal;font-size: 0.9em">North Campus (Pembroke, Bio-Med, Granoff) <span style="color: #9d8189;font-size: 1em">&#8595</span></li>
+          <li style="padding:0">
+            <img class="click" id="north_click" src="../image/click.png">
+            <div id="north_shadow" class="map_shadow"></div>
+
+          </li>
+        </ul>
+
+        <ul id="campus_section_list" data-role="listview" data-inset="true">
+
+          <li data-role="divider" style="white-space:normal;font-size: 0.9em">Central Campus (Main Green, Sci-Li, B&H) <span style="color: #9d8189;font-size: 1em">&#8595</span></li>
+          <li style="padding:0">
+            <img class="click" id="center_click" src="../image/click.png">
+            <div id="center_shadow" class="map_shadow"></div>
+          </li>
+        </ul>
+
+        <ul id="campus_section_list" data-role="listview" data-inset="true">
+
+          <li data-role="divider" style="white-space:normal;font-size: 0.9em">South Campus (Wriston Quad, New Dorm, Perkins) <span style="color: #9d8189;font-size: 1em">&#8595</span></li>
+          <li style="padding:0">
+            <img class="click" id="south_click" src="../image/click.png">
+            <div id="south_shadow" class="map_shadow"></div>
+          </li>
+
+        </ul>
+
+        <a href="#page_sell_2" class="ui-btn" id="address_confirm" style="background-color:#FFCAD4;color:#9D8189;display: block;margin-top: 20px;">Continue</a>
+
+      </div>
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div data-role="page" id="page_sell_2">
+
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_2"></div>
+
+          </div>
+        </div>
+          
+         
+
+        <ul data-role="listview" data-inset="true" id="menu">
+          <li data-role="divider">Pick eatery(s) where you can go.</li>
+
+          <li style="background-color: #ffe5d9">
+                <img src="../image/andrews.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Andrews Commons" id=""/> Andrews Commons </label>
+          </li>
+
+          <li style="background-color: #E8E3E1">
+                <img src="../image/blueroom.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Blueroom" id=""/> Blueroom </label>
+          </li>
+
+          <li style="background-color: #ffe5d9">
+                <img src="../image/johs.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Josiah's" id=""/> Josiah's </label>
+          </li>
+
+          <li style="background-color: #E8E3E1">
+                <img src="../image/ivyroom.png" style="width: 60px;margin-top: 10px; margin-left: 10px">
+                <label><input type="checkbox" value="unchecked" name="Ivy Room" id=""/> Ivy Room </label>
+          </li>
+
+          <li style="background-color: #ffe5d9">
+                <img src="../image/ratty.png" style="width: 80px;">
+                <label><input type="checkbox" value="unchecked" name="Ratty" id=""/> Ratty </label>
+          </li>
+
+          <li style="background-color: #E8E3E1">
+                <img src="../image/ivyroom.png" style="width: 60px;margin-top: 10px; margin-left: 10px">
+                <label><input type="checkbox" value="unchecked" name="V-Dub" id=""/> V-Dub </label>
+          </li>
+
+        </ul>
+
+        <a href="#page_sell_3" class="ui-btn" id="menu_confirm" style="background-color:#FFCAD4;color:#9D8189;display: none;margin-top: 30px">Continue</a>
+      </div>
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div data-role="page" id="page_sell_3">
+    
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+      <div data-role="main" class="ui-content">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a" style="width:20%">
+            <a href="#" data-rel="back" class="back"><img src="../image/back.png"></a>
+          </div>
+          <div class="ui-block-b" style="width:80%">
+             <div id="progress_bar_3"></div>
+
+          </div>
+        </div>
+
+        <div class="full_width">
+
+          <label style="margin-bottom: 20px;margin-top: 20px;" for="bound">How much would you like to pay for this order?</label>
+          <p style="color:#9d8189;" id="payment_suggestion">tap to view suggestion</p>
+          <p style="display: none" id="payment_suggestion_detail">Meal credits are usually traded at 10-15% off. Pick an ideal price to prompt your deal to finish.</p>
+         <input type="range" name="bound" id="bound" value="6.0" min="0" max="7.3" step="0.1">
+        
+        </div>
+        
+        <div style="margin-bottom: 30px" id="credit_number">
+
+          <label for="tel-1" style="margin-top: 20px;margin-bottom:20px;">How many credits are you willing to sell, at most?</label>
+          <label>
+              <input type="radio" data-mini="true" name="radio-choice-0" id="credit_one">One
+          </label>
+
+          <label for="radio-choice-0b">Two
+              <input type="radio" data-mini="true" name="radio-choice-0" id="credit_two" class="custom" checked>
+          </label>
+
+        </div>
+
+        <div style="margin-bottom: 30px" class="full_width">
+
+          <label for="tel-1" style="margin-top: 20px;margin-bottom:20px;font-size: 1.2em;">Your phone number <span style="color:#9d8189">&#x2193</span></label>
+          <input style="height: 40px;" type="tel" data-clear-btn="true" name="tel-1" id="tel-1" value="" placeholder="buyer needs to contact you" >
+
+          <p style="display: none; color:red" id="wrong_number">Phone number incorrect. Please input 10-digit number.</p>
+
+        </div>
+        
+
+        <div>
+          <label style="margin-bottom: 20px;margin-top: 20px;" for="duration">How long can you wait for your offer to be matched? (minutes)</label>
+         <input type="range" name="duration" id="duration" value="30" min="0" max="120" step="10">
+        </div>
+
+        <a class="ui-btn" id="final_confirm" style="margin-top: 40px;margin-bottom:40px;background-color: #ffe5d9">Yeah, let's do it!</a>
+      </div>
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+
+
+
   </div>
 
   </body>

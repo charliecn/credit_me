@@ -1,5 +1,7 @@
 package deal;
 
+import java.util.List;
+
 import global.Global;
 import locationfood.Eatery;
 import locationfood.Location;
@@ -15,11 +17,28 @@ public class Offer extends HalfDeal{
   	Global.getOffer().remove(this);
   };
   private int creditNum;
+  protected List<Location> location;
+  protected List<Eatery> eatery;
 	
-  public Offer(Location loc, Eatery ety, double upper, int dur, User usr, int num) {
-    super(loc, ety, upper, dur, usr);
+  public Offer(List<Location> loc, List<Eatery> ety, double upper, int dur, User usr, int num) {
+    super(upper, dur, usr);
+    location = loc;
+    eatery = ety;
     creditNum = num;
     Global.getOffer().add(this);
+    if (location.isEmpty()) {
+    	isDeliver = false;
+    } else {
+    	isDeliver = true;
+    }
+  }
+  
+  public List<Location> getLocations() {
+  	return location;
+  }
+  
+  public List<Eatery> getEateries() {
+  	return eatery;
   }
   
   public int getCreditNum() {

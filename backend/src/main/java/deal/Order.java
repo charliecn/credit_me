@@ -19,12 +19,21 @@ public class Order extends HalfDeal {
   };
   protected List<Food> orders;
   protected double actualPrice;
+  protected Location location;
+  protected Eatery eatery;
   
   public Order(Location loc, Eatery ety, double upper, double price, int dur, User usr, List<Food> food) {
-    super(loc, ety, upper, dur, usr);
+    super(upper, dur, usr);
+    location = loc;
+    eatery = ety;
     orders = food;
     actualPrice = price;
     Global.getOrders().add(this);
+    if (location == null) {
+    	isDeliver = false;
+    } else {
+    	isDeliver = true;
+    }
   }
 
   public List<Food> getOrders() {
@@ -33,6 +42,14 @@ public class Order extends HalfDeal {
   
   public double getActualPrice() {
   	return actualPrice;
+  }
+  
+  public Location getLocation() {
+    return location;
+  }
+  
+  public Eatery getEatery() {
+  	return eatery;
   }
   
   @Override

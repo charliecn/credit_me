@@ -3,22 +3,27 @@ package global;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import database.Database;
 import deal.Offer;
 import deal.Order;
+import user.User;
 
 public class Global {
   private static List<Order> orders = new CopyOnWriteArrayList<>();
   private static List<Offer> offers = new CopyOnWriteArrayList<>();
   private static Database database = new Database();
-  private static String linkHead = "localhost:4000/verify/";
+  private static String linkHead = "localhost:4000/";
   private static Random random = new Random();
   private static String charStorage = 
   		"1234567890!@#$%^&*qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
   private static int linklength = 20;
+  private static Map<String, String> forgetPwd = new ConcurrentHashMap<>();
+  private static Map<String, User> registeringUsers = new ConcurrentHashMap<>();
   
   public static List<Offer> getOffer() {
     return offers;
@@ -31,8 +36,17 @@ public class Global {
   public static Database getDb() {
     return database;
   }
+  
   public static void setDb(String db) {
     database.setUrl(db);
+  }
+  
+  public static Map<String, User> getRegisteringUsers() {
+  	return registeringUsers;
+  }
+  
+  public static Map<String, String> getForgetPwds() {
+  	return forgetPwd;
   }
   
   public static String md5(String password) {
@@ -53,12 +67,12 @@ public class Global {
   	return sb.toString();
   }
   
-  public static String randomLink() {
+  public static String randomLink(String page) {
 	    char[] text = new char[linklength];
 	    for (int i = 0; i < linklength; i++) {
         text[i] = charStorage.charAt(random.nextInt(charStorage.length()));
 	    }
 	    String linkTail = new String(text);
-	    return linkHead + linkTail;
+	    return linkHead + page + linkTail;
 	}
 }

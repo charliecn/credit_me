@@ -98,34 +98,6 @@ public class Query {
 			prep = conn.prepareStatement("DELETE FROM user WHERE email = ? AND password = ?");
 			prep.setString(1, email);
 			prep.setString(2, password);
-		} catch (SQLException e) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Adds a user to the user table
-	 * @param user - user to add
-	 * @param conn - connection to database
-	 * @return true if able to successfully add user, false otherwise
-	 */
-	public static boolean putUser(User user, Connection conn){
-		PreparedStatement prep;
-		try {
-			prep = conn.prepareStatement(
-			"INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			prep.setString(1, user.getEmail());
-			prep.setString(2, user.getName());
-			prep.setString(3, user.getPassword());
-			prep.setString(4, user.getContact());
-			prep.setInt(5, user.getTotalRating());
-			prep.setInt(6, user.getRatingNum());
-			//TODO: WHAT IS A TITLE STRING
-			String titleString = "placeholder";
-			prep.setString(7, "?");
-			prep.setString(8, "");
-			prep.setBoolean(9, user.getSubscribe());
 	    prep.addBatch();
 	    prep.executeBatch();
 	    prep.close();
@@ -134,6 +106,42 @@ public class Query {
 		}
 		return true;
 	}
+	
+	/**
+   * Adds a user to the user table
+   * @param user - user to add
+   * @param conn - connection to database
+   * @return true if able to successfully add user, false otherwise
+   */
+  public static boolean putUser(User user, Connection conn){
+    System.out.println(user.getEmail());
+    System.out.println(user.getName());
+
+    PreparedStatement prep;
+    try {
+      prep = conn.prepareStatement(
+      "INSERT INTO user (email, name, password, contact, rating, ratingNum, gender, title, subscribe)" +
+      " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+      prep.setString(1, user.getEmail());
+      prep.setString(2, user.getName());
+      prep.setString(3, user.getPassword());
+      prep.setString(4, user.getContact());
+      prep.setInt(5, user.getTotalRating());
+      prep.setInt(6, user.getRatingNum());
+      prep.setString(7, "gender");
+      //TODO: WHAT IS A TITLE STRING
+      String titleString = "placeholder";
+      prep.setString(8, titleString);
+      prep.setBoolean(9, user.getSubscribe());
+      prep.addBatch();
+      prep.executeBatch();
+      prep.close();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+    return true;
+  }
 	
 	public static boolean changePassword(String email, 
 			String oldPwd, String newPwd, Connection conn){
@@ -144,6 +152,25 @@ public class Query {
 			prep.setString(1, newPwd);
 			prep.setString(2, email);
 			prep.setString(3, oldPwd);
+	    prep.addBatch();
+	    prep.executeBatch();
+	    prep.close();
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean changePassword(String email, String newPwd, Connection conn){
+		PreparedStatement prep;
+		try {
+			prep = conn.prepareStatement(
+			"UPDATE user SET password = ? WHERE email = ?");
+			prep.setString(1, newPwd);
+			prep.setString(2, email);
+	    prep.addBatch();
+	    prep.executeBatch();
+	    prep.close();
 		} catch (SQLException e) {
 			return false;
 		}
@@ -219,5 +246,47 @@ public class Query {
 		Double price = rs.getDouble("price");
 		return new Food(price, name);
 		
+	}
+		
+	public static List<Location> getNorthLocation(Connection conn) throws SQLException{
+		PreparedStatement prep = 
+				conn.prepareStatement("SELECT * FROM location WHERE section = 'north'");
+		
+		ResultSet rs = prep.executeQuery();
+		List<Location> toReturn = new ArrayList<>();
+		while(rs.next()){
+			String id = rs.getString("id");
+			String name = rs.getString("name");
+			toReturn.add(new Location(id, name, "north"));
+		}
+		return toReturn;
+	}
+	
+	public static List<Location> getSouthLocation(Connection conn) throws SQLException{
+		PreparedStatement prep = 
+				conn.prepareStatement("SELECT * FROM location WHERE section = 'south'");
+		
+		ResultSet rs = prep.executeQuery();
+		List<Location> toReturn = new ArrayList<>();
+		while(rs.next()){
+			String id = rs.getString("id");
+			String name = rs.getString("name");
+			toReturn.add(new Location(id, name, "south"));
+		}
+		return toReturn;
+	}
+	
+	public static List<Location> getCenterLocation(Connection conn) throws SQLException{
+		PreparedStatement prep = 
+				conn.prepareStatement("SELECT * FROM location WHERE section = 'center'");
+		
+		ResultSet rs = prep.executeQuery();
+		List<Location> toReturn = new ArrayList<>();
+		while(rs.next()){
+			String id = rs.getString("id");
+			String name = rs.getString("name");
+			toReturn.add(new Location(id, name, "center"));
+		}
+		return toReturn;
 	}
 }

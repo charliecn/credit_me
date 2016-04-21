@@ -1,5 +1,7 @@
 package edu.brown.cs.sren1.credit_me;
 
+import emailer.EmailSender;
+import global.Global;
 import gui.Gui;
 
 public class Main {

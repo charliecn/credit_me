@@ -194,15 +194,18 @@ ul li a p{
 	font-size: 1.1em;
 }
 
-<<<<<<< HEAD
-label{
-	
-=======
+
 *, *::before, *::after {
 	box-sizing: inherit;
 }
 
 .ui-btn-me {
 	box-shadow: none;
->>>>>>> 7ca002f8b51ae8b95b6ff38379eab5c4d924a86f
+}
+
+#reset-scd {
+	display: none;
+}
+#reset-email {
+	display: none;
 }

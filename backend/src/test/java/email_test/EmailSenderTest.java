@@ -1,4 +1,4 @@
-package email_test;
+/*package email_test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,7 +15,7 @@ import emailer.EmailSender;
 public class EmailSenderTest {
 	
 	  private static final String dbStr = 
-			  "/gpfs/main/home/lackley/course/cs032/bacon/smallBacon.sqlite3";
+	  		"creditMe.sqlite3";
 	
 	  @BeforeClass
 	  public static void setUpClass() throws Exception {
@@ -52,3 +52,4 @@ public class EmailSenderTest {
 		
 	}
 }
+*/

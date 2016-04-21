@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,8 @@ public class Gui {
 	 * Used to keep email consistent when redirect to buy.ftl
 	 */
 	private String loginEmail;
+	
+	Connection conn = Global.getDb().getConnection();
 
 	/**
 	 * constructor.
@@ -92,10 +95,11 @@ public class Gui {
     Spark.get("/home", new LandingPage(), freeMarker);
     Spark.get("/buy", new BuyHandler(), freeMarker);
     Spark.post("/userlogin", new UserLoginHandler());
-    Spark.post("/usersignup", new UserSignUpHandler());
     Spark.post("/signupemail", new SignUpEmailHandler());
+    Spark.get("/verify/:random", new VerifyHandler(), freeMarker);
     Spark.post("/userforgetpwd", new UserForgetPwdHandler());
     Spark.post("/passwordemail", new PasswordEmailHandler());
+    Spark.get("/forgetpwd/:random", new PasswordVerifyHandler(), freeMarker);
     Spark.post("/userchangepwd", new UserChangePwdHandler());
     Spark.post("/changeinfo", new ChangeInfoHandler());
     Spark.post("/placeorder", new PlaceOrderHandler());
@@ -137,7 +141,7 @@ public class Gui {
       //get user
       User user = null;
 			try {
-				user = Query.getUser(email, Global.md5(password), Global.getDb().getConnection());
+				user = Query.getUser(email, Global.md5(password), conn);
 			} catch (SQLException e) {
       	e.printStackTrace();
       	Map<String, Object> variables = new ImmutableMap.Builder()
@@ -163,65 +167,79 @@ public class Gui {
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-      String subject = "credit_me sign up verification";
-      String link = Global.randomLink();
-      String body = "Welcome! click the following link to verify your email:\n" + link;
-    	EmailSender.sendEmail(email, subject, body);
-      Map<String, Object> variables = new ImmutableMap.Builder()
-      		.put("link", link).build();
-      return GSON.toJson(variables);
-    }
-  }
-  
-  private class UserSignUpHandler implements Route {
-    @Override
-    public Object handle(final Request req, final Response res) {
-      QueryParamsMap qm = req.queryMap();
       String name = qm.value("username");
       String pwd = qm.value("pwd");
-      String email = qm.value("email");
       String subscribe = qm.value("subscribe");
-      boolean subs;
-      if (subscribe.equals("true")) {
-      	subs = true;
-      } else {
-      	subs = false;
-      }
+      boolean subs = Boolean.parseBoolean(subscribe);
+
     	User user = new User(name, email, Global.md5(pwd), subs);
-    	boolean success = Query.putUser(user, Global.getDb().getConnection());
+    	
+      String subject = "credit_me sign up verification";
+      String link = Global.randomLink("verify/");
+      String body = "Welcome! click the following link to verify your email:\n" + link;
+    	Global.getRegisteringUsers().put(link, user);
+    	boolean success = EmailSender.sendEmail(email, subject, body);
+    	System.out.println("emailHandler: " + link);
+    	System.out.println("cache: " + Global.getRegisteringUsers().size());
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("done", success).build();
+      		.put("done", success).build();
       return GSON.toJson(variables);
     }
   }
-  
+
+  private class VerifyHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      String link = req.params("link");
+      User user = Global.getRegisteringUsers().remove(link);
+    	boolean success = Query.putUser(user, conn);  	
+      Map<String, Object> variables = new ImmutableMap.Builder().build();
+      return new ModelAndView(variables, "verify.ftl");
+    }
+  }
+
   private class PasswordEmailHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
       String subject = "credit_me forget password";
-      String link = Global.randomLink();
+      String link = Global.randomLink("forgetpwd/");
       String body = "Visit the following link to reset your password:\n" + link;
-    	EmailSender.sendEmail(email, subject, body);
+      Global.getForgetPwds().put(link, email);
+    	boolean success = EmailSender.sendEmail(email, subject, body);
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("link", link).build();
+          .put("done", success).build();
       return GSON.toJson(variables);
     }
   }
   
+  private class PasswordVerifyHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      //String person = req.params(":id");
+      String link = req.params(":random");
+      String email = Global.getForgetPwds().remove(Global.linkHead + "forgetpwd/" + link);
+    	
+      Map<String, Object> variables = new ImmutableMap.Builder()
+      		.put("email", email).build();
+      return new ModelAndView(variables, "forgetpwd.ftl");
+    }
+  }
+
   private class UserForgetPwdHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String email = qm.value("email");
-
+      String password = qm.value("pwd");
+      boolean success = Query.changePassword(email, password, conn);
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("done", true).build();
+          .put("done", success).build();
       return GSON.toJson(variables);
     }
   }
-  
+
   private class UserChangePwdHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
@@ -231,7 +249,7 @@ public class Gui {
       String newPwd = qm.value("newPwd");
       User user;
 			try {
-				user = Query.getUser(email, Global.md5(prevPwd), Global.getDb().getConnection());
+				user = Query.getUser(email, Global.md5(prevPwd), conn);
 			} catch (SQLException e) {
       	e.printStackTrace();
       	Map<String, Object> variables = new ImmutableMap.Builder()
@@ -243,14 +261,14 @@ public class Gui {
 	          .put("error", "incorrect password!").build();
 	      return GSON.toJson(variables);
       } else {
-      	Query.changePassword(email, prevPwd, newPwd, Global.getDb().getConnection());
+      	Query.changePassword(email, prevPwd, newPwd, conn);
 	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
 	          .put("done", "done").build();
 	      return GSON.toJson(variables);
       }
     }
   }
-  
+
   private class ChangeInfoHandler implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
@@ -267,7 +285,7 @@ public class Gui {
       }
     	User user;
 			try {
-				user = Query.getUser(email, Global.getDb().getConnection());
+				user = Query.getUser(email, conn);
 			} catch (SQLException e) {
       	e.printStackTrace();
       	Map<String, Object> variables = new ImmutableMap.Builder()
@@ -277,7 +295,7 @@ public class Gui {
     	user.setContact(contact);
     	user.setSubsribe(subs);
     	user.setName(name);
-    	Query.putUser(user, Global.getDb().getConnection());
+    	Query.putUser(user, conn);
       Map<String, Object> variables = ImmutableMap.<String, Object>builder().build();
       return GSON.toJson(variables);
     }
@@ -287,28 +305,38 @@ public class Gui {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
-      String address = qm.value("address");
       String email = qm.value("user");
       int creditNum = Integer.parseInt(qm.value("creditNum"));
       int duration = Integer.parseInt(qm.value("duration"));
       double priceBound = Double.parseDouble(qm.value("priceBound"));
       String eateryName = qm.value("eatery");
+      boolean north = Boolean.parseBoolean(qm.value("north_deliver"));
+      boolean center = Boolean.parseBoolean(qm.value("center_deliver"));
+      boolean south = Boolean.parseBoolean(qm.value("south_deliver"));
       // set fields
-      Eatery eatery;
-      Location location;
+      List<Eatery> eatery = new ArrayList<>();
+      List<Location> location = new ArrayList<>();
       User user;
       // initialize fields
       try {
 		    // user
-				user = Query.getUser(email, Global.getDb().getConnection());
+				user = Query.getUser(email, conn);
 				// eatery
-	      eatery = Query.getEatery(eateryName, Global.getDb().getConnection());
+	      String[] eateries = eateryName.split(",");
+	      for (String s : eateries) {
+	      	eatery.add(Query.getEatery(s, conn));
+	      }
 				// location
-		    if (address == null) {
-		    	 location = null;
-		    } else {
-					location = Query.getLocation(address, Global.getDb().getConnection());
+		    if (north) {
+		    	location.addAll(Query.getNorthLocation(conn));
 		    }
+		    if (south){
+		    	location.addAll(Query.getSouthLocation(conn));
+		    }
+		    if (center){
+		    	location.addAll(Query.getCenterLocation(conn));
+		    }
+		    
       } catch (SQLException e) {
       	e.printStackTrace();
       	Map<String, Object> variables = new ImmutableMap.Builder()
@@ -338,7 +366,6 @@ public class Gui {
 		  }
 		}
   }
-  
 
   private class PlaceOrderHandler implements Route {
     @Override
@@ -361,17 +388,17 @@ public class Gui {
       	// food
         String[] foodIds = menu.split("//s");
 		    for (String s : foodIds) {
-						foods.add(Query.getFood(s, Global.getDb().getConnection()));
+						foods.add(Query.getFood(s, conn));
 		    }
 		    // user
-				user = Query.getUser(email, Global.getDb().getConnection());
+				user = Query.getUser(email, conn);
 				// eatery
-	      eatery = Query.getEatery(eateryName, Global.getDb().getConnection());
+	      eatery = Query.getEatery(eateryName, conn);
 				// location
 		    if (address == null) {
 		    	 location = null;
 		    } else {
-					location = Query.getLocation(address, Global.getDb().getConnection());
+					location = Query.getLocation(address, conn);
 		    }
       } catch (SQLException e) {
       	e.printStackTrace();
@@ -402,6 +429,4 @@ public class Gui {
       }
     }
   }
-  
-  
 }

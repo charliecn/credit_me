@@ -114,9 +114,6 @@ public class Query {
    * @return true if able to successfully add user, false otherwise
    */
   public static boolean putUser(User user, Connection conn){
-    System.out.println(user.getEmail());
-    System.out.println(user.getName());
-
     PreparedStatement prep;
     try {
       prep = conn.prepareStatement(
@@ -233,7 +230,7 @@ public class Query {
 	 */
 	public static Food getFood(String foodId, Connection conn) throws SQLException{
 		PreparedStatement prep = 
-				conn.prepareStatement("SELECT name, price FROM food WHERE foodId = ?");
+				conn.prepareStatement("SELECT name, price FROM food WHERE id = ?");
 		
 		prep.setString(1, foodId);
 		
@@ -246,47 +243,5 @@ public class Query {
 		Double price = rs.getDouble("price");
 		return new Food(price, name);
 		
-	}
-		
-	public static List<Location> getNorthLocation(Connection conn) throws SQLException{
-		PreparedStatement prep = 
-				conn.prepareStatement("SELECT * FROM location WHERE section = 'north'");
-		
-		ResultSet rs = prep.executeQuery();
-		List<Location> toReturn = new ArrayList<>();
-		while(rs.next()){
-			String id = rs.getString("id");
-			String name = rs.getString("name");
-			toReturn.add(new Location(id, name, "north"));
-		}
-		return toReturn;
-	}
-	
-	public static List<Location> getSouthLocation(Connection conn) throws SQLException{
-		PreparedStatement prep = 
-				conn.prepareStatement("SELECT * FROM location WHERE section = 'south'");
-		
-		ResultSet rs = prep.executeQuery();
-		List<Location> toReturn = new ArrayList<>();
-		while(rs.next()){
-			String id = rs.getString("id");
-			String name = rs.getString("name");
-			toReturn.add(new Location(id, name, "south"));
-		}
-		return toReturn;
-	}
-	
-	public static List<Location> getCenterLocation(Connection conn) throws SQLException{
-		PreparedStatement prep = 
-				conn.prepareStatement("SELECT * FROM location WHERE section = 'center'");
-		
-		ResultSet rs = prep.executeQuery();
-		List<Location> toReturn = new ArrayList<>();
-		while(rs.next()){
-			String id = rs.getString("id");
-			String name = rs.getString("name");
-			toReturn.add(new Location(id, name, "center"));
-		}
-		return toReturn;
 	}
 }

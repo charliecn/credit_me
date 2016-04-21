@@ -239,7 +239,7 @@
 
           </div>
         </div>
-        <p style="font-size: 1.2em">Current order price: <span id="price_span" style="color: #9d8189">$15.00</span></p>
+        <p style="font-size: 1.2em">Current order price: <span id="price_span_2" style="color: #9d8189"></span></p>
 
         <p style="display: none" id="deliver_note">We have added <span style="color: #9d8189">$2</span> delivery tip.</p>
         

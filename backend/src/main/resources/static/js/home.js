@@ -369,10 +369,9 @@ $(document).on("pagecreate", "#profile-page", function(){
 
 
 
-
-
 request = JSON.parse(localStorage.request||'{}');
 localStorage.request = JSON.stringify(request);
+
 
 $( document ).on( "pageinit", "#page_buy_1", function(event) {
 	console.log('in pagebuy1: ' + email);
@@ -383,6 +382,7 @@ $( document ).on( "pageinit", "#page_buy_1", function(event) {
   $(".meet_up_confirm").tap(function(){
     request = JSON.parse(localStorage.request);
     request.method="meet";
+
     delete request.address;
 
     localStorage.request = JSON.stringify(request);
@@ -461,7 +461,8 @@ $( document ).on( "pageinit", "#page_buy_2", function(event) {
 
   $(".josiahs").click(function(){
     request = JSON.parse(localStorage.request);
-    request.eatery = "jos";  
+    request.eatery = "jos"; 
+
     localStorage.request= JSON.stringify(request);
     //localStorage.request = JSON.stringify(request);
   })
@@ -482,6 +483,7 @@ $( document ).on( "pageshow", "#page_buy_3", function(event) {
 
   //$('#page_buy_3').append("<p>"+request.eatery+"</p>");
   request = JSON.parse(localStorage.request);
+
   var eatery = request.eatery;
   var date = new Date();
   var day = date.getDay();
@@ -590,9 +592,11 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
   });
 
   $('#wrong_number').css("display","none");
-
+  
   request = JSON.parse(localStorage.request);
-
+  $('#price_span_2').text("$"+request.price);
+  localStorage.request=JSON.stringify(request);
+  
   var tap_counter = 0;
 
   $('#payment_suggestion').tap(function(){
@@ -611,6 +615,7 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
     
     if(phone.match(/\d/g).length===10 && phone.length==10){
       $('#wrong_number').css("display","none");
+      request = JSON.parse(localStorage.request);
       request.phone=phone;
       request.duration = $('#duration').val();
       request.bound = $('#bound').val();

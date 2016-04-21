@@ -247,46 +247,4 @@ public class Query {
 		return new Food(price, name);
 		
 	}
-		
-	public static List<Location> getNorthLocation(Connection conn) throws SQLException{
-		PreparedStatement prep = 
-				conn.prepareStatement("SELECT * FROM location WHERE section = 'north'");
-		
-		ResultSet rs = prep.executeQuery();
-		List<Location> toReturn = new ArrayList<>();
-		while(rs.next()){
-			String id = rs.getString("id");
-			String name = rs.getString("name");
-			toReturn.add(new Location(id, name, "north"));
-		}
-		return toReturn;
-	}
-	
-	public static List<Location> getSouthLocation(Connection conn) throws SQLException{
-		PreparedStatement prep = 
-				conn.prepareStatement("SELECT * FROM location WHERE section = 'south'");
-		
-		ResultSet rs = prep.executeQuery();
-		List<Location> toReturn = new ArrayList<>();
-		while(rs.next()){
-			String id = rs.getString("id");
-			String name = rs.getString("name");
-			toReturn.add(new Location(id, name, "south"));
-		}
-		return toReturn;
-	}
-	
-	public static List<Location> getCenterLocation(Connection conn) throws SQLException{
-		PreparedStatement prep = 
-				conn.prepareStatement("SELECT * FROM location WHERE section = 'center'");
-		
-		ResultSet rs = prep.executeQuery();
-		List<Location> toReturn = new ArrayList<>();
-		while(rs.next()){
-			String id = rs.getString("id");
-			String name = rs.getString("name");
-			toReturn.add(new Location(id, name, "center"));
-		}
-		return toReturn;
-	}
 }

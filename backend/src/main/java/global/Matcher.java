@@ -25,11 +25,11 @@ public class Matcher {
   			continue;
   		}
   		// check whether the location matches
-  		if (isDeliver && !of.getLocations().contains(order.getLocation())) {
+  		if (isDeliver && !order.getLocation().equals(of.getLocation())) {
   			continue;
   		}
   		// check whether the eatery matches
-  		if (!of.getEateries().contains(order.getEatery())) {
+  		if (!order.getEatery().equals(of.getEatery())) {
   			continue;
   		}
   		// adjust lowbound price
@@ -76,11 +76,11 @@ public class Matcher {
   			continue;
   		}
   		// check whether the location matches
-  		if (isDeliver && !offer.getLocations().contains(or.getLocation())) {
+  		if (isDeliver && !offer.getLocation().equals(or.getLocation())) {
   			continue;
   		}
   		// check whether the eatery matches
-  		if (!offer.getEateries().contains(or.getEatery())) {
+  		if (!offer.getEatery().equals(or.getEatery())) {
   			continue;
   		}
   		// adjust lowbound price

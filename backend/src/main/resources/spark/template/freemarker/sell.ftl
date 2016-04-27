@@ -64,10 +64,10 @@
     <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
       <div data-role="navbar">
         <ul id="bottom_ul">
-          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+          <li><a href="page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
         </ul>
       </div>
@@ -131,10 +131,10 @@
     <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
       <div data-role="navbar">
         <ul id="bottom_ul">
-          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+          <li><a href="page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
         </ul>
       </div>
@@ -204,10 +204,10 @@
     <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
       <div data-role="navbar">
         <ul id="bottom_ul">
-          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+          <li><a href="page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
         </ul>
       </div>
@@ -277,10 +277,10 @@
     <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
       <div data-role="navbar">
         <ul id="bottom_ul">
-          <li><a href="index.html" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
-          <li><a href="sell.html" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
-          <li><a href="#" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+          <li><a href="page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
 
         </ul>
       </div>

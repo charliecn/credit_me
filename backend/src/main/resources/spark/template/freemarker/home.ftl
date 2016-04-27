@@ -191,7 +191,7 @@
   <div data-role="main" class="ui-content centered">
     <h2>Orders</h2>
     <h3>Current</h3>
-    <ul style="text-align: left; margin-top: 10px" data-role="listview" style="padding-top: 30px">
+    <ul style="text-align: left; margin-top: 10px" data-role="listview" style="padding-top: 30px" id="orders-ul">
       <li id="order-id">
         <a href="#"><h3>Offer:</h3><p style="font-size: 15px; text-align: left">Dining Hall: Andrews Common<br> Time: 2016-4-17-9-29pm</p></a><a href="#delete-popup" data-rel="popup" data-icon="delete"></a>
       </li>
@@ -693,7 +693,7 @@
           </li>
 
           <li style="background-color: #E8E3E1">
-                <img src="../image/ivyroom.png" style="width: 60px;margin-top: 10px; margin-left: 10px">
+                <img src="../image/vdub.png" style="width: 60px;margin-top: 10px; margin-left: 10px">
                 <label><input type="checkbox" value="unchecked" name="V-Dub" id=""/> V-Dub </label>
           </li>
 
@@ -739,7 +739,7 @@
 
         <div class="full_width">
 
-          <label style="margin-bottom: 20px;margin-top: 20px;" for="bound">How much would you like to pay for this order?</label>
+          <label style="margin-bottom: 20px;margin-top: 20px;" for="bound">How much would you like to sell a credit?</label>
           <p style="color:#9d8189;" id="payment_suggestion_sell">tap to view suggestion</p>
           <p style="display: none" id="payment_suggestion_detail_sell">Meal credits are usually traded at 10-15% off. Pick an ideal price to prompt your deal to finish.</p>
          <input type="range" name="bound_sell" id="bound_sell" value="6.0" min="0" max="7.3" step="0.1">
@@ -791,6 +791,72 @@
 
 
 
+  </div>
+
+  <div data-role="page" id="page_confirm_true">
+    
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+     <div data-role="main" class="ui-content">
+     There is a match and please check your mail for detailed information.
+     </div>
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div data-role="page" id="page_confirm_false">
+    
+    <div class="logo" data-role="header" data-id="persistent" data-position="fixed" style="background-color: #FFCAD4">
+      <h1 style="font-size: 1em;">Credit Me @ Brown</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+    
+    <div>
+      <p>There is no match at this moment. Please patiently wait. We will mail you as long as there is someone who can match your requirement.</p>
+    </div>
+    
+    <div style="text-align: center">
+      <img src="../image/clock.png">
+    </div>
+
+    
+    </ul>
+
+    </div>
+
+
+
+
+
+    <div data-role="footer" data-tap-toggle="false" data-id="foo1" data-position="fixed" data-id="persistent">
+      <div data-role="navbar">
+        <ul id="bottom_ul">
+          <li><a href="#page_buy_1" style="padding:0"><img src="../image/buy.png" width="30%"><p>Buy</p></a></li>
+          <li><a href="#page_sell_1" style="padding:0"><img src="../image/sell.png" width="30%"><p>Sell</p></a></li>
+          <li><a href="#orders-page" style="padding:0"><img src="../image/orders.png" width="30%"><p>Orders</p></a></li>
+          <li><a href="#profile-page" style="padding:0"><img src="../image/me.png" width="30%"><p>Me</p></a></li>
+
+        </ul>
+      </div>
+    </div>
+
+    
   </div>
 
 

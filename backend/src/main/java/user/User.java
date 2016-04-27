@@ -19,7 +19,7 @@ public class User {
 	private int totalRating = 0;
 	private int ratingNum = 0;
 	private String gender = "";
-	private String contact = "";
+	private String contact = "0000000000";
 	private boolean subscribe = false;
 	private String password = "";
 	
@@ -149,5 +149,11 @@ public class User {
 
 	public void setPassword(String pwd) {
 		password = pwd;
+	}
+	
+	@Override
+	public String toString() {
+	  return "user: email: " + email + " name: " + name + " password: " 
+	+ password + " subscribe: " + subscribe + " contact: " + contact;
 	}
 }

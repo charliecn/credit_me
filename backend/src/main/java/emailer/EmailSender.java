@@ -11,8 +11,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 
-public class EmailSender {
-	   private static boolean sendFromGMail(String from, String pass, String[] to, String subject, String body) {
+public class EmailSender {  
+	   private static synchronized boolean sendFromGMail(String from, String pass, String[] to, String subject, String body) {
 	        Properties props = System.getProperties();
 	        String host = "smtp.gmail.com";
 	        props.put("mail.smtp.starttls.enable", "true");

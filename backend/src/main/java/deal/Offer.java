@@ -54,4 +54,9 @@ public class Offer extends HalfDeal{
   public void cancel() {
     Global.getOffer().remove(this);
   }
+  
+  @Override
+  public String toString() {
+    return "Offer: buyer: " + user + " credit number: " + creditNum + " priceBound: " + priceBound;
+  }
 }

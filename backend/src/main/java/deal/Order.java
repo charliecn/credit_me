@@ -61,4 +61,9 @@ public class Order extends HalfDeal {
   public void cancel() {
     Global.getOrders().remove(this);
   }
+  
+  @Override
+  public String toString() {
+    return "Offer: buyer: " + user + " actual price: " + actualPrice + " priceBound: " + priceBound;
+  }
 }

@@ -15,6 +15,8 @@ import user.User;
 
 public class Query {
 
+	public static Object lock;
+	
 	/**
 	 * Gets a user from the user database.
 	 * @param email - contact of the user
@@ -23,28 +25,44 @@ public class Query {
 	 * @return user with given email and password if it exists, null otherwise
 	 * @throws SQLException if unable to connect properly
 	 */
-	public static User getUser(String email, String password, Connection conn) 
-			throws SQLException{
-		
+  public static User getUser(String email, String pwd, Connection conn) throws SQLException{
+    PreparedStatement prep = 
+        conn.prepareStatement("SELECT * FROM user WHERE email = ? AND password = ?;");
+    
+    prep.setString(1, email);
+    prep.setString(2, pwd);
+    
+    ResultSet rs;
+    synchronized(lock) {
+    	rs = prep.executeQuery();
+    }
+    System.out.println(rs);
+    //should only be one user with email
+    if(rs.next() == false){
+      return null;
+    }
 
-		PreparedStatement prep = 
-				conn.prepareStatement("SELECT name, subscribe FROM user WHERE email = ? AND password = ?");
-		
-		prep.setString(1, email);
-		prep.setString(2, password);
-		
-		ResultSet rs = prep.executeQuery();
-		
-		//should only be one user with email
-		if(rs.next() == false){
-			return null;
-		}
-
-		String name = rs.getString("name");
-		Boolean subscribe = rs.getBoolean("subscribe");
-		
-		return new User(name, email, password, subscribe);
-	}
+    String name = rs.getString("name");
+    Boolean subscribe = rs.getBoolean("subscribe");
+    String password = rs.getString("password");
+    String contact = rs.getString("contact");
+    int rating = rs.getInt("rating");
+    int ratingNum = rs.getInt("ratingNum");
+    String gender = rs.getString("gender");
+    
+    System.out.println("in query" + contact);
+    
+    /*
+    prep = 
+        conn.prepareStatement("SELECT * FROM "order" WHERE seller = ? OR buyer = ?;");
+    prep.setString(1, email);
+    prep.setString(2, email);
+    rs = prep.executeQuery();
+    */
+    List<Deal> pastDeals = new ArrayList<>();
+    // TODO add deals
+    return new User(name, email, password, rating, ratingNum, gender, contact, pastDeals, subscribe);
+  }
 	
 	/**
 	 * Get a user just given email address.
@@ -55,12 +73,14 @@ public class Query {
 	 */
 	public static User getUser(String email, Connection conn) throws SQLException{
 		PreparedStatement prep = 
-				conn.prepareStatement("SELECT * FROM user WHERE email = ?");
+				conn.prepareStatement("SELECT * FROM user WHERE email = ?;");
 		
 		prep.setString(1, email);
 		
-		ResultSet rs = prep.executeQuery();
-		
+		ResultSet rs;
+    synchronized(lock) {
+    	rs = prep.executeQuery();
+    }
 		//should only be one user with email
 		if(rs.next() == false){
 			return null;
@@ -73,6 +93,8 @@ public class Query {
 		int rating = rs.getInt("rating");
 		int ratingNum = rs.getInt("ratingNum");
 		String gender = rs.getString("gender");
+		
+		System.out.println("in query" + contact);
 		
 		/*
 		prep = 

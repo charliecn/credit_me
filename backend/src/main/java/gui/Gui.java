@@ -11,6 +11,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import database.Database;
 import database.Query;
 import deal.Deal;
 import deal.Offer;
@@ -46,18 +47,13 @@ public class Gui {
 	 */
 	Matcher matcher;
 	
-	/**
-	 * Used to keep email consistent when redirect to buy.ftl
-	 */
-	private String loginEmail;
-	
 	private Connection conn;
 	/**
 	 * constructor.
 	 */
   public Gui(String db) {
   	Global.setDb(db);
-  	conn = Global.getDb().getConnection();
+  	conn = Database.getConnection();
   }
 
   /**
@@ -161,7 +157,8 @@ public class Gui {
 	          .put("error", e.getMessage()).build();
       	return variables;
 			}
-
+			System.out.println(user);
+			
       if (user == null) {
 	      Map<String, Object> variables = new ImmutableMap.Builder()
 	          .put("error", "incorrect email address or password!").build();
@@ -372,22 +369,54 @@ public class Gui {
 	      return GSON.toJson(variables);
     	} else if (deal.size() <= 3) {
       	// no match
-      	Map<String, Object> variables = new ImmutableMap.Builder()
-	          .put("deal", deal)
-	          .put("result", "suggestions").build();
-	      return GSON.toJson(variables);
+        List<String> buyerNames = new ArrayList<>();
+        List<String> buyerContacts = new ArrayList<>();
+        List<Double> prices = new ArrayList<Double>();
+        String sellerName = deal.get(0).getOffer().getUser().getName();
+        String sellerContact = deal.get(0).getOffer().getUser().getContact();
+        for (Deal d : deal) {
+          String buyerName = d.getOrder().getUser().getName();
+          String buyerContact = d.getOrder().getUser().getContact();
+          buyerContacts.add(buyerContact);
+          buyerNames.add(buyerName);
+        }
+        Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+            .put("sellerContact", sellerContact)
+            .put("sellerName", sellerName)
+            .put("prices", prices)
+            .put("buyerNames", buyerNames)
+            .put("buyerContacts", buyerContacts)
+            .put("result", "suggestions").build();
+        return GSON.toJson(variables);
       } else {
       	// has match
-      	Deal result = deal.get(0);
-      	String buyerName = result.getOrder().getUser().getName();
-      	double dealPrice = result.getPrice();
-      	String contact = result.getOrder().getUser().getContact();
-	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-	          .put("buyerName", buyerName)
-	          .put("dealPrice", dealPrice)
-	          .put("contact", contact)
-	          .put("result", "match").build();
-	      return GSON.toJson(variables);
+        Deal result = deal.get(0);
+        String sellerName = result.getOffer().getUser().getName();
+        String buyerName = result.getOrder().getUser().getName();
+        String sellerContact = result.getOffer().getUser().getContact();
+        String buyerContact = result.getOrder().getUser().getContact();
+        double price = result.getPrice();
+      	//send email
+        String subject = "[creditMe] Your offer has been matched!";
+        String body = "Your order has been matched! Order information:\n\n" + 
+        		"Seller Name: " + sellerName + ";\n" +
+        		"Seller Phone Number: " + sellerContact + ";\n" + 
+        		"Buyer Name: " + buyerName + ";\n" +
+        		"Buyer Phone Number: " + buyerContact + ";\n" + 
+        		"Deal Price: " + price + ".\n\n" + 
+        		"CreditMe";
+        System.out.println("email" + result.getOffer().getUser().getEmail() + result.getOrder().getUser().getEmail());
+      	boolean success1 = EmailSender.sendEmail(result.getOrder().getUser().getEmail(), subject, body);
+      	boolean success2 = EmailSender.sendEmail(result.getOffer().getUser().getEmail(), subject, body);
+        
+        Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+            .put("sellerName", sellerName)
+            .put("buyerName", buyerName)
+            .put("sellerContact", sellerContact)
+            .put("buyerContact", buyerContact)
+            .put("dealPrice", price)
+            .put("result", "match").build();
+        return GSON.toJson(variables);
 		  }
 		}
   }
@@ -457,34 +486,56 @@ public class Gui {
 	      return GSON.toJson(variables);
     	} else if (deal.size() <= 3) {
       	// no match
-        User sellers = new List<User>();
-        User prices = new List<Double>();
-        User buyer = deal.get(0).getOrders().getUser();
+    	  List<String> sellerNames = new ArrayList<>();
+    	  List<String> sellerContacts = new ArrayList<>();
+    	  List<Double> prices = new ArrayList<Double>();
+        String buyerName = deal.get(0).getOrder().getUser().getName();
+        String buyerContact = deal.get(0).getOrder().getUser().getContact();
 
         for (Deal d : deal) {
-          User seller = d.getOffer().getUser();
-          double price = d.getPrice();
-          sellers.add(seller);
-          prices.add(Double(price));
+          String sellerName = d.getOffer().getUser().getName();
+          String sellerContact = d.getOffer().getUser().getContact();
+          double dealPrice = d.getPrice();
+          sellerContacts.add(sellerContact);
+          sellerNames.add(sellerName);
+          prices.add(new Double(dealPrice));
         }
       	Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-	          .put("sellers", sellers)
+	          .put("sellerContacts", sellerContacts)
+	          .put("sellerNames", sellerNames)
             .put("prices", prices)
-	          .put("buyer", buyer)
+	          .put("buyerName", buyerName)
+	          .put("buyerContact", buyerContact)
             .put("result", "suggestions").build();
 	      return GSON.toJson(variables);
       } else {
       	// has match
       	Deal result = deal.get(0);
-      	User seller = result.getOffer().getUser();
-        User buyer = result.getOrder().getUser();
-      	double dealPrice = result.getPrice();
-	      Map<String, Object> variables = ImmutableMap.<String, Object>builder()
-	          .put("seller", result)
-	          .put("dealPrice", dealPrice)
-	          .put("buyer", buyer)
-	          .put("result", "match").build();
-	      return GSON.toJson(variables);
+        String sellerName = result.getOffer().getUser().getName();
+        String buyerName = result.getOrder().getUser().getName();
+        String sellerContact = result.getOffer().getUser().getContact();
+        String buyerContact = result.getOrder().getUser().getContact();
+        double dealPrice = result.getPrice();
+      	//send email
+        String subject = "[creditMe] Your offer has been matched!";
+        String body = "Your order has been matched! Order information:\n\n" + 
+        		"Seller Name: " + sellerName + ";\n" +
+        		"Seller Phone Number: " + sellerContact + ";\n" + 
+        		"Buyer Name: " + buyerName + ";\n" +
+        		"Buyer Phone Number: " + buyerContact + ";\n" + 
+        		"Deal Price: " + dealPrice + ".\n\n" + 
+        		"CreditMe";
+        System.out.println("email" + result.getOffer().getUser().getEmail() + result.getOrder().getUser().getEmail());
+      	boolean success1 = EmailSender.sendEmail(result.getOffer().getUser().getEmail(), subject, body);
+        boolean success2 = EmailSender.sendEmail(result.getOrder().getUser().getEmail(), subject, body);
+        Map<String, Object> variables = ImmutableMap.<String, Object>builder()
+            .put("sellerName", sellerName)
+            .put("buyerName", buyerName)
+            .put("sellerContact", sellerContact)
+            .put("buyerContact", buyerContact)
+            .put("dealPrice", dealPrice)
+            .put("result", "match").build();
+        return GSON.toJson(variables);
       }
     }
   }

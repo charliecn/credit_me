@@ -34,4 +34,9 @@ public class Deal {
   public Offer getOffer() {
     return offer;
   }
+  
+  @Override
+  public String toString() {
+    return "Deal-Offer: " + offer + " Order: " + order + " price: " + price;
+  }
 }

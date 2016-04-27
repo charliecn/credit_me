@@ -151,7 +151,24 @@ $(document).on("pagecreate", "#login-page", function(){
 				console.log('login username: ' + username);
 				contact = JSON.parse(responseJSON).user.contact;
 				history = JSON.parse(responseJSON).user.history;
+				subscribe = JSON.parse(responseJSON).user.subscribe;
+
 				// subscribe = JSON.parse(responseJSON).subscribe;
+				sessionStorage.removeItem("user_email");
+				sessionStorage.user_email = enteredEmail;
+
+				sessionStorage.removeItem("contact");
+				sessionStorage.contact = contact;
+				console.log("newest contact :" + contact);
+
+				sessionStorage.removeItem("subscribe");
+				sessionStorage.subscribe = subscribe;
+
+				sessionStorage.removeItem("user_name");
+				sessionStorage.user_name = username;
+
+				console.log(enteredEmail + " " + username + " " + subscribe + " " +contact);
+
 				email = enteredEmail;
 				console.log('in userlogin: ' + email);
 				password = pwd;
@@ -279,9 +296,20 @@ $(document).on("pagecreate", "#profile-page", function(){
 	//preset the returned value from login.
 	contact = "000-000-0000";//placeholder
 	$("#profile-subscribe").prop('checked', subscribe);
-	$("#profile-name").text(username);
-	$("#profile-contact").text(contact);
-	$("#profile-email").text(email);
+	$("#profile-name").text(sessionStorage.user_name);
+	console.log('init sessionStorage contact' + sessionStorage.contact);
+	if (sessionStorage.contact == '0000000000') {
+		console.log('in profile contact');
+		$("#profile-contact").html('tap to add contact');
+		$("#profile-contact").css('color', 'grey');
+	} else {
+		console.log('in contact true');
+		$("#profile-contact").css('color', 'black');
+		$("#profile-contact").html(sessionStorage.contact);
+	}
+	// $("#profile-contact").css('color', 'black');
+	// $("#profile-contact").text(sessionStorage.contact);
+	$("#profile-email").text(sessionStorage.user_email);
 
 
 	$("#profile-name").on("tap", function(e){
@@ -321,6 +349,7 @@ $(document).on("pagecreate", "#profile-page", function(){
 	});
 
 	$("#profile-contact").on("tap", function(e){
+		$("#profile-contact").css('color', 'black');
 		e.preventDefault();
 		//alert('tap');
 		prevContact = $(this).text();
@@ -344,10 +373,12 @@ $(document).on("pagecreate", "#profile-page", function(){
 		//alert(newEmail)
 		$("#profile-contact").html('');
 		$("#profile-contact").html(newContact);
-		if (newContact === "" && prevContact === ""){
+		if (newContact === ""){
 			//alert(prevEmail);
 			//$("#profile-contact").css("color", "#c2c2c2");
-			$("#profile-contact").html(contact);
+			//$("#profile-contact").html(contact);
+			$("#profile-contact").html('tap to add contact');
+			$("#profile-contact").css('color', 'grey');
 		}
 		$("#profile-contact").css('border-bottom', '1px solid #989797');
 
@@ -596,8 +627,19 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
   $('#wrong_number').css("display","none");
 
   request = JSON.parse(localStorage.request);
+
+  console.log(request);
   $("#price_span_2").text("$"+request.price);
   localStorage.request = JSON.stringify(request);
+
+
+  var contact = sessionStorage.contact;
+  console.log(contact);
+
+  if(contact.length==10){
+  	console.log("contact true");
+  	$('#tel-1').val(contact);
+  };
 
   var tap_counter = 0;
 
@@ -610,13 +652,28 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
     tap_counter+=1;
   })
 
-  $("#final_confirm").click(function(){
+  $("#final_confirm").tap(function(){
     
     var phone = $('#tel-1').val().trim();
     console.log(phone);
+    console.log("email:" +sessionStorage.user_email);
+
     
     if(phone.match(/\d/g).length===10 && phone.length==10){
+
+      sessionStorage.contact = phone;
+      $("#profile-contact").html(sessionStorage.contact);
+
+
       $('#wrong_number').css("display","none");
+
+      console.log("phone number"+phone);
+
+      var postParameters = {email: sessionStorage.user_email, contact: phone, username: sessionStorage.user_name, subscribe: sessionStorage.subscribe};
+
+      $.post("/changeinfo",postParameters,function(data){
+      	console.log(data);
+      })
 
       request = JSON.parse(localStorage.request);
       request.phone=phone;
@@ -625,21 +682,55 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
       console.log(request);
       localStorage.request = JSON.stringify(request)
 
-      $.post("/placeorder",{user:"silei_ren@brown.edu",address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
+      $.post("/placeorder",{user:sessionStorage.user_email,address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
         data = JSON.parse(response);
         console.log(response);
+
+        var address = window.location.href;
+         console.log(address);
+
+
+         for(var i = address.length; i>0; i--){
+	     		if (address.charAt(i) == "#"){
+	     			address = address.substring(0,i);
+	     			break;
+	     		}
+	     }
+
+         console.log(address);
+
+
+        if (data.result == "nothing"){
+
+        	$(location).attr('href', address+"#page_confirm_false");
+
+	    } else if(data.result == "match"){
+	         	//var li = document.createElement("li");
+         	//console.log('match successful');
+         	//console.log(data.buyerName);
+         	//console.log(data.buyerContact);
+         	var li = '<li><a href="#">' + 
+         			'<h3>Buy Record:</h3><p style="font-size: 15px; text-align: left">Seller: ' + 
+         			data.sellerName + 
+         			'<br> Seller Contact:' + data.sellerContact + '</p>' + 
+         			'</a><a href="#delete-popup" data-rel="popup" data-icon="delete"></a></li>';
+         	$("#orders-ul").append(li);
+
+         	$(location).attr('href', address+"#page_confirm_true");
+         } else{
+
+         }
       })
     } else{
       $('#wrong_number').css("display","block");
     }
   })
 
-  request = JSON.stringify(localStorage.request);
 });
 
 
 
-
+	
 //
 //SELL PART
 //
@@ -866,7 +957,14 @@ $( document ).on( "pageshow", "#page_sell_3", function(event) {
 
 	$('#wrong_number').css("display","none");
 
-	
+	var contact = sessionStorage.contact;
+	console.log(contact);
+
+
+  	if(contact!=null){
+  		$('#tel-1_sell').val(contact);
+  	};
+
 
 	var tap_counter = 0;
 
@@ -883,8 +981,19 @@ $( document ).on( "pageshow", "#page_sell_3", function(event) {
     
 	    var phone = $('#tel-1_sell').val().trim();
 	    console.log(phone);
+	    sessionStorage.contact = phone;
 	    
 	    if(phone.match(/\d/g).length===10 && phone.length==10){
+
+	       console.log("sessionS conta: " + sessionStorage.contact);
+	       $("#profile-contact").html(sessionStorage.contact);
+
+	       var postParameters = {email: sessionStorage.user_email, contact: sessionStorage.contact, username: sessionStorage.user_name, subscribe: sessionStorage.subscribe};
+
+	       $.post("/changeinfo",postParameters,function(data){
+	      	 console.log(data);
+	       })
+
 	      offer = JSON.parse(localStorage.offer);
 	      $('#wrong_number_sell').css("display","none");
 	      offer.phone=phone;
@@ -897,8 +1006,44 @@ $( document ).on( "pageshow", "#page_sell_3", function(event) {
 
 	      //$(location).attr('href', 'http://stackoverflow.com')
 	      
-	     $.post("/placeoffer",{user:"silei_ren@brown.edu",address:offer.address,eatery:offer.eatery,menu:offer.menu,duration:offer.duration,price:offer.price,bound:offer.bound,creditNum:offer.creditNum},function(response){
+	     $.post("/placeoffer",{user:sessionStorage.user_email,address:offer.address,eatery:offer.eatery,menu:offer.menu,duration:offer.duration,price:offer.price,bound:offer.bound,creditNum:offer.creditNum},function(response){
+	         
 	         data = JSON.parse(response);
+
+	         var address = window.location.href;
+	         console.log(address);
+
+	         for(var i = address.length; i>0; i--){
+	         		if (address.charAt(i) == "#"){
+	         			address = address.substring(0,i);
+	         			break;
+	         		}
+	         }
+
+	         console.log(address);
+
+
+	         if (data.result == "nothing"){
+
+	         	$(location).attr('href', address+"#page_confirm_false");
+
+	         } else if(data.result == "match"){
+	         	//var li = document.createElement("li");
+	         	console.log('match successful');
+	         	console.log(data.buyerName);
+	         	console.log(data.buyerContact);
+	         	var li = '<li><a href="#">' + 
+	         			'<h3>Sell Record:</h3><p style="font-size: 15px; text-align: left">Buyer: ' + 
+	         			data.buyerName + 
+	         			'<br> Buyer Contact:' + data.buyerContact + '</p>' + 
+	         			'</a><a href="#delete-popup" data-rel="popup" data-icon="delete"></a></li>';
+	         	$("#orders-ul").append(li);
+
+	         	$(location).attr('href', new_address+"#page_confirm_true");
+	         } else{
+
+	         }
+
 	         console.log(response);
 	      })
     } else{

@@ -123,31 +123,21 @@ public class Matcher {
   
   private static double generateLowerBound(int creditNum, double actualPrice, double creditBound) {
   	double points = 0;
-  	int state = 0;
+    double lowerBound;
+
 		if (actualPrice > 11.3 && creditNum == 2) {
-			points = actualPrice - 14.6;
-			state = 4;
+			points = Math.min(actualPrice - 14.6, 0);
+      lowerBound = creditBound * 2 + points;
 		} else if (actualPrice > 11.3 && creditNum == 1) {
-			state = 3;
+      lowerBound = 100;
 		} else if (actualPrice > 7.3 && creditNum == 2) {
 			points = actualPrice - 7.3;
-			state = 2;
+      lowerBound = Math.min(creditBound + points, creditBound * 2);
 		} else if (actualPrice > 7.3 && creditNum == 1) {
 			points = actualPrice - 7.3;
-			state = 1;
-		}
-
-		double lowerBound;
-		if (state == 0) {
-			lowerBound = creditBound;
-		} else if (state == 1) {
-			lowerBound = creditBound + points;
-		} else if (state == 2) {
-			lowerBound = Math.min(creditBound + points, creditBound * 2);
-		} else if (state == 3) {
-			lowerBound = 100;
+      lowerBound = creditBound + points;
 		} else {
-			lowerBound = creditBound * 2 + points;
+      lowerBound = creditBound;
 		}
 	  return lowerBound;
   }

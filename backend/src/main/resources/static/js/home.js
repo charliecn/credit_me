@@ -1,8 +1,71 @@
 //var userPwd = {};
 
+schedule = {
+	'Ratty':{
+		'1':[[330,1050]],
+		'2':[[330,1050]],
+		'3':[[330,1050]],
+		'4':[[330,1050]],
+		'5':[[330,1050]],
+		'6':[[330,1050]],
+		'7':[[510,1050]]
+	},
+
+	'V-Dub':{
+		'1':[[330,720],[870,1050]],
+		'2':[[330,720],[870,1050]],
+		'3':[[330,720],[870,1050]],
+		'4':[[330,720],[870,1050]],
+		'5':[[330,720],[870,1050]],
+		'6':[[0,0]],
+		'7':[[0,0]]
+	},
+
+	'Andrews Commons':{
+		'1':[[540,1440]],
+		'2':[[540,1440]],
+		'3':[[540,1440]],
+		'4':[[540,1440]],
+		'5':[[540,1440]],
+		'6':[[540,1440]],
+		'7':[[540,1440]]
+	},
+
+	'Ivy Room':{
+		'1':[[570,705],[1065,1320]],
+		'2':[[570,705],[1065,1320]],
+		'3':[[570,705],[1065,1320]],
+		'4':[[570,705],[1065,1320]],
+		'5':[[570,705]],
+		'6':[[0,0]],
+		'7':[[1065,1320]]
+	},
+
+	'Blue Room':{
+		'1':[[330,1140]],
+		'2':[[330,1140]],
+		'3':[[330,1140]],
+		'4':[[330,1140]],
+		'5':[[330,1140]],
+		'6':[[420,900]],
+		'7':[[420,900]]
+	},
+
+	"Josiah's":{
+		'1':[[960,1440]],
+		'2':[[960,1440]],
+		'3':[[960,1440]],
+		'4':[[960,1440]],
+		'5':[[960,1440]],
+		'6':[[960,1440]],
+		'7':[[960,1440]]
+	}
+}
+
+
 //user information
 var email;
-var contact = "000-000-0000";
+var contact = "0000000000";
 var username = "lmhly";
 var password;
 var subscribe = false;//boolean
@@ -11,11 +74,33 @@ var history; //history is a list of strings?
 //other variables.
 var prevName;
 var prevEmail;
-var prevContact;
+var prevContact = '0000000000';
 var btnWidth;
 var buysell = {};
 var buyorsell;
+var currDate = new Date();
+var ignore = ['login-page','signup-page','signupwait-page','resetpwdwait-page','forgetpwd-page']
 //var resetEmail = "";
+
+function addExternal(){
+  $("#bottom_ul a").each(function(){
+    console.log($(this))
+    //$(this).attr("rel","external");
+  });
+}
+
+
+
+
+function checkLogin(){
+	console.log(sessionStorage);
+
+	if (sessionStorage.getItem('user_name')==null ||sessionStorage.getItem('user_name')=== undefined){
+		console.log("fails!!!!!!!!!!!!!!!!");
+		sessionStorage.clear();
+		$.mobile.changePage($("#login-page"));
+	}
+}
 
 function resetProfile(email, contact, username, subscribe) {
 	var postParameters = {email: email, contact: contact, username: username, subscribe: subscribe};
@@ -23,6 +108,66 @@ function resetProfile(email, contact, username, subscribe) {
 		var done = JSON.parse(responseJSON).done;
 	});
 }
+
+function countStar(star) {
+	if (star == -1) {
+		return 'no rating.'
+	} else if (star == 0) {
+		return '&#x2606;';
+	} else if (star == 1) {
+		return '&#9733; &#x2606; &#x2606; &#x2606; &#x2606;';
+	} else if (star == 2) {
+		return '&#9733; &#9733; &#x2606; &#x2606; &#x2606;';
+	} else if (star == 3) {
+		return '&#9733; &#9733; &#9733; &#x2606; &#x2606;';
+	} else if (star == 4) {
+		return '&#9733; &#9733; &#9733; &#9733; &#x2606;';
+	} else {
+		return '&#9733; &#9733; &#9733; &#9733; &#9733;';
+	}
+}
+
+$( document ).on( "click", "a", function( e ) {
+		href = $( this ).attr( "href" );
+		var hash = $.mobile.path.parseUrl( href );
+		console.log(hash);
+
+		if( typeof href !== "undefined" && hash !== "" && href !== href.replace( hash,"" ) && hash.search( "/" ) !== -1 ){
+			//remove the hash from the link to allow normal loading of the page.
+			var newHref = href.replace( hash,"" );
+			console.log(newHref);
+			$( this ).attr( "href", newHref );
+		}
+		//ele = $( this );
+	});
+
+$(document).on("pagebeforeshow",function(event){
+	var location = window.location.href;
+
+	if (location.indexOf("buy") !=-1){
+
+	}
+
+	var page_hash = location.split('#').pop();
+	var verify = false;
+
+	if (location.indexOf("verify") != -1){
+		verify = true;
+	}
+
+	if (location.indexOf("forgetpwd") != -1){
+		verify = true;
+	}
+
+	if (ignore.indexOf(page_hash)==-1 && !verify){
+		checkLogin();
+	}
+}); 
+
+$( document ).on( "pagecontainerbeforeload", function( event, data ) {
+	console.log("load")
+	
+})
 
 $(document).on("pagecreate", "#resetpwd-page", function(){
 	//console.log('here in resetpwd-page');
@@ -63,6 +208,7 @@ function checkLoginEmail(email) {
 	if (edu != "@brown.edu") {
 		$("#login-error").html('<span style="font-weight: bold">Email is not valid</span><br>Please enter a valid brown email address');
 		return false;
+
 	}
 	return true;
 }
@@ -114,8 +260,27 @@ function checkSignupUsername(username) {
 	return true;
 }
 
-$(document).on("pagecreate", "#home-page", function(){
+function checkProfileUsername(username) {
+	//console.log('1 in username');
+	var pattern = /^\w+$/;
+	if (!username.match(pattern)) {
+		$("#profile-error").html(
+			'<span style="font-weight: bold">' +
+			'Input is not valid' + 
+			'</span>' + 
+			'<br>Username should only contains underline and characters. ' + 
+			'And password should have 10 digits');
+		return false;
+	}
+	console.log('in username');
+	return true;
+}
+
+$(document).on("pageshow", "#first-page", function(){
 	console.log('in home page');
+	if (sessionStorage.getItem("user_name")!=null && sessionStorage.getItem("user_email")!= null){
+		$.mobile.changePage($("#page_buy_1"));
+	}
 	$("#buy-button").click(function(){
 		console.log('buybutton clicked');
 		buyorsell = 1;
@@ -127,7 +292,13 @@ $(document).on("pagecreate", "#home-page", function(){
 	});
 });
 
-$(document).on("pagecreate", "#login-page", function(){
+$(document).on("pageshow", "#login-page", function(){
+
+	$("#login-user").focus(function(){
+
+		$("#login-user").val('@brown.edu');
+	})
+
 	$("#login-submit").click(function(){
 		$("#login-error").html('');
 		var enteredEmail = $("#login-user").val();
@@ -142,15 +313,29 @@ $(document).on("pagecreate", "#login-page", function(){
 
 		//this variable is used to indicate if the login is valid.
 		var validlogin;
-		$.post("/userlogin",postParameters,function(responseJSON){
-			//username = JSON.parse(responseJSON).user.name;
-			if (JSON.parse(responseJSON).error != undefined) {
+
+		$.ajax({
+		  type: 'POST',
+		  url: "/userlogin",
+		  data: postParameters,
+		  success: function(responseJSON){
+		  	if (JSON.parse(responseJSON).error != undefined) {
 				$("#login-error").html('<span style="font-weight: bold">Login failed</span>Please check your email and password.<br>');
 			} else {
+				$("#login-error").remove;
+				var isComment = JSON.parse(responseJSON).comment;
+				console.log('commentDone: ' + isComment);
+				if (isComment == true) {
+					$(".alert-p").html();
+					$(".alert-p").html('Orders &#10071;');
+				} else {
+					$(".alert-p").html('Orders');
+				}
+
 				username = JSON.parse(responseJSON).user.name;
 				console.log('login username: ' + username);
 				contact = JSON.parse(responseJSON).user.contact;
-				history = JSON.parse(responseJSON).user.history;
+				//history = JSON.parse(responseJSON).user.history;
 				subscribe = JSON.parse(responseJSON).user.subscribe;
 
 				// subscribe = JSON.parse(responseJSON).subscribe;
@@ -167,22 +352,12 @@ $(document).on("pagecreate", "#login-page", function(){
 				sessionStorage.removeItem("user_name");
 				sessionStorage.user_name = username;
 
-				console.log(enteredEmail + " " + username + " " + subscribe + " " +contact);
+				console.log("login info: " + enteredEmail + " " + username + " " + subscribe + " " +contact);
 
 				email = enteredEmail;
 				console.log('in userlogin: ' + email);
 				password = pwd;
 
-				//var buy = true;
-				//var postParameters = {email: email};
-				//send a request to server to change to Hong's buy page.
-				// $.get("/buy", postParameters, function(responseJSON){
-				// 	//var done = JSON.parse(responseJSON).done;
-				// });
-
-				//$.redirect("/buy", {email: email});
-				//buysell[email] = "login";
-				//$(location).attr('href', '/home#page_buy_1');
 				console.log('buyorsell: ' + buyorsell);
 				if (buyorsell == 1) {
 					buysell[email] = 1;
@@ -191,15 +366,82 @@ $(document).on("pagecreate", "#login-page", function(){
 					buysell[email] = 0;
 					$.mobile.changePage($("#page_sell_1"));
 				}
-				//$.mobile.changePage($("#page_buy_1"));
+
 			}
+			console.log(sessionStorage);
+		  },
+		  async:false
 		});
 
-		//$.mobile.changePage($("#delivery-page"));
+		// $.post("/userlogin",postParameters,function(responseJSON){
+		// 	//username = JSON.parse(responseJSON).user.name;
+		// 	if (JSON.parse(responseJSON).error != undefined) {
+		// 		$("#login-error").html('<span style="font-weight: bold">Login failed</span>Please check your email and password.<br>');
+		// 	} else {
+
+		// 		//$(".alert-dot").css('display', 'block');
+		// 		//console.log('before alert p');
+		// 		var isComment = JSON.parse(responseJSON).comment;
+		// 		console.log('commentDone: ' + isComment);
+		// 		if (isComment == false) {
+		// 			$(".alert-p").html();
+		// 			$(".alert-p").html('Orders &#10071;');
+		// 		}
+		// 		// $(".alert-p").html();
+		// 		// $(".alert-p").html('Orders &#10071;');
+
+		// 		username = JSON.parse(responseJSON).user.name;
+		// 		console.log('login username: ' + username);
+		// 		contact = JSON.parse(responseJSON).user.contact;
+		// 		//history = JSON.parse(responseJSON).user.history;
+		// 		subscribe = JSON.parse(responseJSON).user.subscribe;
+
+		// 		// subscribe = JSON.parse(responseJSON).subscribe;
+		// 		sessionStorage.removeItem("user_email");
+		// 		sessionStorage.user_email = enteredEmail;
+
+		// 		sessionStorage.removeItem("contact");
+		// 		sessionStorage.contact = contact;
+		// 		console.log("newest contact :" + contact);
+
+		// 		sessionStorage.removeItem("subscribe");
+		// 		sessionStorage.subscribe = subscribe;
+
+		// 		sessionStorage.removeItem("user_name");
+		// 		sessionStorage.user_name = username;
+		// 		//console.log()
+
+		// 		console.log("login info: " + enteredEmail + " " + username + " " + subscribe + " " +contact);
+
+		// 		email = enteredEmail;
+		// 		console.log('in userlogin: ' + email);
+		// 		password = pwd;
+
+		// 		console.log('buyorsell: ' + buyorsell);
+		// 		if (buyorsell == 1) {
+		// 			buysell[email] = 1;
+		// 			$.mobile.changePage($("#page_buy_1"));
+		// 		} else {
+		// 			buysell[email] = 0;
+		// 			$.mobile.changePage($("#page_sell_1"));
+		// 		}
+
+		// 	}
+		// });
+
 	})
 });
 
 $(document).on("pagecreate", "#signup-page", function(){
+
+	$("#signup-user").focus(function(){
+		//console.log('signup-user focus');
+		$("#signup-user").val('@brown.edu');
+	});
+	// $("#signup-user").focusout(function(){
+	// 	//console.log('signup-user focus');
+	// 	$("#signup-user").prop('placeholder','Brown Email');
+	// });
 	//e.preventDefault();
 	$("#signup-submit").click(function(){
 		$("#signup-error").html('');
@@ -207,7 +449,9 @@ $(document).on("pagecreate", "#signup-page", function(){
 		var enteredEmail = $.trim($("#signup-user").val()).replace(/\s/g, '+');
 		var pwd = $.trim($("#signup-pwd").val()).replace(/\s/g, '+');
 		var subscribe = document.getElementById("subscribe").checked;
-		console.log(username + " " + enteredEmail + " " + pwd + " " + subscribe);
+		var gender = $('input[name="gender"]:checked').val();
+
+		console.log(username + " " + enteredEmail + " " + pwd + " " + subscribe + " "+gender);
 		
 		if (!checkSignupEmail(enteredEmail)) {
 			console.log('email invalid');
@@ -221,14 +465,22 @@ $(document).on("pagecreate", "#signup-page", function(){
 		}
 		email = enteredEmail;
 
-		var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
+		var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe,gender:gender};
 		$.post("/signupemail", postParameters, function(responseJSON){
 			var done = JSON.parse(responseJSON).done;
 			console.log("signup: " + done);
+			if (done == false || done == "false") {
+				console.log('in sign up false');
+				$("#signup-error").html("<h3 style=\"color: #f12074; margin-bottom: 10px; font-weight: bold\">Sign Up Failed</h3><p style=\"color: #f12074\">You've already signed Up." + 
+					"If you forget your password, please click 'Forget Password' to reset it.</p>");
+			} else {
+				console.log('in redirection');
+				$.mobile.changePage($("#signupwait-page"));
+			}
 		});
 
 
-		$.mobile.changePage($("#signupwait-page"));
+		//$.mobile.changePage($("#signupwait-page"));
 
 		// console.log('after email');
 		// var postParameters = {username: username, email: email, pwd: pwd, subscribe: subscribe};
@@ -239,6 +491,9 @@ $(document).on("pagecreate", "#signup-page", function(){
 		// 	console.log(success);
 		// })
 	})
+		// .done(function(){
+		// 	console.log('signup success!');
+		// });
 });
 
 // $(document).on("pagecreate", "#signupwait-page", function(){
@@ -249,15 +504,26 @@ $(document).on("pagecreate", "#forgetpwd-page", function(){
 	//e.preventDefault();
 	$("#forgetpwd-submit").click(function(){
 		$("#forgetpwd-processing").css('display', 'block');
+		$("#forgetpwd-error").css('display', 'none');
 		var email = $("#forgetpwd-user").val();
 		//resetEmail = email;
 		console.log(email);
 		var postParameters = {email: email};
 		$.post("/passwordemail",postParameters,function(responseJSON){
 			var done = JSON.parse(responseJSON).done;
-			$.mobile.changePage($("#resetpwdwait-page"));
+			if (done == false || done == "false") {
+				$("#forgetpwd-processing").css('display', 'none');
+				$("#forgetpwd-error").css('display', 'block');
+			} else {
+				console.log('in reset pwd');
+				$.mobile.changePage($("#resetpwdwait-page"));
+			}
+			//$.mobile.changePage($("#resetpwdwait-page"));
 			//var done = JSON.parse(responseJSON).done;
 		})
+			// .done(function(){
+			// 	console.log('forget pwd success!');
+			// });
 	});
 });
 
@@ -269,38 +535,626 @@ $(document).on("pagecreate", "#changepwd-page", function(){
 		var newPwd = $.trim($("#new-pwd").val()).replace(/\s/g, '+');
 		var reNewPwd = $.trim($("#re-new-pwd").val()).replace(/\s/g, '+');
 		if (newPwd != reNewPwd) {
-			$("#changepwd-error").html('<span style="font-weight: bold">Passwords do not match</span><br> You must enter the same password twice in order to confirm it.');
+			$("#changepwd-error").html('<span style="font-weight: bold; color: red">Passwords do not match</span><br> You must enter the same password twice in order to confirm it.');
 			return;
-		} else if (password != prevPwd) {
-			$("#changepwd-error").html('<span style="font-weight: bold">Current Password Not Correct</span><br> You must enter your current password correctly.');
 		}
 		$("#changepwd-error").html('<span style="font-weight: bold">Processing</span><br> Please wait.');
-		console.log("change: " + prevPwd + " " + newPwd + " " + reNewPwd + " " + email);
-		var postParameters = {prevPwd: prevPwd, newPwd: newPwd, email: email};
-		// $.post("/userforgetpwd",postParameters,function(responseJSON){
-			$("#changepwd-error").html('<span style="font-weight: bold">Password Changed Successfully.</span>')
-		// })
+		console.log("change: " + prevPwd + " " + newPwd + " " + reNewPwd + " " + sessionStorage.user_email);
+		var postParameters = {prevPwd: prevPwd, newPwd: newPwd, email: sessionStorage.user_email};
+		$.post("/userchangepwd",postParameters,function(responseJSON){
+			var done = JSON.parse(responseJSON).done;
+			var error = JSON.parse(responseJSON).error;
+			console.log('error: ' + error);
+			if (error == '' || error == undefined) {
+				console.log('good');
+				$("#changepwd-error").html('<span style="font-weight: bold">Password Changed Successfully.</span>')
+			} else {
+				//console.log()
+				$("#changepwd-error").html('<span style="font-weight: bold">Current Password Not Correct</span><br> You must enter your current password correctly.');
+			}
+			//$("#changepwd-error").html('<span style="font-weight: bold">Password Changed Successfully.</span>')
+		});
 	})
 });
 
-$(document).on("pagecreate", "#orders-page", function(){
-	$("#changepwd-error").html('');
-	$("#order-id-a").on("tap", function(e){
-		//alert("taped!");
-		$("#order-id").remove();
+function revertTime(time) {
+	var newTime = time.substring(0, 3);
+	newTime += ' ';
+	newTime += time.substring(3, 6);
+	newTime += ' ';
+	newTime += time.substring(6, 8);
+	newTime += ' ';
+	newTime += time.substring(8, 10);
+	newTime += ':';
+	newTime += time.substring(10, 12);
+	newTime += ':';
+	newTime += time.substring(12, 14);
+	newTime += ' ';
+	newTime += time.substring(14, 17);
+	newTime += ' ';
+	newTime += time.substring(17, time.length);
+	return newTime;
+}
+
+function getComment(){
+	//uncommented -= 1;
+	//$("#uncommented-label").html('Uncommented: ' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.8em">' + uncommented + '</span>');
+	var info= $("#info").val();
+	var commentId = $("input:hidden[name=commentId]").val();
+	var fromTime = revertTime(commentId);
+	var userType = $("input:hidden[name=userType]").val();
+	var userTypeToReturn;
+	console.log('usertype: ' + userType);
+	if (userType == 'Bought') {
+		userTypeToReturn = 'seller';
+	} else if (userType == 'Sold') {
+		userTypeToReturn = 'buyer';
+	}
+	var userEmail = $("input:hidden[name=userEmail]").val();
+	//alert('info :' + info + ' from: ' + fromTime + ' ' + userType + ' ' + userEmail);
+	var completed = $("#completed").is(':checked');
+
+	if (completed == true) {
+		completed = false;
+	} else {
+		completed = true;
+	}
+	
+	console.log('completed: ' + completed);
+	var completedSend;
+	if (completed == true) {
+		completedSend = 1;
+	} else {
+		completedSend = 0;
+	}
+	//alert('info :' + info + ' from: ' + fromTime + ' ' + userTypeToReturn + ' ' + userEmail + ' ' + completed + ' ' + starRating);
+
+	var postParameters = {user: userTypeToReturn, time: fromTime, rating: starRating, comment: info, email: userEmail, complete: completedSend};
+	$.post("/addcomment", postParameters, function(responseJSON){
+		var done = JSON.parse(responseJSON).done;
+		starRating = 5;
+		console.log('uncommented: ' + uncommented);
+		uncommented = uncommented - 1;
+		$("#uncommented-label").html('To Rate ' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.8em">' + uncommented + '</span>');
+		if (uncommented == 0) {
+			//$(".alert-p").html();
+			$(".alert-p").html('Orders');
+		}
+		$('#' + commentId + 'comment').remove();
+		$('#' + commentId).remove();
 	});
+	//alert(id);
+
+}
+
+var starRating = 5;
+var uncommented = 0;
+
+function getRating(id) {
+
+	for (var j = 1; j <=id; j++) {
+		$("#star" + j).removeClass('fa-star-o').addClass('fa-star');
+	}
+
+	for (var i = 5; i > id; i--) {
+		$("#star" + i).removeClass('fa-star').addClass('fa-star-o');
+	}
+	starRating = id;
+	//return id;
+}
+
+function checkComplete() {
+
+	console.log('in check completed');
+
+	var isCompleted = $("#completed").is(':checked');
+	console.log(isCompleted);
+	if (isCompleted == 'true' || isCompleted == true) {
+		console.log('completed true');
+		//$("#completed").prop('checked', false);
+		$("#completed").prop('data-cacheval', 'false');
+		$("#completed-label").removeClass('ui-checkbox-on').addClass('ui-checkbox-off');
+	} else if (isCompleted == 'false' || isCompleted == false) {
+		console.log('completed false');
+		//$("#completed").prop('checked', true);
+		$("#completed").prop('data-cacheval', 'true');
+		$("#completed-label").removeClass('ui-checkbox-off').addClass('ui-checkbox-on');
+	}
+
+}
+
+function deleteOrderOffer(id) {
+
+	console.log("curr offer order: " + $("#curr-label").text().substring(11, 12));
+
+	var currOfferOrder = parseInt($("#curr-label").text().substring(11, 12)) -1;
+	//$("#curr-label").html
+	//$("#curr-label").html('Current' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.8em">' + currOfferOrder + '</span>');
+
+	console.log('delete order offer id: ' + id);
+	id = id.substring(0, id.length-6);
+	console.log(id);
+	$("#delete-popup").popup("open");
+	$("#delete-popup #remove").click(function(){
+		$("#curr-label").html('Pending' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.8em">' + currOfferOrder + '</span>');
+		$("#" + id).remove();
+	});
+	var type = id.substring(id.length-5, id.length);
+	var time = revertTime(id.substring(0, id.length-5));
+	console.log('type: ' + type + 'time: ' + time);
+	var postParameters = {type: type, time: time}
+	$.post("/deletedeal", postParameters, function(responseJSON){	
+		var done = JSON.parse(responseJSON).done;
+	});
+}
+
+function generateStars(num) {
+	var starsHtml = '<div id="history-stars">';
+	var stars = [];
+	for (var i = 1; i <= num; i++) {
+		starsHtml += '<i class="fa fa-star"></i>&nbsp;&nbsp;';
+	}
+	for (var j = 5; j> num; j--) {
+		starsHtml += '<i class="fa fa-star-o"></i>&nbsp;&nbsp;';
+	}
+	starsHtml += '</div>';
+	console.log('starsHtml: ' + starsHtml);
+	return starsHtml;
+}
+
+function checkPhone(phone) {
+	var pattern = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+	if (phone.match(pattern)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+$(document).on("pageshow", "#orders-page", function(){
+
+
+	var hiddenProfileComments = [];
+	var hiddenOrdersHistory = [];
+	var showMoreBtn = true;
+
+	var commentInfo = {};
+
+	$("#uncommented-label").html('To Rate ' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.8em">' + uncommented + '</span>');
+
+	$("#changepwd-error").html('');
+	//console.log()
+	$(".delete").on("tap", function(e){
+		//alert("taped!");
+		console.log('to delete');
+		var toDelete = $(this).parent().attr("id");
+		console.log('toDelete: ' + toDelete);
+		$("#delete-popup").popup("open");
+		//$("#order-id").remove();
+	});
+	var history;
+	console.log('in orders-page');
+
+	var showMorBtn = true;
+
+	var postParameters = {email: sessionStorage.user_email};
+	$.post("/getdeals", postParameters, function(responseJSON){
+		$("#orders-ul").empty();
+		$("#deals-history").empty();
+		$("#uncommented-ul").empty();
+		console.log('in get deals');
+		var orders = JSON.parse(responseJSON).orders;
+		var offers = JSON.parse(responseJSON).offers;
+		history = JSON.parse(responseJSON).history;
+		console.log('length: ' + orders.length + ' ' + offers.length + ' ' + history.length);
+		//console.log(orders[0].duration);
+		if (orders.length != 0 || offers.length != 0) {
+			$("#curr-label").html('Pending' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.8em">' + (orders.length + offers.length) + '</span>');
+		}
+
+		if (orders.length != 0) {
+			console.log(orders[0].duration);
+			for (var i = 0; i < orders.length; i++) {
+				console.log('order time: ' + orders[i].time);
+				var trimedOrderTime = $.trim(orders[i].time).replace(/[:]/g, '').replace(/\s/g, '');
+				console.log('trimed order time: ' + trimedOrderTime);
+				var li = document.createElement('li');
+	        	li.setAttribute("class", "ui-li-has-alt ui-first-child ui-last-child");
+	        	li.setAttribute("id", trimedOrderTime + "order");
+		        li.innerHTML = '<a href="#" class="ui-btn" >' + 
+		         			'<h3>Buy Pending:</h3><p style="font-size: 15px; text-align: left">' + 
+		         			'Eatery: ' + orders[i].eatery + 
+		         			'<br>Duration: ' + orders[i].duration + 'min' + 
+		         			'<br>' + orders[i].time + 
+		         			'</p>' + 
+		         			'<a href="#"' + 
+		         			' id="' + trimedOrderTime + 'orderdelete" data-rel="popup" data-icon="delete"' + 
+		         			' aria-haspopup="true" aria-owns="delete-popup"' + 
+		         			' aria-expanded="false"' + 
+		         			'onclick="deleteOrderOffer(this.id)"' + 
+		         			' class="ui-btn ui-btn-icon-notext ui-icon-delete delete" title=“”>::after</a>';
+		        $("#orders-ul").append(li);
+			}
+		}
+		if (offers.length != 0) {
+			console.log(offers[0].duration);
+			for (var j = 0; j < offers.length; j++) {
+				console.log('offer time: ' + offers[j].time);
+				var trimedOfferTime = $.trim(offers[j].time).replace(/[:]/g, '').replace(/\s/g, '');
+				var li = document.createElement('li');
+				li.setAttribute("id", trimedOfferTime + "offer");
+	        	li.setAttribute("class", "ui-li-has-alt ui-first-child ui-last-child");
+		        li.innerHTML = '<a href="#" class="ui-btn" >' + 
+		         			'<h3>Sell Pending:</h3><p style="font-size: 15px; text-align: left">' + 
+		         			'Eatery: ' + offers[j].eatery + 
+		         			'<br>Duration: ' + offers[j].duration + 'min' + 
+		         			'<br>' + offers[j].time + 
+		         			'</p><a href="#" data-rel="popup" ' + 
+		         			'id="' + trimedOfferTime + 'offerdelete"' + 
+		         			'data-icon="delete" aria-haspopup="true" aria-owns="delete-popup" ' +
+		         			'onclick="deleteOrderOffer(this.id)"' + 
+		         			'aria-expanded="false" ' + 
+		         			'class="ui-btn ui-btn-icon-notext ui-icon-delete delete" title=“”>::after</a>';
+		        $("#orders-ul").append(li);
+			}
+		}
+		//console.log('history length: ' + history.length);
+		if (history.length == 0) {
+			$("#hist-label").html('History');
+		} else {
+
+			uncommented = 0;
+
+			$("#hist-label").html('History' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.8em">' + history.length + '</span>');
+
+			//var uncommented = 0;
+
+			for (var p = 0; p < history.length; p++) {
+				var star;
+				var buyOrSell;
+				var isSell = true;
+				var name;
+				var contact;
+				var email;
+				var isCommented;
+				var comment;
+				//var histRating;
+				//console.log('user-email in history: ' + sessionStorage.user_email);
+				//console.log('sellerEmail in history: ' + history[p].sellerEmail);
+				if (history[p].sellerEmail == sessionStorage.user_email) {
+					console.log('Im seller');
+					name = history[p].buyerName;
+					buyOrSell = "Sold";
+					console.log('buyorsell1: ' + buyOrSell);
+					contact = history[p].buyerContact;
+					email = history[p].buyerEmail;
+					star = countStar(history[p].buyerRating);
+					comment = history[p].sellerComment;
+					//histRating = 
+					if (history[p].buyerComment == 'No comment yet.') {
+						isCommented = false;
+					} else {
+						isCommented = true;
+					}
+
+				} else if (history[p].buyerEmail == sessionStorage.user_email){
+					console.log('Im buyer');
+					name = history[p].sellerName;
+					buyOrSell = "Bought";
+					email = history[p].sellerEmail;
+					contact = history[p].sellerContact;
+					star = countStar(history[p].sellerRating);
+					comment = history[p].buyerComment;
+					if (history[p].sellerComment == 'No comment yet.') {
+						isCommented = false;
+					} else {
+						isCommented = true;
+					}
+				}
+				//console.log('buy or sell 1.5: ' + buyOrSell);
+
+				var prep;
+
+				if (buyOrSell == 'Bought') {
+					prep = "from";
+				} else {
+					prep = "to";
+				}
+
+				// if (p < 4) {
+
+				// }
+				var li = document.createElement("li");
+	         	li.setAttribute("class", "ui-li-static ui-body-inherit ui-first-child ui-last-child");
+	         	li.innerHTML = '<h3 style="font-weight: bold">'+ buyOrSell  + ' Meal ' + prep + ' ' + 
+	         	'<span style="color: #8a24a0">' + name + '</span></h3>' + 
+	         	'<p style="font-size: 13px">' + 
+	         	// name + 
+	         	// '<br>' + 
+	         	'Contact: ' + contact + 
+	         	'<br>' + 
+	         	'Rating: ' + star + 
+	         	'<br>' + 
+	         	'Deal Price: $' + history[p].price + 
+	         	'<br>' + 
+	         	'Dining Hall: ' + history[p].eatery + 
+	         	'<br>' + 
+	         	'Comment Received: ' + comment + 
+	         	'<br>' + 
+	         	'Time: '  + history[p].time; 
+
+	         	if (p < 4) {
+	         		$("#deals-history").append(li);
+	         	} else {
+	         		hiddenOrdersHistory.push(li)
+	         	}
+	         	//$("#deals-history").append(li);
+
+	         	//put in profile
+
+	         	//var star = countStar(data.rating);
+	         	//console.log('buyOrSell 1.6: ' + buyOrSell);
+
+	         	if (isCommented == false) {
+	         		uncommented += 1;
+	         		$(".alert-p").html('Orders &#10071;');
+
+	         		//To do: change "!" sign in order.
+
+	         		var prep;
+	         		if (buyOrSell == 'Bought') {
+	         			prep = 'from';
+	         		} else {
+	         			prep = 'to';
+	         		}
+
+	         		var com = 'comment';
+	         		var li = document.createElement("li");
+		         	li.setAttribute("class", "ui-li-has-alt ui-first-child ui-last-child");
+		         	var trimedTime = $.trim(history[p].time).replace(/[:]/g, '').replace(/\s/g, '');
+		         	console.log('trimed time: ' + trimedTime);
+		         	li.setAttribute("id", trimedTime);
+		         	li.innerHTML = '<a href="#" class="ui-btn" >' +
+		         	'<h3>'+ buyOrSell  + ' credit ' + prep + ' ' + name + '</h3>' + 
+		         	// '<p style="font-size: 15px; text-align: left">' + 
+		         	// name + 
+		         	// '<br>' + 
+		         	'<p>Dining Hall: ' + history[p].eatery + 
+		         	'<br>' + 
+		         	'Time: '  + history[p].time + 
+		         	'</p><a id="'  + trimedTime + 'commentbtn" href="#" data-rel="popup" data-icon="comment" aria-haspopup="true" aria-owns="delete-popup" aria-expanded="false" class="ui-btn ui-btn-icon-notext ui-icon-comment" style="background-color: #fca9ad" title=“”>::after</a>'; 
+		         	$("#uncommented-ul").append(li); //id = timecomment;
+
+		         	//console.log('history[p].time: ' + history[p].time);
+		         	var commentBtn = 'commentBtn';
+
+		         	var dealInfo = [buyOrSell, email];
+		         	//console.log(dealInfo[0]);
+		         	commentInfo[trimedTime] = dealInfo;
+
+		         	//console.log('buyOrSell 1.75: ' + buyOrSell);
+
+		         	$("#" + trimedTime + "commentbtn").click(function(){
+
+		         		//var commentBtn = 'commentBtn';
+
+
+
+		         		$(".comments").remove();
+		         		//console.log('clicked: ' + this.id.substring(0, this.id.length-10));
+		         		var commentID = this.id.substring(0, this.id.length-10);
+
+		         		var dealInfo = commentInfo[commentID];
+		         		var buyOrSell = dealInfo[0];
+		         		var email = dealInfo[1];
+		         		console.log('dealInfo: ' + buyOrSell + ' ' + email);
+
+		         		var sellerOrBuyer;
+		         		if (buyOrSell == "Bought") {
+		         			sellerOrBuyer = "seller";
+		         		} else if (buyOrSell == "Sold") {
+		         			sellerOrBuyer = "buyer";
+		         		}
+
+		         		var li = document.createElement("li");
+		         		li.setAttribute("class", "ui-li-static ui-body-inherit ui-first-child ui-last-child comments");
+		         		li.setAttribute("id", commentID + "comment");
+		         		//console.log(trimedTime);
+		         		//console.log('useremail: ' + email);
+		         		//li.setAttribute("c)
+		         		li.innerHTML = '<form id="' + commentID + 'form">' + 
+            				'<div class="ui-field-contain">' + 
+            				// '<label style="text-align: center">Rate and Comment</label>' + 
+              				'<fieldset data-role="controlgroup" class="ui-controlgroup ui-controlgroup-vertical ui-corner-all" style="margin-bottom: 10px; margin-top: 0px;">' + 
+          					'<div class="ui-controlgroup-controls" style="width: 100%; margin-top: 0px">' + 
+          					'<div class="ui-checkbox">' + 
+          					'<label for="completed" id="completed-label"' + 
+          					'class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-first-child ui-last-child ui-checkbox-on" >Is the order completed?</label>' + 
+          					'<input onclick="checkComplete()" style="margin-left: 5px" type="checkbox" name="completed" id="completed" data-cacheval="true">' + 
+        					'</div>' + 
+        					'</div>' + 
+        					'</fieldset>' + 
+        					'<div id="star-rating" style="text-align: center">' + 
+        					'<label>------ Please Leave Your Rating ------</label>' + 
+        					'<div id="stars">' + 
+        					'<i id="star1" onclick="getRating(1)" class="fa fa-star"></i>&nbsp;&nbsp;' + 
+        					'<i id="star2" onclick="getRating(2)" class="fa fa-star"></i>&nbsp;&nbsp;' + 
+        					'<i id="star3" onclick="getRating(3)" class="fa fa-star"></i>&nbsp;&nbsp;' + 
+        					'<i id="star4" onclick="getRating(4)" class="fa fa-star"></i>&nbsp;&nbsp;' + 
+        					'<i id="star5" onclick="getRating(5)" class="fa fa-star"></i>' + 
+        					'</div>' + 
+        					'</div>' + 
+              				'<textarea name="addComment" id="info" ' + 
+              				'class="ui-input-text ui-shadow-inset ui-body-inherit ui-corner-all ui-textinput-autogrow" ' + 
+              				'style="height: 52px" ' + 
+              				'placeholder="please comment on the deal and the ' + sellerOrBuyer + '">' + 
+              				'</textarea>' + 
+              				'<input type="hidden" name="commentId" value=' + commentID + '>' + 
+              				'<input type="hidden" name="userType" value="' + buyOrSell +'"">' + 
+              				'<input type="hidden" name="userEmail" value="' + email + '">' + 
+							'</div>' + 
+							'<button onclick="getComment()" type="button" data-role="none" class="ui-btn commentBtn" id="' + commentBtn + '" ' + 
+              				'style="margin-top: 5px" ' + 
+              				'>Submit Comment</button></form>';
+              			//console.log('buyorSell2: ' + buyOrSell);
+              			// document.getElementById('combutton').addEventListener('click', function(){
+              			// 	alert('submit!');
+              			// });
+						// 	alert('submit!');
+						// 	console.log('submit!');
+						// 	var value = $("input[name=commentId]").val();
+						// 	console.log('value: ' + value);
+						// });
+              			//console.log(li.innerHTML);
+		         		$("#" + commentID).after(li);
+
+		         	});
+
+					// $("#info").on('input', function(){
+					// 	alert('info input!');
+					// });
+					//alert('aha here!!');
+
+					// $(".ui-btn").click(function(){
+					// 	alert('click btn!');
+					// })
+
+					// $("#" + commentBtn).click(function(){
+					// 	alert('submit!');
+					// 	console.log('submit!');
+					// 	var value = $("input[name=commentId]").val();
+					// 	console.log('value: ' + value);
+					// });
+		         	console.log('reaches after comment');
+	         	} else {
+	         		// var commentToMe;
+	         		// if (buyOrSell == 'Bought') {
+	         		// 	commentToMe = history[p].buyerComment;
+	         		// } else if (buyOrSell == 'Sold'){
+	         		// 	commentToMe = history[p].sellerComment;
+	         		// }
+
+	         		// console.log("hist num: " + p);
+
+	         		// if (p < 4) {
+	         		// 	//$("#more-div").css('display', 'block');
+	         		// 	// var next = '<li class="ui-li-static ui-body-inherit ui-first-child">' + 
+	         		// 	// '<a class="ui-btn ui-shadow ui-icon-arrow-d ui-btn-icon-left ui-corner-all"style="background-color: rgba(200, 255, 255, 0.5);' + 
+	         		// 	// 'height: 20px; width: 100%; text-align: center; list-style: none">More' + 
+	         		// 	// '</a>' + 
+	         		// 	// '</li>';
+	         		// 	// $("#rating-ol").append(next);
+	         		// 	var profileComment = '<li class="ui-li-static ui-body-inherit ui-first-child">' + 
+			         // 		'<h4>' + name + '</h4>' + 
+			         // 		'<p style="font-size: 15px">' + 
+			         // 		star + 
+			         // 		'<br>&nbsp; &nbsp; &nbsp; &nbsp;' + commentToMe + '</p>' + 
+			         // 		'</li>'
+			         // 	$("#rating-ol").append(profileComment);
+
+	         		// } else {
+	         		// 	var profileComment = '<li class="ui-li-static ui-body-inherit ui-first-child">' + 
+			         // 		'<h4>' + name + '</h4>' + 
+			         // 		'<p style="font-size: 15px">' + 
+			         // 		star + 
+			         // 		'<br>&nbsp; &nbsp; &nbsp; &nbsp;' + commentToMe + '</p>' + 
+			         // 		'</li>';
+			         // 	hiddenProfileComments.push(profileComment);
+			         // 	//$("#rating-ol").append(profileComment);
+	         		// }
+
+	         		// var profileComment = '<li style="display:none" class="ui-li-static ui-body-inherit ui-first-child hidden-comments">' + 
+		         	// 	'<h4>' + name + '</h4>' + 
+		         	// 	'<p style="font-size: 15px">' + 
+		         	// 	star + 
+		         	// 	'<br>&nbsp; &nbsp; &nbsp; &nbsp;' + commentToMe + '</p>' + 
+		         	// 	'</li>'
+		         	// $("#rating-ol").append(profileComment);
+	         	}
+
+			}
+			$("#uncommented-label").html('To Rate ' + '    <span style="color: #ff44b6; font-family: Arial; font-size: 0.9em">' + uncommented + '</span>');
+		}
+	});
+
+	$("#deals-history").on('scrollstop', function(){
+		//alert("stop!");
+		console.log($("#deals-history").scrollTop());
+		var scroll = $("#deals-history").scrollTop();
+		if (showMoreBtn == false) {
+			return;
+		}
+		if (scroll > 400){
+			console.log('bottom');
+			$("#hist-more-div").css('display', 'block');
+			//alert('bottom!');
+		} else {
+			$("#hist-more-div").css('display', 'none');
+		}
+	});
+
+	$("#hist-more-div").click(function(){
+		console.log('in hist more div');
+		//console.log(hiddenProfileComments.length);
+		while (hiddenOrdersHistory.length != 0) {
+			var toAdd = hiddenOrdersHistory.shift();
+			$("#deals-history").append(toAdd);
+		}
+		$("#hist-more-div").css('display', 'none');
+		showMoreBtn = false;
+		//hiddenProfileComments.shift();
+		//$(".hidden-comments").css('display', 'block');
+	});
+
+	// $("#star1").click(function(){
+	// 	alert('1');
+	// });
+	// $("#star2").click(function(){
+	// 	alert('2');
+	// });
+	// $("#star3").click(function(){
+	// 	alert('3');
+	// });
+	// $("#star4").click(function(){
+	// 	alert('4');
+	// });
+	// $("#star5").click(function(){
+	// 	alert('5');
+	// });
+
+//alert('aha!');
+	// console.log('history length: ' + history.length);
+	// for (var q = 0; q < history.length; q++) {
+	// 	$("#" + history[q].time + "comment").click(function(){
+	// 		console.log('clicked!');
+ //     		alert('clicked!');
+ //     	});
+	// }
+
+	//$("#")
 });
 
-$(document).on("pagecreate", "#profile-page", function(){
+// function displayMore() {
+// 	console.log('in more div');
+// 	$(".hidden-comments").css('display', 'block');
+// }
+
+//var hiddenProfileComments = [];
+//var initProfileComments = [];
+//var have
+
+$(document).on("pageshow", "#profile-page", function(){
 	
+	addExternal();
 	//preset the returned value from login.
-	contact = "000-000-0000";//placeholder
+	contact = "0000000000";//placeholder
 	$("#profile-subscribe").prop('checked', subscribe);
 	$("#profile-name").text(sessionStorage.user_name);
 	console.log('init sessionStorage contact' + sessionStorage.contact);
-	if (sessionStorage.contact == '0000000000') {
+	if (sessionStorage.contact == '0000000000' || sessionStorage.contact == '') {
 		console.log('in profile contact');
-		$("#profile-contact").html('tap to add contact');
+		//$("#profile-contact").html('000000000');
+		$("#profile-contact").text('Please enter your phone number.');
 		$("#profile-contact").css('color', 'grey');
 	} else {
 		console.log('in contact true');
@@ -315,7 +1169,10 @@ $(document).on("pagecreate", "#profile-page", function(){
 	$("#profile-name").on("tap", function(e){
 		e.preventDefault();
 		//alert('tap');
-		prevName = $(this).text();
+		if ($(this).text() != '') {
+			prevName = $(this).text();
+		}
+		//prevName = $(this).text();
 		//alert(prevEmail);
 		//alert("email: " + email);
 		//$(this).css('border', 'none');
@@ -333,24 +1190,31 @@ $(document).on("pagecreate", "#profile-page", function(){
 	$(document).on('blur', '#profile-name-in', function(){
 		//alert(prevEmail);
 		var newName = $(this).val();
+		sessionStorage.user_name = newName;
 		//alert(newEmail)
 		$("#profile-name").html('');
 		$("#profile-name").html(newName);
-		if (newName === "" && prevName === ""){
+		if (newName == "" && prevName == "") {
+			$("#profile-name").html('tap to add username');
+		} else if (newName === "" || !checkProfileUsername(newName)){
 			//alert(prevEmail);
 			//$("#profile-name").css("color", "#c2c2c2");
-			$("#profile-name").html(username);
+			$("#profile-name").html(prevName);
+			sessionStorage.user_name = prevName;
 		}
 		$("#profile-name").css('border-bottom', '1px solid #989797');
 		username = newName;
+		//sessionStorage.user_name = 
 
-		resetProfile(email, contact, username, subscribe);
+		resetProfile(email, sessionStorage.contact, sessionStorage.user_name, subscribe);
 
 	});
 
 	$("#profile-contact").on("tap", function(e){
-		$("#profile-contact").css('color', 'black');
+		//$("#profile-contact").css('color', 'black');
 		e.preventDefault();
+		$("#profile-contact").css('color', 'black');
+		$("#profile-contact").html('');
 		//alert('tap');
 		prevContact = $(this).text();
 		//alert(prevEmail);
@@ -370,20 +1234,54 @@ $(document).on("pagecreate", "#profile-page", function(){
 	$(document).on('blur', '#profile-contact-in', function(){
 		//alert(prevEmail);
 		var newContact = $(this).val();
+		console.log('new contact ' + newContact);
+		sessionStorage.contact = newContact;
+		$("#profile-error").text("");
+		//$("#profile-contact").css('color', 'grey');
+
+
+		// if (checkPhone(newContact)) {
+		// 	$("#profile-error").text("");
+		// 	console.log('phone number valid');
+		// 	//sessionStorage.contact = newContact;
+		// } else {
+		// 	$("#profile-error").text("Please enter a valid US phone number.");
+		// }
+
+		//sessionStorage.contact = newContact;
+		console.log('prev contact' + prevContact);
 		//alert(newEmail)
 		$("#profile-contact").html('');
 		$("#profile-contact").html(newContact);
-		if (newContact === ""){
+		if (newContact == "" && prevContact == "") {
+			$("#profile-contact").text('Please enter your phone number');
+			$("#profile-contact").css('color', 'grey');
+		} else if (newContact === ""){
+			console.log('new contact = null');
 			//alert(prevEmail);
 			//$("#profile-contact").css("color", "#c2c2c2");
 			//$("#profile-contact").html(contact);
-			$("#profile-contact").html('tap to add contact');
+			$("#profile-contact").html(prevContact);
+			sessionStorage.contact = prevContact;
+			$("#profile-contact").css('color', 'black');
+			//$("#profile-contact").css('color', 'grey');
+		} else if (!checkPhone(newContact) && prevContact == "") {
+			$("#profile-contact").text('Please enter your phone number');
 			$("#profile-contact").css('color', 'grey');
+			$("#profile-error").text("Please enter a valid US phone number.");
+		} else if (!checkPhone(newContact)){
+			$("#profile-contact").html(prevContact);
+			$("#profile-contact").css('color', 'black');
+			sessionStorage.contact = prevContact;
+			$("#profile-error").text("Please enter a valid US phone number.");
 		}
+		//}
+		//sessionStorage.contact = newContact;
+		console.log('reset contact blur: ' + sessionStorage.contact);
 		$("#profile-contact").css('border-bottom', '1px solid #989797');
 
-		contact = newContact;
-		resetProfile(email, contact, username, subscribe);
+		//contact = newContact;
+		resetProfile(email, sessionStorage.contact, sessionStorage.user_name, subscribe);
 
 	});
 
@@ -396,17 +1294,182 @@ $(document).on("pagecreate", "#profile-page", function(){
 
 		// })
 	});
+
+	$("#logout-submit").click(function(){
+		sessionStorage.clear();
+		console.log('logout.');
+		console.log(sessionStorage)
+		$.mobile.changePage($("#login-page"));
+	});
+
+	var hiddenProfileComments = [];
+
+	$("#rating-ol").empty();
+
+	showMoreBtn = true;
+
+	var postParameters = {email: sessionStorage.user_email};
+	$.post("/getdeals", postParameters, function(responseJSON){
+		//$("#orders-ul").empty();
+		//$("#deals-history").empty();
+		//console.log('in get deals');
+		var orders = JSON.parse(responseJSON).orders;
+		var offers = JSON.parse(responseJSON).offers;
+		var history = JSON.parse(responseJSON).history;
+		console.log('length: ' + orders.length + ' ' + offers.length + ' ' + history.length);
+		if (history.length != 0) {
+
+			//var uncommented = 0;
+			$("#rating-ol").css('height', '250px');
+			var commentedCount = 0;
+			for (var p = 0; p < history.length; p++) {
+				var star;
+				var buyOrSell;
+				var isSell = true;
+				var name;
+				var contact;
+				var email;
+				var isCommented;
+				var comment;
+				//var histRating;
+				//console.log('user-email in history: ' + sessionStorage.user_email);
+				//console.log('sellerEmail in history: ' + history[p].sellerEmail);
+				if (history[p].sellerEmail == sessionStorage.user_email) {
+					//console.log('Im seller');
+					name = history[p].buyerName;
+					buyOrSell = "Sold";
+					//console.log('buyorsell1: ' + buyOrSell);
+					contact = history[p].buyerContact;
+					email = history[p].buyerEmail;
+					star = countStar(history[p].buyerRating);
+					comment = history[p].sellerComment;
+					//histRating = 
+					if (history[p].buyerComment == 'No comment yet.') {
+						isCommented = false;
+					} else {
+						isCommented = true;
+					}
+
+				} else if (history[p].buyerEmail == sessionStorage.user_email){
+					//console.log('Im buyer');
+					name = history[p].sellerName;
+					buyOrSell = "Bought";
+					email = history[p].sellerEmail;
+					contact = history[p].sellerContact;
+					star = countStar(history[p].sellerRating);
+					comment = history[p].buyerComment;
+					if (history[p].sellerComment == 'No comment yet.') {
+						isCommented = false;
+					} else {
+						isCommented = true;
+					}
+				}
+				//console.log('buy or sell 1.5: ' + buyOrSell);
+
+				var prep;
+
+				if (buyOrSell == 'Bought') {
+					prep = "from";
+				} else {
+					prep = "to";
+				}
+
+	         	if (isCommented == false) {
+
+	         	} else {
+	         		commentedCount += 1;
+	         		var commentToMe;
+	         		if (buyOrSell == 'Bought') {
+	         			commentToMe = history[p].buyerComment;
+	         		} else if (buyOrSell == 'Sold'){
+	         			commentToMe = history[p].sellerComment;
+	         		}
+
+	         		console.log("hist num: " + p);
+
+	         		if (commentedCount <= 4) {
+	         			//$("#more-div").css('display', 'block');
+	         			// var next = '<li class="ui-li-static ui-body-inherit ui-first-child">' + 
+	         			// '<a class="ui-btn ui-shadow ui-icon-arrow-d ui-btn-icon-left ui-corner-all"style="background-color: rgba(200, 255, 255, 0.5);' + 
+	         			// 'height: 20px; width: 100%; text-align: center; list-style: none">More' + 
+	         			// '</a>' + 
+	         			// '</li>';
+	         			// $("#rating-ol").append(next);
+	         			var profileComment = '<li class="ui-li-static ui-body-inherit ui-first-child">' + 
+			         		'<h4>' + name + '</h4>' + 
+			         		'<p style="font-size: 15px">' + 
+			         		star + 
+			         		'<br>&nbsp; &nbsp; &nbsp; &nbsp;' + commentToMe + '</p>' + 
+			         		'</li>'
+			         	$("#rating-ol").append(profileComment);
+			         	//initProfileComments.push(profileComment);
+
+	         		} else {
+	         			var profileComment = '<li class="ui-li-static ui-body-inherit ui-first-child">' + 
+			         		'<h4>' + name + '</h4>' + 
+			         		'<p style="font-size: 15px">' + 
+			         		star + 
+			         		'<br>&nbsp; &nbsp; &nbsp; &nbsp;' + commentToMe + '</p>' + 
+			         		'</li>';
+			         	hiddenProfileComments.push(profileComment);
+			         	//$("#rating-ol").append(profileComment);
+	         		}
+
+	         	}
+
+			}
+			console.log('commented count: ' + commentedCount);
+			if (commentedCount == 0) {
+
+				$("#rating-ol").css('height', '0px');
+			}
+		} else {
+			$("#rating-ol").css('height', '0px');
+		}
+	});
+
+	$("#rating-ol").on('scrollstop', function(){
+		//alert("stop!");
+		console.log($("#rating-ol").scrollTop());
+		var scroll = $("#rating-ol").scrollTop();
+		if (showMoreBtn == false) {
+			return;
+		}
+		if (scroll > 110){
+			console.log('bottom');
+			$("#more-div").css('display', 'block');
+			//alert('bottom!');
+		} else {
+			$("#more-div").css('display', 'none');
+		}
+	});
+
+	$("#more-div").click(function(){
+		console.log()
+		console.log('in more div');
+		console.log(hiddenProfileComments.length);
+		while (hiddenProfileComments.length != 0) {
+			var toAdd = hiddenProfileComments.shift();
+			$("#rating-ol").append(toAdd);
+		}
+		$("#more-div").css('display', 'none');
+		showMoreBtn = false;
+		//hiddenProfileComments.shift();
+		$(".hidden-comments").css('display', 'block');
+	});
+
 });
 
 
 
 
 
-localStorage.removeItem("request");
+//localStorage.removeItem("request");
 request = JSON.parse(localStorage.request||'{}');
 localStorage.request = JSON.stringify(request);
 
-$( document ).on( "pageinit", "#page_buy_1", function(event) {
+$( document ).on( "pageshow", "#page_buy_1", function(event) {
+	console.log(sessionStorage.user_email)
 	console.log('in pagebuy1: ' + email);
   $("#progress_bar").progressbar({
      value: 25
@@ -480,6 +1543,46 @@ $( document ).on( "pageinit", "#page_buy_2", function(event) {
     value: 50
   });
 
+   	var day = Math.abs(new Date().getDay() - 7);
+
+  	if (new Date().getHours()<2){
+  		day -=1;
+  	}
+
+	var hour = Math.abs(parseInt(new Date().getHours()) + 24 - 2);
+
+	var min = new Date().getMinutes();
+
+	var hour_parsed = (hour % 24)*60 + min;
+
+	var live_eateries = [];
+
+	for (eatery in schedule){
+		if (schedule.hasOwnProperty(eatery)){
+			console.log(hour);
+			console.log(eatery);
+			console.log(day);
+			console.log(hour_parsed);
+			console.log( schedule[eatery][day]);
+			for (var i = 0; i < schedule[eatery][day].length;i++){
+				var span = schedule[eatery][day][i];
+				if (hour_parsed > span[0] && hour_parsed < span[1]){
+					live_eateries.push(eatery)
+				}
+			}
+		}
+		
+	}
+
+	console.log(live_eateries);
+
+	$('#page_buy_2 li h2').each(function(){
+		var eatery = $(this).text();
+		if (live_eateries.indexOf(eatery) == -1){
+			var $li = $(this).parents('li');
+			$li.remove();
+		}
+	})
   $(".andrews").click(function(){
     request = JSON.parse(localStorage.request);
     request.eatery = "Andrews Commons";  
@@ -501,6 +1604,20 @@ $( document ).on( "pageinit", "#page_buy_2", function(event) {
     //localStorage.request = JSON.stringify(request);
   })
 
+  $(".ratty").click(function(){
+    request = JSON.parse(localStorage.request);
+    request.eatery = "Ratty";  
+    localStorage.request= JSON.stringify(request);
+    //localStorage.request = JSON.stringify(request);
+  })
+
+  $(".vdub").click(function(){
+    request = JSON.parse(localStorage.request);
+    request.eatery = "V-Dub";  
+    localStorage.request= JSON.stringify(request);
+    //localStorage.request = JSON.stringify(request);
+  })
+
 
 });
 
@@ -510,13 +1627,14 @@ $( document ).on( "pageshow", "#page_buy_3", function(event) {
     value: 75
   });
 
-  $("#menu_fieldset").empty();
+  $(".ui-checkbox").remove();
   
   //$("#menu_fieldset").append("<legend>What do you wanna eat?</legend>");
   //$("#menu_fieldset").append("<legend style='margin-top: 10px;margin-bottom: 10px;''>Total: <span style='color:#9D8189'>$0.00</span></legend>");
 
   //$('#page_buy_3').append("<p>"+request.eatery+"</p>");
   request = JSON.parse(localStorage.request);
+  console.log(request);
   var eatery = request.eatery;
   var date = new Date();
   var day = date.getDay();
@@ -530,86 +1648,124 @@ $( document ).on( "pageshow", "#page_buy_3", function(event) {
 
   //var map = {eatery:eatery,day:day,time:time}
   localStorage.request = JSON.stringify(request);
+  var parsed_menu = [];
+  var prices = [];
+  var menu = [];
 
-  var menu={
-       "food-1":{
-              "name":"Pho",
-              "price":7.30,
-              "id":"food-1"
-       },
-       "food-2":{
-              "name":"Cheese Pizza Slice",
-              "price": 2.40,
-              "id":"food-2"
-       },
-       "food-3":{
-              "name":"MYO Panini",
-              "price": 5.95,
-              "id":"food-3"
-       },
-       "food-4":{
-              "name":"Fresh Salad",
-              "price": 4.00,
-              "id":"food-4"
-       },
-       "food-5":{
-              "name":"Sushi",
-              "price": 2.40,
-              "id":"food-5"
-       },
-  };
+  $.post("/getmenu",{eatery:eatery},function(response){
+  	data = JSON.parse(response);
+  	console.log(data)
+  	menu = data.menu;
+
+  	
+  	
+  	for (var i = 0; i<menu.length;i++){
+  		var food = menu[i];
+  		food = food.replace(/\W/g, '_');
+  		parsed_menu.push(food);
+  		prices.push(parseFloat(data.price[i]));
+  	}
+
+  	console.log(parsed_menu);
+  	//var menu = ["Pho","Skim Milk","Tea","Coffee","Sushi","Brownie"];  	
+  	//var prices = [7.30,1.75,1.85,1.90,8.25,2.50];
 
 
+  	for(var i = 0; i<menu.length;i++){
+  		//console.log(arrive);
+  		var food = parsed_menu[i];
 
-  var items = Object.keys(menu);
-  for (var i = 0;i<items.length;i++){
-    var food = menu[items[i]];
-    var id = food.id;
-    var name = food.name;
-    var price = food.price;
+  		var label = "<div class='ui-checkbox'> <label for='"+ food
+  		 + "'class='ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-right ui-checkbox-off ";
+  		if (i==0){
+  			label +="ui-first-child'>"
+  		} else if (i==menu.length-1){
+  			label += "ui-last-child'>"
+  		} else{
+  			label += "'>";
+  		}
 
-    var label = "<div class='ui-checkbox'> <label for="+ id + " style='font-weight: 400;'class='ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-right ui-checkbox-off ui-first-child'>"+ name + ": $"+ price+ "</label>";
-    var input = "<input type='checkbox' name=" + id + " id=" + id + "></div>";
-    $(label+input).appendTo($('#menu_fieldset')).trigger("create");
-  }
+  		label += menu[i];
+
+  		if (prices.length>0){
+  			var price = prices[i];
+  			label += ": $"+ price;
+  		}
+  		label += "</label>";
+  		
+    	var input = "<input type='checkbox' name=" + food + " id=" + food + "></div>";
+
+    	//console.log(label+input);
+    	$(label+input).appendTo($('#menu_fieldset .ui-controlgroup-controls')).trigger("create");
+  		//$(label).appendTo($('#menu_fieldset'));
+  		//$('#menu_fieldset').enhanceWithin().controlgroup("refresh");	
+  	}
+  	
+
+  	//$('#menu_fieldset').trigger("create");
+  	//console.log(label);
+
+  	//$("#page_buy_3 input[type='checkbox']").checkboxradio("refresh");
+
+  });
+
 
   var menu_order = {};
   var checked_count = 0;
   var total_price = 0.00;
+  if (request.eatery =="Ratty" || request.eatery == "VDub"){
+  	total_price = 7.3;
+  }
   $('#price_span').text("$"+total_price);
   
-  $('#menu :checkbox').click(function() {
-    var $this = $(this);
-    var id = $this.attr('name');
-    // $this will contain a reference to the checkbox   
-    if ($this.is(':checked')) {
-        checked_count +=1;
-        $('#menu_confirm').css("display","block");
-        menu_order[id]=true;
+  setTimeout(function(){
+  	$('#menu :checkbox').click(function() {
 
-        total_price += menu[id].price;
-        total_price = Math.abs(total_price.toFixed(2));
+	    var $this = $(this);
+	    var id = $this.attr('name');
+	    var index = parsed_menu.indexOf(id);
+	    var orig_name = menu[index];
 
-        
-        $('#price_span').text("$"+total_price);
+	    console.log(id);
+	    console.log( prices[index]);
+	    // $this will contain a reference to the checkbox   
+	    if ($this.is(':checked')) {
+	        checked_count +=1;
+	        $('#menu_confirm').removeClass('ui-disabled');
+	        menu_order[orig_name]=true;
 
-    } else {
-         checked_count-=1;
-         if(checked_count==0){
-          $('#menu_confirm').css("display","none");
-         }
-         delete menu_order[id];
-         
-         total_price -= menu[id].price;
-         total_price=Math.abs(total_price.toFixed(2));
+	        total_price += prices[index];
+	        console.log(total_price);
+	        total_price = Math.abs(total_price.toFixed(2));
 
-         $('#price_span').text("$"+ total_price);
-    }
-  });
+	        if(total_price>18.00){
+	        	$('#menu_confirm').addClass('ui-disabled');
+	        }
+	        $('#price_span').text("$"+total_price);
+
+	    } else {
+	         checked_count-=1;
+	         if(checked_count==0){
+	          $('#menu_confirm').addClass('ui-disabled');
+	         }
+
+	        
+	         delete menu_order[orig_name];
+	         
+	         total_price -= prices[index];
+	         total_price=Math.abs(total_price.toFixed(2));
+
+	          if(total_price<18.00){
+	        	$('#menu_confirm').removeClass('ui-disabled');
+	        }	
+	         $('#price_span').text("$"+ total_price);
+	    }
+  	})
+  },500);
 
   $('#menu_confirm').tap(function(){
     request = JSON.parse(localStorage.request);
-    var menu_string = Object.keys(menu_order).join(' ');
+    var menu_string = Object.keys(menu_order).join('%%');
     request.menu=menu_string;
     request.price = total_price;
     localStorage.request= JSON.stringify(request);
@@ -633,12 +1789,12 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
   localStorage.request = JSON.stringify(request);
 
 
-  var contact = sessionStorage.contact;
-  console.log(contact);
+  // var contact = sessionStorage.contact;
+  // console.log(contact);
 
-  if(contact.length==10){
+  if(sessionStorage.contact.length==10 && sessionStorage.contact != 0000000000){
   	console.log("contact true");
-  	$('#tel-1').val(contact);
+  	$('#tel-1').val(sessionStorage.contact);
   };
 
   var tap_counter = 0;
@@ -652,14 +1808,47 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
     tap_counter+=1;
   })
 
+  $("#tel-1").focusout(function(){
+  	console.log('tel-1 focusout');
+  	var phone = $('#tel-1').val().trim();
+  	if(!phone.match(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/)){
+  		$('#wrong_number').css("display","block");
+  	} else {
+  		$('#wrong_number').css("display","none");
+  	}
+  });
+ //  var intervalFlag = 1;
+
+	// var confirmInterval = setInterval(function(){
+	// 	intervalFlag = 0;
+	// 	console.log('in set interval');
+	// 	clearInterval(confirmInterval);
+	// }, 5000);
+
   $("#final_confirm").tap(function(){
+
+  	if (intervalFlag == 0 ) {
+  		console.log('two times too quick');
+		return;
+	}
+
+	var intervalFlag = 0;
+
+	var confirmInterval = setInterval(function(){
+		intervalFlag = 1;
+		console.log('in set interval');
+		clearInterval(confirmInterval);
+	}, 5000);
     
     var phone = $('#tel-1').val().trim();
-    console.log(phone);
+    console.log("input contact: " + phone);
     console.log("email:" +sessionStorage.user_email);
 
     
-    if(phone.match(/\d/g).length===10 && phone.length==10){
+    if(phone.match(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/) && phone.length==10){
+      $("#profile-error").text("");
+
+      console.log('phone match pattern');
 
       sessionStorage.contact = phone;
       $("#profile-contact").html(sessionStorage.contact);
@@ -669,22 +1858,28 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
 
       console.log("phone number"+phone);
 
-      var postParameters = {email: sessionStorage.user_email, contact: phone, username: sessionStorage.user_name, subscribe: sessionStorage.subscribe};
-
-      $.post("/changeinfo",postParameters,function(data){
-      	console.log(data);
-      })
-
       request = JSON.parse(localStorage.request);
       request.phone=phone;
       request.duration = $('#duration').val();
       request.bound = $('#bound').val();
       console.log(request);
+      console.log("session storage user_name buy: " + sessionStorage.user_name);
       localStorage.request = JSON.stringify(request)
 
-      $.post("/placeorder",{user:sessionStorage.user_email,address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
+      $.post("/placeorder",{
+      	user:sessionStorage.user_email,
+      	address:request.address,
+      	eatery:request.eatery,
+      	menu:request.menu,
+      	duration:request.duration,
+      	price:request.price,
+      	priceBound:request.bound,
+      	contact: sessionStorage.contact,
+	    username: sessionStorage.user_name,
+	    subscribe: sessionStorage.subscribe
+      },function(response){
         data = JSON.parse(response);
-        console.log(response);
+        console.log(data);
 
         var address = window.location.href;
          console.log(address);
@@ -702,26 +1897,61 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
 
         if (data.result == "nothing"){
 
+        	$('#suggestion_mail').html(sessionStorage.user_email);
+
         	$(location).attr('href', address+"#page_confirm_false");
 
 	    } else if(data.result == "match"){
-	         	//var li = document.createElement("li");
-         	//console.log('match successful');
-         	//console.log(data.buyerName);
-         	//console.log(data.buyerContact);
-         	var li = '<li><a href="#">' + 
-         			'<h3>Buy Record:</h3><p style="font-size: 15px; text-align: left">Seller: ' + 
-         			data.sellerName + 
-         			'<br> Seller Contact:' + data.sellerContact + '</p>' + 
-         			'</a><a href="#delete-popup" data-rel="popup" data-icon="delete"></a></li>';
-         	$("#orders-ul").append(li);
-
+	    	$("#match-username").html('Username: ' + data.sellerName);
+         	displayRating(data.sellerRating);
+         	$("#match-contact").html('Contact: ' + data.sellerContact);
+         	console.log('seller_email: ' + data.sellerEmail);
+         	$("#match-email").text(data.sellerEmail);
+	    	
          	$(location).attr('href', address+"#page_confirm_true");
          } else{
+
+         	$('#suggestion_div').css('display','block');
+         	$('#suggestion_mail').html(sessionStorage.user_email);
+         	sessionStorage.removeItem('offerIds');
+         	sessionStorage.removeItem('orderId');
+         	sessionStorage.removeItem('sellerNames');
+         	sessionStorage.removeItem('sellerRatings');
+         	sessionStorage.removeItem('sellerContacts');
+         	sessionStorage.removeItem('prices');
+
+         	sessionStorage.removeItem('orderIds');
+         	sessionStorage.removeItem('offerId');
+         	sessionStorage.removeItem('buyerNames');
+         	sessionStorage.removeItem('buyerRatings');
+         	sessionStorage.removeItem('buyerContacts');
+         	sessionStorage.removeItem('prices');
+
+         	sessionStorage.offerIds = JSON.stringify(data.offerIds);
+         	sessionStorage.orderId= data.orderId;
+         	sessionStorage.sellerNames = JSON.stringify(data.sellerNames);
+         	sessionStorage.sellerRatings = JSON.stringify(data.sellerRatings);
+         	sessionStorage.sellerContacts = JSON.stringify(data.sellerContacts);
+         	sessionStorage.prices = JSON.stringify(data.prices);
+
+         	for (var i = 0;i<data.sellerNames.length;i++){
+         		
+         		$("#li_"+(i+1)).css('display',"block");
+
+         		$("#user_"+(i+1)).html(data.sellerNames[i]);
+         		for (var j = 0; j<Math.floor(data.sellerRatings[i]);j++){
+         			$("#li_"+(i+1) +" #star"+(j+1)).css("color","rgba(198,26,102,0.7)");
+         		}
+
+         		$("#price_"+(i+1)).html(data.prices[i]);
+         	}
+
+         	$(location).attr('href', address+"#page_confirm_false");
 
          }
       })
     } else{
+    	console.log('wrong number');
       $('#wrong_number').css("display","block");
     }
   })
@@ -739,9 +1969,10 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
 offer = JSON.parse(localStorage.offer||'{}');
 localStorage.offer = JSON.stringify(offer);
 
-$( document ).on( "pageinit", "#page_sell_1", function(event) {
+$( document ).on( "pageshow", "#page_sell_1", function(event) {
+	console.log("arrive!!!! sell!!!")
   $("#progress_bar_sell").progressbar({
-     value: 35
+     value: 25
   });
 
   $(".meet_up_confirm").tap(function(){
@@ -783,11 +2014,20 @@ $( document ).on( "pageshow", "#page_sell_deliver", function(event) {
      value: 60
   });
 
+  $('#north_click').attr('src','../image/click.png');
+  $('#center_click').attr('src','../image/click.png');
+  $('#south_click').attr('src','../image/click.png');
+
+  $('#north_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/north_new.jpeg')");
+  $('#center_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/center_new.jpeg')");
+  $('#south_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/south_new.jpeg')");
+	
+
   var width = $(window).width()-16*2;
 
-  var north_height = 360*width/564.0 + "px";
-  var center_height = 335*width/564.0 +"px";
-  var south_height = 299*width/564.0 +"px";
+  var north_height = "218px"//360*width/564.0 + "px";
+  var center_height = "218px";//335*width/564.0 +"px";
+  var south_height = "200px"; //299*width/564.0 +"px";
 
   $('#north_shadow').css("height",north_height);
   $('#center_shadow').css("height",center_height);
@@ -799,16 +2039,16 @@ $( document ).on( "pageshow", "#page_sell_deliver", function(event) {
   var south_counter = 0;
   var center_counter =0;
 
-  $('#north_shadow').click(function(){
+  $('#north_click').click(function(){
   	if(north_counter%2==0){
   		$('#north_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0), rgba(240, 240, 240, 0)),url('../image/north_new.jpeg')");
-  		$('#north_shadow').css("background-size","100%");
+  		$('#north_shadow').css("background-size","cover");
 
   		$('#north_click').attr('src','../image/confirm.png');
   		//$('#north_check').css('display','block');
   	} else{
   		$('#north_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/north_new.jpeg')");
-		$('#north_shadow').css("background-size","100%");
+		$('#north_shadow').css("background-size","cover");
 
 		$('#north_click').attr('src','../image/click.png');
 
@@ -825,10 +2065,10 @@ $( document ).on( "pageshow", "#page_sell_deliver", function(event) {
   	}
   });
 
-  $('#center_shadow').click(function(){
+  $('#center_click').click(function(){
   	if(center_counter%2==0){
   		$('#center_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0), rgba(240, 240, 240, 0)),url('../image/center_new.jpeg')");
-  		$('#center_shadow').css("background-size","100%");
+  		$('#center_shadow').css("background-size","cover");
 
   		$('#center_click').attr('src','../image/confirm.png');
 
@@ -836,7 +2076,7 @@ $( document ).on( "pageshow", "#page_sell_deliver", function(event) {
   		//$('#center_check').css('display','block');
   	} else{
   		$('#center_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/center_new.jpeg')");
-	  	$('#center_shadow').css("background-size","100%");
+	  	$('#center_shadow').css("background-size","cover");
 
 		$('#center_click').attr('src','../image/click.png');
 		//$('#center_check').css('display','none');
@@ -851,10 +2091,10 @@ $( document ).on( "pageshow", "#page_sell_deliver", function(event) {
   	}
   });
 
-  $('#south_shadow').click(function(){
+  $('#south_click').click(function(){
   	if(south_counter%2==0){
   		$('#south_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0), rgba(240, 240, 240, 0)),url('../image/south_new.jpeg')");
-    	$('#south_shadow').css("background-size","100%");
+    	$('#south_shadow').css("background-size","cover");
 
       	$('#south_click').attr('src','../image/confirm.png');
 
@@ -862,7 +2102,7 @@ $( document ).on( "pageshow", "#page_sell_deliver", function(event) {
   		//$('#south_check').css('display','block');
   	} else{
   		$('#south_shadow').css("background","linear-gradient(rgba(240, 240, 240, 0.5), rgba(240, 240, 240, 0.5)),url('../image/south_new.jpeg')");
-		$('#south_shadow').css("background-size","100%");
+		$('#south_shadow').css("background-size","cover");
 
 		$('#south_click').attr('src','../image/click.png');
 		//$('#south_check').css('display','none');
@@ -912,7 +2152,55 @@ $( document ).on( "pageshow", "#page_sell_2", function(event) {
     value: 70
   });
 
+  	var day = Math.abs(new Date().getDay() - 7);
+
+  	if (new Date().getHours()<2){
+  		day -=1;
+  	}
+
+	var hour = Math.abs(parseInt(new Date().getHours()) + 24 - 2);
+
+	var min = new Date().getMinutes();
+
+	var hour_parsed = (hour % 24)*60 + min;
+
+	var live_eateries = [];
+
+	for (eatery in schedule){
+		if (schedule.hasOwnProperty(eatery)){
+			console.log(hour);
+			console.log(eatery);
+			console.log(day);
+			console.log(hour_parsed);
+			console.log( schedule[eatery][day]);
+			for (var i = 0; i < schedule[eatery][day].length;i++){
+				var span = schedule[eatery][day][i];
+				if (hour_parsed > span[0] && hour_parsed < span[1]){
+					live_eateries.push(eatery)
+				}
+			}
+		}
+		
+	}
+
+	console.log(live_eateries);
+
+	$('#page_sell_2 li label').each(function(){
+		var eatery = $(this).text();
+		if (live_eateries.indexOf(eatery) == -1){
+			var $li = $(this).parents('li');
+			$li.remove();
+		}
+	})
+
   console.log("arrived")
+  
+  $('#page_sell_2 :checkbox').each(function(){
+  		$(this).prop('checked',false).checkboxradio("refresh");
+       //$(this).removeClass('ui-checkbox-on');
+       console.log(this)
+       console.log("uncheck");
+  });
 
   var eateries = {};
   var checked_count = 0;
@@ -950,6 +2238,22 @@ $( document ).on( "pageshow", "#page_sell_2", function(event) {
 
 });
 
+function displayRating(rating) {
+	console.log('rating: ' + rating);
+	$("#match-ratingstars").css('display', 'block');
+	if (rating == 0) {
+		$("#match-ratingstars").css('display', 'none');
+		$("#match-ratingp").html('No current Rating');
+	}
+	for (var j = 1; j <=rating; j++) {
+		$("#match-rating #star" + j).addClass('fa-star');
+	}
+
+	for (var i = 5; i > rating; i--) {
+		$("#match-rating #star" + i).addClass('fa-star-o');
+	}
+}
+
 $( document ).on( "pageshow", "#page_sell_3", function(event) {
 	$("#progress_bar_3_sell").progressbar({
 	    value: 90
@@ -961,7 +2265,7 @@ $( document ).on( "pageshow", "#page_sell_3", function(event) {
 	console.log(contact);
 
 
-  	if(contact!=null){
+  	if(contact!=null && contact != 0000000000 ){
   		$('#tel-1_sell').val(contact);
   	};
 
@@ -977,22 +2281,56 @@ $( document ).on( "pageshow", "#page_sell_3", function(event) {
 	  tap_counter+=1;
 	});
 
+	//var intervalFlag = 1;
+
+	// var confirmInterval = setInterval(function(){
+	// 	intervalFlag = 0;
+	// 	console.log('in set interval');
+	// 	clearInterval(confirmInterval);
+	// }, 5000);
+
 	$("#final_confirm_sell").click(function(){
+
+		if (intervalFlag == 0 ) {
+			console.log('two clicks too quick');
+			return;
+		}
+
+		var intervalFlag = 0;
+
+		var confirmInterval = setInterval(function(){
+			intervalFlag = 1;
+			console.log('in set interval');
+			clearInterval(confirmInterval);
+		}, 5000);
+
+		// if (intervalFlag == 0 ) {
+		// 	console.log('two clicks too quick');
+		// 	return;
+		// }
     
 	    var phone = $('#tel-1_sell').val().trim();
 	    console.log(phone);
 	    sessionStorage.contact = phone;
+
+	    // if (!phone.match(/\d/g) || phone.length != 10) {
+	    // 	$('#wrong_number_sell').css("display","block");
+	    // 	$('#wrong_number_sell').css("color","red");
+	    // }
+	    //console.log()
 	    
-	    if(phone.match(/\d/g).length===10 && phone.length==10){
+	    if(phone.match(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/) && phone.length==10){
 
 	       console.log("sessionS conta: " + sessionStorage.contact);
 	       $("#profile-contact").html(sessionStorage.contact);
+	       $("#profile-error").text("");
+	       //consolg.log()
 
-	       var postParameters = {email: sessionStorage.user_email, contact: sessionStorage.contact, username: sessionStorage.user_name, subscribe: sessionStorage.subscribe};
+	       // var postParameters = {email: sessionStorage.user_email, contact: sessionStorage.contact, username: sessionStorage.user_name, subscribe: sessionStorage.subscribe};
 
-	       $.post("/changeinfo",postParameters,function(data){
-	      	 console.log(data);
-	       })
+	       // $.post("/changeinfo",postParameters,function(data){
+	      	//  console.log(data);
+	       // })
 
 	      offer = JSON.parse(localStorage.offer);
 	      $('#wrong_number_sell').css("display","none");
@@ -1005,10 +2343,27 @@ $( document ).on( "pageshow", "#page_sell_3", function(event) {
 	      localStorage.offer = JSON.stringify(offer)
 
 	      //$(location).attr('href', 'http://stackoverflow.com')
+	      console.log("session storage user_name sell: " + sessionStorage.user_name);
 	      
-	     $.post("/placeoffer",{user:sessionStorage.user_email,address:offer.address,eatery:offer.eatery,menu:offer.menu,duration:offer.duration,price:offer.price,bound:offer.bound,creditNum:offer.creditNum},function(response){
+	     $.post("/placeoffer",{
+	     	user:sessionStorage.user_email,
+	     	address:offer.address,
+	     	eatery:offer.eatery,
+	     	menu:offer.menu,
+	     	duration:offer.duration,
+	     	price:offer.price,
+	     	bound:offer.bound,
+	     	creditNum:offer.creditNum, 
+	     	contact: sessionStorage.contact,
+	     	username: sessionStorage.user_name,
+	     	subscribe: sessionStorage.subscribe,
+	     	north_deliver: offer.north_deliver,
+	     	south_deliver: offer.south_deliver,
+	     	center_deliver: offer.center_deliver
+	     },function(response){
 	         
 	         data = JSON.parse(response);
+	         //console.log(data.result);
 
 	         var address = window.location.href;
 	         console.log(address);
@@ -1020,36 +2375,358 @@ $( document ).on( "pageshow", "#page_sell_3", function(event) {
 	         		}
 	         }
 
-	         console.log(address);
+	         //console.log(address);
 
 
 	         if (data.result == "nothing"){
 
 	         	$(location).attr('href', address+"#page_confirm_false");
 
-	         } else if(data.result == "match"){
-	         	//var li = document.createElement("li");
-	         	console.log('match successful');
-	         	console.log(data.buyerName);
-	         	console.log(data.buyerContact);
-	         	var li = '<li><a href="#">' + 
-	         			'<h3>Sell Record:</h3><p style="font-size: 15px; text-align: left">Buyer: ' + 
-	         			data.buyerName + 
-	         			'<br> Buyer Contact:' + data.buyerContact + '</p>' + 
-	         			'</a><a href="#delete-popup" data-rel="popup" data-icon="delete"></a></li>';
-	         	$("#orders-ul").append(li);
+	
 
-	         	$(location).attr('href', new_address+"#page_confirm_true");
+	         } else if(data.result == "match"){
+	         	$("#match-username").html('Username: ' + data.buyerName);
+	         	displayRating(data.buyerRating);
+	         	$("#match-contact").html('Contact: ' + data.buyerContact);
+	         	console.log('buyer_email: ' + data.buyerEmail);
+	         	$("#match-email").text(data.buyerEmail);
+	         	
+	         	$(location).attr('href', address+"#page_confirm_true");
 	         } else{
 
+	         	$('#suggestion_div').css('display','block')
+	         	sessionStorage.removeItem('orderIds');
+	         	sessionStorage.removeItem('offerId');
+	         	sessionStorage.removeItem('buyerNames');
+	         	sessionStorage.removeItem('buyerRatings');
+	         	sessionStorage.removeItem('buyerContacts');
+	         	sessionStorage.removeItem('prices');
+
+	         	sessionStorage.removeItem('offerIds');
+         		sessionStorage.removeItem('orderId');
+         		sessionStorage.removeItem('sellerNames');
+         		sessionStorage.removeItem('sellerRatings');
+         		sessionStorage.removeItem('sellerContacts');
+         		sessionStorage.removeItem('prices');
+
+	         	sessionStorage.orderIds = JSON.stringify(data.orderIds);
+	         	sessionStorage.offerId= data.offerId;
+	         	sessionStorage.buyerNames = JSON.stringify(data.buyerNames);
+	         	sessionStorage.buyerRatings = JSON.stringify(data.buyerRatings);
+	         	sessionStorage.buyerContacts = JSON.stringify(data.buyerContacts);
+	         	sessionStorage.prices = JSON.stringify(data.prices);
+
+	         	for (var i = 0;i<data.buyerNames.length;i++){
+	         		
+	         		$("#li_"+(i+1)).css('display',"block");
+
+	         		$("#user_"+(i+1)).html(data.buyerNames[i]);
+	         		
+	         		for (var j = 0; j<Math.floor(data.buyerRatings[i]);j++){
+	         			$("#li_"+(i+1) +" #star"+(j+1)).css("color","rgba(198,26,102,0.7)");
+	         		}
+
+	         		$("#price_"+(i+1)).html(data.prices[i]);
+	         	}
+
+         		$(location).attr('href', address+"#page_confirm_false");
 	         }
 
-	         console.log(response);
+	         //console.log(response);
 	      })
-    } else{
+    	} else {
+    		//console.log('wrong number');
       		$('#wrong_number_sell').css("display","block");
-    };
-  })
+    	};
+ 	})
+
+})
+
+$( document ).on( "pageshow", "#page_confirm_true", function(event) {
+	//uncommented +1;
+	//$(".alert-p").html('Orders &#10071;');
+	$(".alert-p").html();
+	$(".alert-p").html('Orders &#10071;');
+	$("#match-checkhistory").click(function(){
+		var othersEmail = $("#match-email").text();
+		console.log("match-email: " + othersEmail);
+		var postParameters = {email: othersEmail};
+		$.post("/getdeals", postParameters, function(responseJSON){
+			var history = JSON.parse(responseJSON).history;
+			console.log('in profile hist length: ' + history.length);
+			if (history.length != 0) {
+				//console.log('history length: ' + history.length);
+
+			//var uncommented = 0;
+
+				for (var p = 0; p < history.length; p++) {
+					var star;
+					var buyOrSell;
+					var isSell = true;
+					var name;
+					var contact;
+					var email;
+					var isCommented;
+					var comment;
+					//var histRating;
+					console.log('othersEmail in history: ' + othersEmail);
+					console.log('sellerEmail in history: ' + history[p].sellerEmail);
+					if (history[p].sellerEmail == othersEmail) {
+						console.log('Im seller');
+						name = history[p].buyerName;
+						buyOrSell = "Sold";
+						console.log('buyorsell1: ' + buyOrSell);
+						contact = history[p].buyerContact;
+						email = history[p].buyerEmail;
+						star = countStar(history[p].buyerRating);
+						comment = history[p].sellerComment;
+						//histRating = 
+						if (history[p].buyerComment == 'No comment yet.') {
+							isCommented = false;
+						} else {
+							isCommented = true;
+						}
+
+					} else if (history[p].buyerEmail == othersEmail){
+						console.log('Im buyer');
+						name = history[p].sellerName;
+						buyOrSell = "Bought";
+						//email = history[p].sellerEmail;
+						//contact = history[p].sellerContact;
+						star = countStar(history[p].sellerRating);
+						comment = history[p].buyerComment;
+						if (history[p].sellerComment == 'No comment yet.') {
+							isCommented = false;
+						} else {
+							isCommented = true;
+						}
+					}
+					var commentToMe;
+		     		if (buyOrSell == 'Bought') {
+		     			commentToMe = history[p].buyerComment;
+		     		} else if (buyOrSell == 'Sold'){
+		     			commentToMe = history[p].sellerComment;
+		     		}
+					var profileComment = '<li class="ui-li-static ui-body-inherit ui-first-child">' + 
+			     		'<h4>' + name + '</h4>' + 
+			     		'<p style="font-size: 15px">' + 
+			     		star + 
+			     		'<br>&nbsp; &nbsp; &nbsp; &nbsp;' + commentToMe + '</p>' + 
+			     		'</li>'
+			     	$("#match-rating-ol").append(profileComment);
+			    }
+			}
+		});
+	});
+});
+
+$( document ).on( "pageshow", "#page_confirm_false", function(event) {
+
+	$("#suggestion_div .ui-button").click(function(){
+		var num = $(this).attr('id');
+		var num = parseInt(num.split("_")[1])-1;
+		console.log(num);
+		console.log(sessionStorage);
+
+		if (sessionStorage.getItem('sellerNames')!= null){
+			$('#page_confirm_true #match-username').html('Username: ' + JSON.parse(sessionStorage.sellerNames)[num]);
+			var stars = Math.floor(JSON.parse(sessionStorage.sellerRatings)[num]);
+			for (var j = 0; j < stars;j++){
+				$('#page_confirm_true #star'+(j+1)).addClass("fa-star");
+			}
+			$('#match-contact').html("Contact: " + JSON.parse(sessionStorage.sellerContacts)[num]);
+			
+			console.log(JSON.parse(sessionStorage.offerIds)[num]);
+			console.log(sessionStorage.orderId);
+			console.log(JSON.parse(sessionStorage.prices)[num]);
+
+			$.post('/putdeal',{offerID:JSON.parse(sessionStorage.offerIds)[num],orderID:sessionStorage.orderId,price:JSON.parse(sessionStorage.prices)[num]}, function(responseJSON){
+				console.log('in put deal');
+				var done = JSON.parse(responseJSON).done;
+				console.log('put deal done: ' + done);
+				if(done == 'true' || done == true) {
+					var sellerEmail = JSON.parse(responseJSON).sellerEmail;
+					console.log(sellerEmail);
+					$("#match-email").text(sellerEmail);
+				} else{
+					$.mobile.changePage($("#page_taken"));
+				}
+				console.log(JSON.parse(responseJSON).buyerEmail);
+			});
+
+		} else{
+			$('#page_confirm_true #match-username').html('Username: ' + JSON.parse(sessionStorage.buyerNames)[num]);
+			var stars = Math.floor(JSON.parse(sessionStorage.buyerRatings)[num]);
+			for (var j = 0; j < stars;j++){
+				$('#page_confirm_true #star'+(j+1)).addClass("fa-star");
+			}
+			$('#match-contact').html("Contact: " + JSON.parse(sessionStorage.buyerContacts)[num]);
+
+			console.log({offerID:sessionStorage.offerId,orderID:JSON.parse(sessionStorage.orderIds)[num],price:JSON.parse(sessionStorage.prices)[num]});
+
+			$.post('/putdeal',{offerID:sessionStorage.offerId,orderID:JSON.parse(sessionStorage.orderIds)[num],price:JSON.parse(sessionStorage.prices)[num]}, function(responseJSON){
+				console.log('in put deal');
+				var done = JSON.parse(responseJSON).done;
+				console.log('put deal done: ' + done);
+				if (done == 'true' || done == true) {
+					var buyerEmail = JSON.parse(responseJSON).buyerEmail;
+					console.log(buyerEmail);
+					$("#match-email").text(buyerEmail);
+				} else{
+					$.mobile.changePage($("#page_taken"));
+				}
+				console.log(JSON.parse(responseJSON).sellerEmail);
+			})
+				.done(function(){
+					//alert('putdeal success!');
+				});
+
+		}
+
+
+		$.mobile.changePage($("#page_confirm_true"));
+
+		
+	})
+
+
+
+
+});
+
+$(document).on('pageloadfailed', function(e) {
+	e.preventDefault();
+
+	console.log('page load failed');
+
+	$.mobile.changePage($("#error-page"));
+});
+
+$(document).ajaxError(function(){
+	$.mobile.changePage($("#error-page"));
+});
+
+
+
+
+$(document).on("pageshow", "#page_market", function(){
+
+	$('.ui-content #people').remove();
+	$('.ui-content #people').remove();
+
+	$.ajax({
+		  type: 'POST',
+		  url: "/market",
+		  data: {},
+		  success:function(response){
+		  	var data = JSON.parse(response);
+
+		  	console.log(data);
+
+		  	var buyerNames = data.buyerNames;
+		  	var buyerPrices = data.buyerPrices;
+		  	var buyerEateries = data.buyerEateries;
+		  	var buyerGenders = data.buyerGenders;
+		  	var buyerBounds = data.buyerBounds;
+		  	var buyerDelivers = data.buyerDelivers;
+		  	var buyerLocations = data.buyerLocations;
+		  	var buyerDurations = data.buyerDurations;
+
+		  	var sellerNames = data.sellerNames;
+		  	var sellerDelivers = data.sellerDelivers;
+		  	var sellerEateries = data.sellerEateries;
+		  	var sellerLocations = data.sellerLocations;
+		  	var sellerBounds = data.sellerBounds; 
+		  	var creditBounds = data.creditBounds;
+		  	var sellerGenders = data.sellerGenders;
+		  	var sellerDurations = data.sellerDurations;
+
+		  	for (var i = 0; i < buyerNames.length;i++){
+		  		var buyerName = buyerNames[i];
+		  		var buyerPrice = buyerPrices[i];
+		  		var buyerEatery = buyerEateries[i];
+		  		var buyerGender = buyerGenders[i];
+		  		if (buyerGender == "male"){
+		  			buyerGender = "He";
+		  		} else{
+		  			buyerGender = "She";
+		  		}
+		  		var buyerBound = buyerBounds[i];
+		  		var buyerDeliver = buyerDelivers[i];
+		  		var buyerLocation = buyerLocations[i];
+		  		var buyerDuration = buyerDurations[i];
+
+		  		var li = "<li id='people' class='ui-li-static ui-body-inherit ui-last-child'>"
+						+ "<p style='white-space:normal;font-size: 15px;'><span style='color: #A52A2A'>"
+		  				+ buyerName + "</span> wants to buy $" + buyerPrice + " worth of food at "
+		  				+ buyerEatery + ". " + buyerGender + " would like to pay $" + buyerBound
+		  				+ " for it. "  + buyerGender;
+
+		  		if (!buyerDeliver){
+		  			li += " can meet there in the next ";
+		  		}  else{
+		  			li += " wants food to be delivered in the next "
+		  		}
+
+		  		li += buyerDuration + " mins.</p></li>";
+		  		$('#current_buyers').append($(li));
+
+		  		//$(li).appendTo($('#current_buyers')).trigger("create");
+		  	};
+
+		  	if (buyerNames.length == 0){
+		  		$("<li class='ui-li-static ui-body-inherit ui-first-child' id='people'><p style='white-space:normal; font-size: 15px;'>There is currently no buyer.</p></li>").appendTo($('#current_buyers')).trigger("create");
+		  	}
+
+		  	for (var i =0; i< sellerNames.length;i++){
+
+		  		var sellerName = sellerNames[i];
+		  		var creditBound = creditBounds[i];
+		  		var sellerEatery = sellerEateries[i];
+		  		var sellerGender = sellerGenders[i];
+		  		if (sellerGender == "male"){
+		  			sellerGender = "He";
+		  		} else{
+		  			sellerGender = "She";
+		  		}
+		  		var sellerBound = sellerBounds[i];
+		  		var sellerDeliver = sellerDelivers[i];
+		  		var sellerLocation = sellerLocations[i];
+		  		var sellerDuration = sellerDurations[i];
+
+		  		var li = "<li id='people' class='ui-li-static ui-body-inherit ui-last-child'>"
+		  			+ "<p style='white-space:normal; font-size: 15px;'><span style='color: #A52A2A'>"
+		  			+ sellerName + "</span> wants to sell ";
+		  		
+		  		if (creditBound ==2){
+		  			li += "1-2 credits, ";
+		  		} else{
+		  			li += "1 credit, ";
+		  		}
+
+		  		li += "each at $"+sellerBound + ". "
+		  			+ sellerGender + " can purchase food at "
+		  			+ sellerEatery;
+ 
+		  		if (sellerDeliver){
+		  			li += ". " + sellerGender + " can meet with you, or deliever food to "
+		  				+ sellerLocations + " campus within "
+		  		} else{
+		  			li += ", and meet with you within "
+		  		}
+
+		  		li += sellerDuration + " mins.</p></li>";
+
+		  		$(li).appendTo($('#current_sellers')).trigger("create");
+		  	};
+
+		  	if (sellerNames.length == 0){
+		  		$("<li class='ui-li-static ui-body-inherit ui-last-child' id='people'><p style='white-space:normal; font-size: 15px;'>There is currently no seller.</p></li>").appendTo($('#current_sellers')).trigger("create");
+		  	}
+		  	
+		  },
+		  async:false
+		});
 
 })
 

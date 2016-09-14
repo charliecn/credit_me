@@ -1,0 +1,45 @@
+
+constant_menu ={
+    all_day:["Cheese Pizza","Pepperoni Pizza","Cookie Slice","Brownie","Fountain 21oz Drink","Tea","Coffee","Fresh Salad","Sushi","Seaweed Salad","Fruit Cup","Chobani Yoghurt","Milk","Whole Fruit","Deep River chips","Odwalla Bars"],
+    day:["Pho"],
+    night:["Asian Grill (1-credit worth)"]
+  }
+
+special_menu={
+    0:{
+      all_day:["Chipotle BBQ Sausage Pizza", "Southwest Veggie Pizza", "Upside Down Margherita Pizza","Buffalo Chicken Puff Pocket","Chicken w/Pink Vodka Pasta", "Pesto & Sundried Tomato Pasta"],
+      lunch:["Brunch Burrito","Breakfast Sandwich","Granola Bowl"],
+      dinner:["Banh Mi (Vietnamese Sandwich)"],
+    },
+    1:{
+      all_day:["Rhode to Italy Pizza", "Caprese Pizza", "BBQ Chicken Ranch Pizza","Spinach & Feta Puff Pocket","Chicken Parmesan Pasta","Mac & Cheese Pasta"],
+      lunch:["Grinder Station Sandwich",],
+      dinner:["MYO Fried Rice","MYO Panini"]
+    },
+    2:{
+      all_day:["Bacon Chicken Ranch Pizza", "Spinach & Feta Pizza", "Pepperoni & Meatball Pizza","Italian Puff Pocket","Meatball Pasta","Mac & Cheese Pasta"],
+      lunch:["Grinder Station Sandwich"],
+      dinner:["Chipotle BBQ Taco","MYO Panini"]
+    },
+    3:{
+      all_day:["Honey Boo Boo Pizza", "Mushroom's Revenge Pizza", "Sausage & Spicy Garlic Pizza","Buffalo Chicken Puff Pocket","Carbonara Pasta", "Pesto & Sundried Tomato Pasta"],
+      lunch:["Grinder Station Sandwich"],
+      dinner:["Po' Boys/Rich Boys","MYO Panini"]
+
+    },
+    4:{
+      all_day:["Na 'cho Pizza", "Spicy 5 Cheese & Garlic Pizza", "BBQ Bam Bam Pizza","Spinach & Feta Puff Pocket","MYO Pasta"],
+      lunch:["Grinder Station Sandwich"],
+      dinner:["MYO Panini"]
+    },
+    5:{
+      all_day:["Bacon & Feta Pizza", "Harvest Pizza", "Buffalo Chicken Pizza", "Italian Puff Pocket","Cajun Chicken Pasta", "Wild Mushroom & Gorgonzola Pasta"],
+      lunch:["Grinder Station Sandwich"],
+      dinner:["BBQ Pulled Pork Sandwich","MYO Panini"]
+    },
+    6:{
+      all_day:["Bacon Alfredo Pizza", "Pizza Bianco Pizza", "Pepperoni & Sausage & Jalapeno Pizza","Biscuit Bites Puff Pocket","Bacon Mac Pasta", "Mac & Cheese Pasta",],
+      lunch:["Brunch Burrito","Breakfast Sandwich","Granola Bowl"],
+      dinner:["Asian Taco"]
+    },
+  }

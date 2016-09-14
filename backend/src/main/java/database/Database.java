@@ -46,7 +46,6 @@ public class Database {
 		}
 	}
 	
-	
 	/**
 	 * an interface to connect with the database
 	 * @author lackley

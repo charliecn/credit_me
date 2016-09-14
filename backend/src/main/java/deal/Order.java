@@ -1,5 +1,6 @@
 package deal;
 
+import java.util.Date;
 import java.util.List;
 
 import global.Global;
@@ -22,13 +23,12 @@ public class Order extends HalfDeal {
   protected Location location;
   protected Eatery eatery;
   
-  public Order(Location loc, Eatery ety, double upper, double price, int dur, User usr, List<Food> food) {
-    super(upper, dur, usr);
+  public Order(Location loc, Eatery ety, double upper, double price, int dur, User usr, List<Food> food, Date date) {
+    super(upper, dur, usr, date);
     location = loc;
     eatery = ety;
     orders = food;
     actualPrice = price;
-    Global.getOrders().add(this);
     if (location == null) {
     	isDeliver = false;
     } else {
@@ -36,6 +36,14 @@ public class Order extends HalfDeal {
     }
   }
 
+  public String getFoodString() {
+  	StringBuilder sb = new StringBuilder();
+  	for (Food f : orders) {
+  		sb.append(", " + f.name);
+  	}
+  	return sb.toString().substring(2);
+  }
+  
   public List<Food> getOrders() {
     return orders;
   }
@@ -64,6 +72,7 @@ public class Order extends HalfDeal {
   
   @Override
   public String toString() {
-    return "Offer: buyer: " + user + " actual price: " + actualPrice + " priceBound: " + priceBound;
+    return "Order:\nbuyer: " + user.getName() + "\nactual price: " + actualPrice + 
+    		"\npriceBound: " + priceBound + "\ntime: " + time.toString() + "\neatery: " + eatery + "\n";
   }
 }

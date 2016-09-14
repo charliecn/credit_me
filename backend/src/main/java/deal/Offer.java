@@ -1,5 +1,6 @@
 package deal;
 
+import java.util.Date;
 import java.util.List;
 
 import global.Global;
@@ -20,12 +21,11 @@ public class Offer extends HalfDeal{
   protected List<Location> location;
   protected List<Eatery> eatery;
 	
-  public Offer(List<Location> loc, List<Eatery> ety, double upper, int dur, User usr, int num) {
-    super(upper, dur, usr);
+  public Offer(List<Location> loc, List<Eatery> ety, double upper, int dur, User usr, int num, Date date) {
+    super(upper, dur, usr, date);
     location = loc;
     eatery = ety;
     creditNum = num;
-    Global.getOffer().add(this);
     if (location.isEmpty()) {
     	isDeliver = false;
     } else {
@@ -57,6 +57,7 @@ public class Offer extends HalfDeal{
   
   @Override
   public String toString() {
-    return "Offer: buyer: " + user + " credit number: " + creditNum + " priceBound: " + priceBound;
+    return "Offer:\nbuyer: " + user.getName() + "\ncredit number: " + creditNum + 
+    		"\npriceBound: " + priceBound+ "\ntime: " + time.toString()  + "\neateries: " + eatery + "\n";
   }
 }

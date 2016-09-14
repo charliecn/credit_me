@@ -1,0 +1,100 @@
+
+body,span,p,div,html,ul,li,a,img{
+	margin: 0;
+	padding: 0;
+}
+
+html,body{
+	width: 100vw;
+}
+
+
+#side_nav{
+	display: inline-block;
+	height: 100vh;
+	width: 15vw;
+	background-color: gray;
+}
+
+#process{
+/*	position: relative;
+*/	display: inline-block;
+	margin-left: 15vw;
+	height:100vh;
+	width: 85vw;
+}
+
+
+
+.container{
+/*	transition: 0.5s ease-in;
+*/}
+
+
+.container_1{
+	position:relative;
+	top:20%;
+	left:30%;
+	width:40%;
+	height: 60%;
+	border-radius: 5px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	background-color:white;
+}
+
+#meetup{
+	height: 50%;
+	width: 100%;
+	text-align: center;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+	line-height: 50%;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+#delivery{
+	height: 50%;
+	width: 100%;
+	text-align: center;
+	line-height: 50%;
+	vertical-align: middle;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.choice{
+	border-radius: 5px;
+}
+
+.choice div{
+	position: relative;
+	font-size: 20px;
+	top:45%;
+	font-family: "Source Sans Pro",Helvetica;
+	font-weight: 300;
+}
+
+#meetup,#delivery:hover{
+	cursor: pointer;
+}
+
+
+.container_2{
+	position:relative;
+	top:0%;
+	left:30%;
+	width:40%;
+	height: 60%;
+	border-radius: 5px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	background-color:white;
+}
+
+
+
+
+
+
+
+
+

@@ -8,7 +8,8 @@
   </div>
 
   <div data-role="main" class="ui-content">
-    <p>Congrats! You have successfully signed up. Now log in and start exchaning credits!</p>
+<!--   	<p id="ifV"> -->
+    <p>${valid}</p>
     <a href="#" data-role="button" id="backtologin-submit" class="ui-btn">Go To Log In</a>
   </div>
 </div>

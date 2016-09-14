@@ -7,7 +7,7 @@ package locationfood;
  */
 public class Eatery {
 	
-	private String id;
+	private int id;
 	private String eateryName;
 	private String section;
 	private int start;
@@ -23,7 +23,7 @@ public class Eatery {
 	 * @param end - when it closes
 	 * @param description - description of eatery 
 	 */
-	public Eatery(String id, String eateryName, String section, 
+	public Eatery(int id, String eateryName, String section, 
 			int start, int end, String description){
 		this.id = id;
 		this.eateryName = eateryName;
@@ -33,7 +33,7 @@ public class Eatery {
 		this.description = description;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	
@@ -63,8 +63,12 @@ public class Eatery {
 			return false;
 		}
 		Eatery that = (Eatery) o;
-		return that.id.equals(this.id);
+		return that.id == this.id;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Eatery:\nName: " + eateryName + "\nID: " + id + "\nSection: " + section + "\n";
+	}
 
 }

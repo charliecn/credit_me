@@ -36,7 +36,18 @@ public class Location {
 	public String getSection() {
 		return section;
 	}
-
-
-
+	
+	@Override
+	public boolean equals(Object o) {
+		if(! (o instanceof Location)){
+			return false;
+		}
+		Location that = (Location) o;
+		return that.id.equals(this.id);
+	}
+	
+	@Override
+	public String toString() {
+		return "Location:\nName: " + name + "\nID: " + id + "\nSection: " + section + "\n";
+	}
 }

@@ -7,4 +7,18 @@ public class Food {
 		price = pr;
 		name = n;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(! (o instanceof Food)){
+			return false;
+		}
+		Food that = (Food) o;
+		return that.name.equals(this.name);
+	}
+	
+	@Override
+	public String toString() {
+		return "Food:\nName: " + name + "\nprice: " + price + "\n";
+	}
 }

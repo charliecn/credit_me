@@ -245,7 +245,7 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
       console.log(request);
       localStorage.request = JSON.stringify(request)
 
-      $(location).attr('href', 'http://stackoverflow.com')
+      //$(location).attr('href', 'http://stackoverflow.com')
       
       $.post("/placeorder",{user:email,address:request.address,eatery:request.eatery,menu:request.menu,duration:request.duration,price:request.price,priceBound:request.bound,},function(response){
         data = JSON.parse(response);
@@ -256,5 +256,4 @@ $( document ).on( "pageshow", "#page_buy_4", function(event) {
     }
   })
 
-  request = JSON.stringify(localStorage.request);
 });

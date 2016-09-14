@@ -1,7 +1,16 @@
 offer = JSON.parse(localStorage.offer||'{}');
 localStorage.offer = JSON.stringify(offer);
 
+$(document).bind('mobileinit',function(){
+    $.extend(  $.mobile , {
+      defaultPageTransition: "none"
+    });
+});
+ 
 $( document ).on( "pageinit", "#page_sell_1", function(event) {
+
+
+
   $("#progress_bar").progressbar({
      value: 35
   });

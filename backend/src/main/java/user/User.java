@@ -1,10 +1,4 @@
 package user;
-import java.util.ArrayList;
-import java.util.List;
-
-import database.Query;
-import deal.Deal;
-import global.Global;
 
 /**
  * represents a class for containing information about a user
@@ -13,15 +7,15 @@ import global.Global;
  */
 public class User {
 	private boolean isBrownUser = false;
-	private List<Deal> pastDeals;
 	private String name = "";
 	private String email = "";
 	private int totalRating = 0;
 	private int ratingNum = 0;
-	private String gender = "";
+	private String gender = "Not disclose";
 	private String contact = "0000000000";
 	private boolean subscribe = false;
 	private String password = "";
+	private String lastComment = "No last comment";
 	
 	enum title {
 	}
@@ -33,38 +27,35 @@ public class User {
 	 * @param id - the id of the user
 	 * @param rating - the rating of the user
 	 */
-	public User(String name, String email, String password, boolean subscribe){
+	public User(String name, String email, String password, boolean subscribe, String gen){
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.pastDeals = new ArrayList<Deal>();
 		this.subscribe = subscribe;
-		pastDeals = new ArrayList<Deal>();
+		gender = gen;
 		if (email.endsWith("@brown.edu")) {
 			isBrownUser = true;
 		}
 	}
 	
-	public User(String name, String email, String password, int totalRating, int ratingNum, String gender, String contact, List<Deal> pastDeals, boolean subscribe){
+	public User(String name, String email, String password, int totalRating, int ratingNum, String gender, String contact, boolean subscribe, String lastComment){
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.pastDeals = new ArrayList<Deal>();
 		this.subscribe = subscribe;
 		this.totalRating = totalRating;
 		this.ratingNum = ratingNum;
 		this.contact = contact;
 		this.gender = gender;
-		this.pastDeals = pastDeals;
-		pastDeals = new ArrayList<Deal>();
+		this.lastComment = lastComment;
 		if (email.endsWith("@brown.edu")) {
 			isBrownUser = true;
 		}
 	}
 	
-	//public static boolean deleteUser(String email, String password) {
-	//	return Query.deleteUser(email, password, Global.getDb().getConnection());
-	//}
+	public String getGender() {
+		return gender;
+	}
 	
 	public void setSubsribe(boolean s) {
 		subscribe = s;
@@ -107,6 +98,9 @@ public class User {
 	 * @return rating
 	 */
 	public double getRating(){
+		if (ratingNum == 0) {
+			return -1;
+		}
 		return (double) totalRating/ (double) ratingNum;
 	}
 	
@@ -122,22 +116,6 @@ public class User {
 	public int getRatingNum() {
 		return ratingNum;
 	}
-	
-	/**
-	 * adds a deal to the list of deals
-	 * @param deal - deal to add
-	 */
-	public void addDeals(List<Deal> deal){
-		pastDeals = deal;
-	}
-	
-	/**
-	 * returns the list of past deals
-	 * @return pastOrders
-	 */
-	public List<Deal> getPastDeals(){
-		return null;
-	}
 
 	/**
 	 * gets the user's password
@@ -151,9 +129,22 @@ public class User {
 		password = pwd;
 	}
 	
+	public String getLatsComment() {
+		return lastComment;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(! (o instanceof User)){
+			return false;
+		}
+		User that = (User) o;
+		return that.email.equals(this.email);
+	}
+	
 	@Override
 	public String toString() {
-	  return "user: email: " + email + " name: " + name + " password: " 
-	+ password + " subscribe: " + subscribe + " contact: " + contact;
+	  return "user:\nemail: " + email + "\nname: " + name + "\npassword: " 
+	+ password + "\nsubscribe: " + subscribe + "\ncontact: " + contact + "\n";
 	}
 }
